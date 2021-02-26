@@ -52,9 +52,11 @@ elseif(isset($_GET['I_id'])):
          $data[$nome]=$valor;
      }
      if($id == 0){
-        $query = DBCreate($db, $data, true);  
+        $query = DBCreate($db, $data, true);
+        $route ='&Item&Catego='.$_POST['categoria'];
     }else{
         $query =  DBUpdate($db, $data, "id = '{$id}'");
+        $route ='&Item&Catego='.$_POST['categoria'];
     };
 endif;
 
@@ -73,13 +75,15 @@ if(isset($_GET['DeletarCategoria'])){
 #DELETAR ITEM
 if(isset($_GET['DeletarItem'])){
     $id     = get('DeletarItem');
+    $cat = DBRead('cardapio_item','*' ,"WHERE id = '{$id}'")[0];
+    $route ='&Item&Catego='.$cat;
     $query  = DBDelete('cardapio_item',"id = '{$id}'");
 }
 
 if(isset($query)){
     if ($query != 0)  {
-        Redireciona('&sucesso');
+        Redireciona($UrlPage.'?sucesso'.$route);
     } else {
-        Redireciona('&erro');
+        Redireciona($UrlPage.'?erro'.$route);
     }
 }

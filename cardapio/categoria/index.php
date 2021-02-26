@@ -17,11 +17,34 @@ $status = $_GET['Cat'];
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
+                            <th>Implementação</th>
+                            <th>Item</th>
                             <th width="53px">Ações</th>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>Todas as categorias</td>
+                            <td>
+                                <button id="btnCopiarCodSite0" class="btn btn-primary btn-xs m-1" onclick="CopiadoCodSite(0)"  data-clipboard-text="<iframe onload='frame(this)'  src='<?php echo ConfigPainel('base_url') ?>wa/cardapio/' ></iframe>" type="button">
+                                    <i class="icon icon-code"></i> Copiar Código 
+                                </button>
+                            </td>
                         </tr>
                         <tr v-for="ctrl, index in ctrls">
                             <td>{{index+1}}</td>
                             <td>{{ctrl.nome}}</td>
+                            <td>
+                                <button :id="'btnCopiarCodSite'+ctrls[index].id" class="btn btn-primary btn-xs m-1" :idi="ctrls[index].id" onclick="CopiadoCodSite(getAttribute('idi'))"  :data-clipboard-text="codigo[index]" type="button">
+                                    <i class="icon icon-code"></i> Copiar Código 
+                                </button>
+                            </td>
+                            <td>
+                                <a class="tooltips" data-tooltip="Adicionar" :href="'?Item=0&Catego='+ctrls[index].id">
+                                    <i class="icon-plus blue lighten-2 avatar"></i>
+                                </a>
+                                    <a class="tooltips" data-tooltip="Visualizar" :href="'?Item&Catego='+ctrls[index].id"><i class="icon-eye blue lighten-2 avatar"></i>
+                                </a>
+                            </td>
                             <td>
                                 <div class="dropdown">
                                     <a class="" href="#" data-toggle="dropdown">
@@ -81,12 +104,13 @@ $status = $_GET['Cat'];
     </div>
 </div>
 <script>
-    new Vue({
+    const vue = new Vue({
         el:".card",
         data: {
             idx:"",
             status:"<?php echo $status ?>",
-            ctrls:<?php echo $query ?>
+            ctrls:<?php echo $query ?>,
+            codigo:[]
         },
         methods:{
             move: function(a, b){
@@ -95,4 +119,7 @@ $status = $_GET['Cat'];
             }
         }
     })
+    for(let i = 0; i<vue.ctrls.length; i++){
+        vue.codigo.push("<iframe onload='frame(this)'  src='<?php echo ConfigPainel('base_url') ?>wa/cardapio/?id="+vue.ctrls[i].id+"' ></iframe>")
+    }
 </script>

@@ -1,10 +1,10 @@
 <?php
+	$TitlePage = 'Cardapio';
+	$UrlPage   = 'cardapio.php';
 	require_once('includes/funcoes.php');
 	require_once('includes/header.php');
 	require_once('includes/menu.php');
 	require_once('controller/cardapio.php');
-	$TitlePage = 'Cardapio';
-	$UrlPage   = 'cardapio.php';
 	echo DBRead('cardapio','*',"WHERE id = '1'")[0]['modo'];
 ?>
 <div class="has-sidebar-left">
