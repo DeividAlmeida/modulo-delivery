@@ -38,43 +38,69 @@ CREATE TABLE IF NOT EXISTS `cardapio_item` (
 CREATE TABLE IF NOT EXISTS `cardapio_config` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
-        #ALGO
-    `lg_cor_fundo` varchar(255) DEFAULT NULL,
-    `lg_cor_texto` varchar(255) DEFAULT NULL,
-    `lg_cor_texto_bt` varchar(255) DEFAULT NULL,
-    `lg_cor_texto_hover_bt` varchar(255) DEFAULT NULL,
-    `lg_cor_fundo_bt` varchar(255) DEFAULT NULL,
-    `logo` varchar(255) DEFAULT NULL,
-    `img` varchar(255) DEFAULT NULL,
-    `lg_cor_fundo_hover_bt` varchar(255) DEFAULT NULL,
-    `destaque` varchar(255) DEFAULT NULL,
-        #ALGO
-    `ds_cor_fundo` varchar(255) DEFAULT NULL,
-    `ds_cor_titulo` varchar(255) DEFAULT NULL,
-    `ds_descricao` varchar(255) DEFAULT NULL,
-    `cor_primaria` varchar(255) DEFAULT NULL,
-    `cor_secundaria` varchar(255) DEFAULT NULL
+        #ESTILO
+    `estilo` varchar(255) DEFAULT NULL,
+    `colunas` varchar(255) DEFAULT NULL,
+    `lis_fundo` varchar(255) DEFAULT NULL,
+    `lis_hover_fundo` varchar(255) DEFAULT NULL,
+    `lis_titulo` varchar(255) DEFAULT NULL,
+    `lis_descricao` varchar(255) DEFAULT NULL,
+    `lis_preco` varchar(255) DEFAULT NULL,
+    `lis_preco_pro` varchar(255) DEFAULT NULL,
+    `borda` varchar(255) DEFAULT NULL,
+    `paginacao` varchar(255) DEFAULT NULL,
+    `item` varchar(255) DEFAULT NULL,
+        #POPUP
+    `pop_titulo` varchar(255) DEFAULT NULL,
+    `pop_descricao` varchar(255) DEFAULT NULL,
+    `pop_fechar` varchar(255) DEFAULT NULL,
+    `entrada` varchar(255) DEFAULT NULL,
+        #MOBILE
+    `mob_img` varchar(255) DEFAULT NULL,
+    `mob_fundo_categoria` varchar(255) DEFAULT NULL,
+    `mob_texto_categoria` varchar(255) DEFAULT NULL,
+    `mob_fundo_pesquisa` varchar(255) DEFAULT NULL,
+    `mob_texto_pesquisa` varchar(255) DEFAULT NULL,
+    `mob_fundo` varchar(255) DEFAULT NULL,
+    `mob_divisor` varchar(255) DEFAULT NULL,
+    `mob_titulo` varchar(255) DEFAULT NULL,
+    `mob_descricao` varchar(255) DEFAULT NULL,
+    `mob_preco` varchar(255) DEFAULT NULL,
+    `mob_preco_pro` varchar(255) DEFAULT NULL
     
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-    INSERT INTO `cardapio_config` (
-        `id`, 
+   INSERT INTO `cardapio_config` (
+       `id`,
 
-        #ALGO
-        `lg_cor_fundo`, 
-        `lg_cor_texto`, 
-        `lg_cor_texto_bt`, 
-        `lg_cor_texto_hover_bt`, 
-        `lg_cor_fundo_bt`,
-        `logo`, 
-        `img`,  
-        `lg_cor_fundo_hover_bt`,
-        `destaque`,
-        #ALGO
-        `ds_cor_fundo`, 
-        `ds_cor_titulo`,
-        `ds_descricao`, 
-        `cor_primaria`,  
-        `cor_secundaria`
+            #ESTILO 
+       `estilo`, 
+       `colunas`, 
+       `lis_fundo`,
+        `lis_hover_fundo`, 
+        `lis_titulo`, 
+        `lis_descricao`, 
+        `lis_preco`, 
+        `lis_preco_pro`, 
+        `borda`, 
+        `paginacao`, 
+        `item`,
 
-    ) VALUES
-    (1,'','','','','','','','','','','','','','');
+            #POPUP 
+        `pop_titulo`, 
+        `pop_descricao`, 
+        `pop_fechar`, 
+        `entrada`, 
+        
+            #MOBILE
+        `mob_img`, 
+        `mob_fundo_categoria`, 
+        `mob_texto_categoria`, 
+        `mob_fundo_pesquisa`, 
+        `mob_texto_pesquisa`, 
+        `mob_fundo`, 
+        `mob_divisor`, 
+        `mob_titulo`, 
+        `mob_descricao`, 
+        `mob_preco`, 
+        `mob_preco_pro`) 
+   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

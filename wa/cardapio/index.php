@@ -3,15 +3,18 @@
 	require_once('../../includes/funcoes.php');
 	require_once('../../database/config.database.php');
 	require_once('../../database/config.php');
-	$_GET['id'] = 4;
+	#$_GET['id'] = 4;
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
 	    $fetch = DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria}'");
 	    
 	else:
-	    $categoria = null;
-	    $fetch = DBRead('cardapio_categoria','*');
+	    $categoria = 'null';
+	    $fetch = DBRead('cardapio_item','*');
+
 	endif;
+	    $categorias = json_encode(DBRead('cardapio_categoria','*'));
+	    $config = json_encode(DBRead('cardapio_config','*')[0]);
 	    $db = json_encode($fetch);
 ?>
 <head>
@@ -23,13 +26,15 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js'></script>
 
 <style>
-
-
+html{
+    overflow-x: hidden;;
+}
 .pagination {
-  display: inline-block;
-  padding-left: 0;
-  margin: 20px 0;
-  border-radius: 4px;
+    width: 100%;
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 9%;
+    border-radius: 4px;
 }
 
 .pagination > li {
@@ -138,32 +143,41 @@
 .pagination a {
   cursor: pointer;
 }
-
+#dashboard{
+    margin:10px 7%; 
+    display: flex;
+    justify-content: center;
+ }
 * {
   box-sizing: border-box;
 }
-#search{
+.search{
     width:250px;
+    height: 35px;
+    margin:15px;
 }
 #menu{
-    margin-left:6%;
+    position:relative;
+    left:8%;
 }
 .column {
     float: left;
-    width: 45%;
+    width: 40%;
     display:flex;
     border:solid 3px #000;
     margin: 1%;
     cursor:pointer;
+    height:120px;
 }
 .column div{
-    margin:1%;
+    
 }
 .um{
-    width:100px;
+    width:120px;
+    overflow:hidden;
 }
 .um img{
-    width:100px;
+    height:120px;
 }
 .dois p{
     text-overflow: ellipsis;
@@ -179,10 +193,16 @@
     height:70px;
     white-space:nowrap;
     text-overflow:ellipsis;
+    position:relative;
+    top:15%;
     
 }
 .tres{
     padding-bottom:10px;
+    padding-top: 2%;
+    position:relative;
+    top:16%;
+    right:1.5%;
 }
 #box{
     position: fixed;
@@ -245,17 +265,37 @@
   background-color: rgb(0,0,0,0.2);
   border-radius: 10px;
 }
-
+.nao{
+    text-decoration: line-through;
+    margin: 0;
+    text-align: center;
+}
+.sim{
+    font-size: 20px;
+    font-weight: bolder;
+    white-space: nowrap;
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: 5%;
+}
+.promocao{
+    background:grey;
+}
 </style>
 </header>
 <body>
     <div id="controller">
         <div id="dashboard">
-            <input id="search"  v-model="searchQuery" placeholder="Digite aqui o que está procurando... &#128269;" @keyup="resultQuery()" />
+            <select @change="categor($event)" v-if="!categoria" class="search">
+                <option selected>Escolha a categoria que deseja </option>
+                <option  v-for="cat, i of categorias" :value="cat.id">{{cat.nome}}</option>
+            </select>
+            <input class="search"  v-model="searchQuery" placeholder="Digite aqui o que está procurando... &#128269;" @keyup="resultQuery()" />
         </div>
         
-        <div id="menu" v-if="categoria">
-            <div class="column" v-for="(item, index) in tokens" @click="select(index)">
+        <div id="menu" >
+            <div :class="item.promocao == 'S'?'promocao column':'column'" class="" v-for="(item, index) in tokens" @click="select(index)">
                 <div class="um">
                     <img :src="origin+'wa/cardapio/uploads/'+item.img">
                 </div>
@@ -264,7 +304,8 @@
                     <p>{{item.descricao}}</p>
                 </div>
                 <div class="tres">
-                    <p>R$ {{item.valor}}</p>
+                    <p class="sim" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</p>
+                    <p :class="item.promocao == 'S'?'nao':'sim'">R$ {{item.preco.replace('.',',')}}</p>
                 </div>
             </div>
             
@@ -272,7 +313,7 @@
         <div v-if="idx != null">
             <div id="box" @click="close()">
             </div>
-            <div id="popup" class="tc-animation-slide-top">
+            <div id="popup" :class='config.entrada'>
                 <span id="fechar"  @click="close()"> 	&times;
                 </span>
                 <div id="um">
@@ -286,19 +327,19 @@
         </div>
         <ul  class="pagination">
             <li :class="{'disabled' : pager.currentPage === 1}">
-                <a @click="setPage(1)">Primeiro</a>
+                <a @click="setPage(1)">&Ll;</a>
             </li>
             <li :class="{'disabled' : pager.currentPage === 1}">
-                <a @click="setPage(pager.currentPage - 1)">Anterior</a>
+                <a @click="setPage(pager.currentPage - 1)">	&Lt;</a>
             </li>
             <li v-for="page in pager.pages" :class="{'active' : pager.currentPage === page}">
                 <a @click="setPage(page)" v-html="page"></a>
             </li>
             <li :class="{'disabled' : pager.currentPage === pager.totalPages}">
-                <a @click="setPage(pager.currentPage + 1)">Proximo</a>
+                <a @click="setPage(pager.currentPage + 1)">	&Gt;</a>
             </li>
             <li :class="{'disabled' : pager.currentPage === pager.totalPages}">
-                <a @click="setPage(pager.totalPages)">Ultimo</a>
+                <a @click="setPage(pager.totalPages)">&ggg;</a>
             </li>
         </ul>
     </div>
@@ -311,7 +352,7 @@ var myMixin = {
     GetPager: function (totalItems, currentPage, pageSize) {
       currentPage = currentPage || 1;
 
-      pageSize = pageSize || 2;
+      pageSize = pageSize || 11;
 
       var totalPages = Math.ceil(totalItems / pageSize);
 
@@ -327,7 +368,7 @@ var myMixin = {
           startPage = totalPages - 9;
           endPage = totalPages;
         } else {
-          startPage = currentPage - 2;
+          startPage = currentPage - 11;
           endPage = currentPage + 4;
         }
       }
@@ -359,6 +400,8 @@ mixins: [myMixin],
 data: {
     origin:'<?php echo ConfigPainel('base_url') ?>',
     categoria: <?php echo $categoria ?>,
+    categorias: <?php echo $categorias ?>,
+    config:<?php echo $config ?>,
     idx:null,
     tokenDumms: [],
     pager: {},
@@ -374,14 +417,16 @@ methods: {
     close: function(){
         this.idx=null;
     },
-
+    categor: function(i){
+        window.location.href = '<?php echo ConfigPainel('base_url') ?>wa/cardapio/?id='+i.target.value
+    },
     setPage: function (page, itemsToFilter) {
         if (page < 1 || page > this.pager.totalPages) {
             return;
         }
         
         if (itemsToFilter != null) {
-            this.pager = this.GetPager(itemsToFilter.length, page, 2);
+            this.pager = this.GetPager(itemsToFilter.length, page, 11);
         
             this.tokens = itemsToFilter.slice(
               this.pager.startIndex,
@@ -390,7 +435,7 @@ methods: {
         
         
         } else if (itemsToFilter == null || itemsToFilter.length <= 0) {
-            this.pager = this.GetPager(this.tokenDumms.length, page, 2);
+            this.pager = this.GetPager(this.tokenDumms.length, page, 11);
         
             this.tokens = this.tokenDumms.slice(
               this.pager.startIndex,
