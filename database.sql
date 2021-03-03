@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `cardapio_config` (
     `estilo` varchar(255) DEFAULT NULL,
     `colunas` varchar(255) DEFAULT NULL,
     `lis_fundo` varchar(255) DEFAULT NULL,
+    `lis_fundo_pro` varchar(255) DEFAULT NULL,
     `lis_hover_fundo` varchar(255) DEFAULT NULL,
     `lis_titulo` varchar(255) DEFAULT NULL,
     `lis_descricao` varchar(255) DEFAULT NULL,
@@ -73,9 +74,10 @@ CREATE TABLE IF NOT EXISTS `cardapio_config` (
        `id`,
 
             #ESTILO 
-       `estilo`, 
-       `colunas`, 
-       `lis_fundo`,
+        `estilo`, 
+        `colunas`, 
+        `lis_fundo`,
+        `lis_fundo_pro`,
         `lis_hover_fundo`, 
         `lis_titulo`, 
         `lis_descricao`, 
@@ -103,4 +105,4 @@ CREATE TABLE IF NOT EXISTS `cardapio_config` (
         `mob_descricao`, 
         `mob_preco`, 
         `mob_preco_pro`) 
-   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

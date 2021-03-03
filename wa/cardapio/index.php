@@ -14,7 +14,8 @@
 
 	endif;
 	    $categorias = json_encode(DBRead('cardapio_categoria','*'));
-	    $config = json_encode(DBRead('cardapio_config','*')[0]);
+	    $conf = DBRead('cardapio_config','*')[0];
+	    $config = json_encode($conf);
 	    $db = json_encode($fetch);
 ?>
 <head>
@@ -29,6 +30,10 @@
 html{
     overflow-x: hidden;;
 }
+    #menu{
+    position:relative;
+    left:6%;
+    }
 .pagination {
     width: 100%;
     display: inline-block;
@@ -156,36 +161,14 @@ html{
     height: 35px;
     margin:15px;
 }
-#menu{
-    position:relative;
-    left:8%;
+
+.column:hover{
+    background:<?php echo $conf['lis_hover_fundo'] ?>;
 }
-.column {
-    float: left;
-    width: 40%;
-    display:flex;
-    border:solid 3px #000;
-    margin: 1%;
-    cursor:pointer;
-    height:120px;
-}
-.column div{
-    
-}
-.um{
-    width:120px;
-    overflow:hidden;
-}
-.um img{
-    height:120px;
-}
-.dois p{
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    margin:0;
-}
+
 .dois b{
     font-size:25px;
+    color:<?php echo $conf['lis_titulo'] ?>;
 }
 .dois { 
     width:60%;
@@ -195,15 +178,8 @@ html{
     text-overflow:ellipsis;
     position:relative;
     top:15%;
-    
 }
-.tres{
-    padding-bottom:10px;
-    padding-top: 2%;
-    position:relative;
-    top:16%;
-    right:1.5%;
-}
+
 #box{
     position: fixed;
     background-color: rgb(0,0,0,0.5);
@@ -231,7 +207,7 @@ html{
     right: 5px;
     cursor: pointer;
     font-weight: bolder;
-    color: rgb(0,0,0,0.1);
+    color: <?php  echo $conf['pop_fechar'] ?>;
 }
 #um{
     position: absolute;
@@ -251,9 +227,11 @@ html{
 #dois p{
     height:150px;
     overflow-y:scroll;
+    color: <?php  echo $conf['pop_descricao'] ?>;
 }
 #dois b{
     font-size: 35px;
+   color: <?php  echo $conf['pop_titulo'] ?>;
 }
             
 ::-webkit-scrollbar {
@@ -265,10 +243,52 @@ html{
   background-color: rgb(0,0,0,0.2);
   border-radius: 10px;
 }
-.nao{
-    text-decoration: line-through;
-    margin: 0;
+
+.promocao{
+    background:<?php  echo $conf['lis_fundo_pro'] ?>;
+}
+.quatro{
+    display:none;
+}
+<?php if($conf['estilo'] == 1){ ?>
+#menu{
+    position:relative;
+    left:8%;
+}
+.column {
+    float: left;
+    width: 40%;
+    height:120px;
+    display:flex;
+    border:solid 3px <?php echo $conf['borda'] ?>;
+    margin: 1%;
+    cursor:pointer;
+    background:<?php echo $conf['lis_fundo'] ?>;
+}
+.um img{
+    height:120px;
+}
+.um{
+    width:120px;
+    overflow:hidden;
+}
+.tres{
+    padding-bottom:10px;
+    padding-top: 2%;
+    position:relative;
+    top:16%;
+    right:1.5%;
+}
+.talvez{
+    font-size: 20px;
+    font-weight: bolder;
+    white-space: nowrap;
     text-align: center;
+    margin: 0;
+    position: relative;
+    top: 5%;
+    color:<?php echo $conf['lis_preco'] ?>;
+
 }
 .sim{
     font-size: 20px;
@@ -278,9 +298,177 @@ html{
     margin: 0;
     position: relative;
     top: 5%;
+    color:<?php echo $conf['lis_preco_pro'] ?>;
 }
-.promocao{
-    background:grey;
+.nao{
+    text-decoration: line-through;
+    margin: 0;
+    text-align: center;
+    color:<?php echo $conf['lis_preco'] ?>;
+    left:20%;
+}
+.dois p{
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    margin:0;
+    color:<?php echo $conf['lis_descricao'] ?>;
+}
+<?php } else { 
+    if($conf['colunas']=='20%'){
+    ?>
+#menu{
+    position:relative;
+    left:6%;
+}
+<?php }else{ ?>
+#menu{
+    position:relative;
+    left:9%;
+}
+<?php }?>
+.column {
+    float: left;
+    border:solid 3px <?php echo $conf['borda'] ?>;
+    margin: 1%;
+    cursor:pointer;
+    background:<?php echo $conf['lis_fundo'] ?>;
+    width: <?php echo $conf['colunas'] ?>;
+    display: block;
+}
+.um{
+    height:180px;
+    overflow:hidden;
+}
+.um img{
+    width:100%;
+}
+.tres{
+    padding-bottom:10px;
+    padding-top: 2%;
+    position:relative;
+    top:16%;
+    right:1.5%;
+    display:flex;
+}
+
+.talvez{
+    font-size: 20px;
+    font-weight: bolder;
+    white-space: nowrap;
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: 5%;
+    color:<?php echo $conf['lis_preco'] ?>;
+    left:16px;
+}
+.sim{
+    font-size: 20px;
+    font-weight: bolder;
+    white-space: nowrap;
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: 5%;
+    color:<?php echo $conf['lis_preco_pro'] ?>;
+    left:36%;
+}
+.nao{
+    text-decoration: line-through;
+    margin: 0;
+    text-align: center;
+    color:<?php echo $conf['lis_preco'] ?>;
+    left:7%;
+    bottom:32%;
+    position:absolute;
+}
+.dois p{
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    margin:0;
+    color:<?php echo $conf['lis_descricao'] ?>;
+    width:175%;
+}
+<?php } ?>
+@media only screen and (max-width: 1000px) {
+  #dashboard {
+    display:grid;
+  }
+  .search{
+    margin:5px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+     border-radius: 20px;
+  }
+  .column {
+    float: left;
+    width: 70%;
+    height:120px;
+    display:flex;
+    border:solid 3px <?php echo $conf['borda'] ?>;
+    margin: 1%;
+    cursor:pointer;
+    background:<?php echo $conf['lis_fundo'] ?>;
+    overflow:hidden;
+    }
+    .um img {
+    width: 155px;
+}
+
+.dois {
+    width: 100%;
+    margin: 10px;
+    top: 0;
+    position: relative;
+    padding: 0;
+    white-space: normal;
+}
+.dois p{
+    overflow: scroll;
+    margin: 0;
+    height: 80px;
+    width:100%;
+    position:absolute;
+}
+.tres{
+ display:none;   
+}
+.quatro{
+    display:inline;
+}
+
+
+#menu{
+    position: relative;
+    width: 122%;
+}
+::-webkit-scrollbar {
+  width: 0;
+
+}
+#mob{
+    display:none;
+}
+.column:hover {
+    background:<?php echo $conf['mob_fundo']?>;
+}
+.column {
+    background:<?php echo $conf['mob_fundo']?>;
+}
+.nao {
+    text-decoration: line-through;
+    margin: 0;
+    text-align: center;
+    color: #43869c;
+    left: 0%;
+    top: 10%;
+    position: absolute !important;
+}
+<?php if($conf['mob_img'] == 'N'){?>
+    .um img {
+        display: none;
+    }
+<?php }?>
 }
 </style>
 </header>
@@ -301,16 +489,20 @@ html{
                 </div>
                 <div class="dois">
                     <b>{{item.nome}}</b>
+                    <div class="quatro">
+                        <p :class="item.promocao == 'S'?'nao':'talvez'">R$ {{item.preco.replace('.',',')}}</p>
+                        <p class="sim" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</p>
+                    </div>
                     <p>{{item.descricao}}</p>
                 </div>
                 <div class="tres">
                     <p class="sim" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</p>
-                    <p :class="item.promocao == 'S'?'nao':'sim'">R$ {{item.preco.replace('.',',')}}</p>
+                    <p :class="item.promocao == 'S'?'nao':'talvez'">R$ {{item.preco.replace('.',',')}}</p>
                 </div>
             </div>
             
         </div>
-        <div v-if="idx != null">
+        <div id="mob" v-if="idx != null">
             <div id="box" @click="close()">
             </div>
             <div id="popup" :class='config.entrada'>
@@ -325,20 +517,20 @@ html{
                 </div>
             </div>
         </div>
-        <ul  class="pagination">
-            <li :class="{'disabled' : pager.currentPage === 1}">
+        <ul  class="pagination" v-if="config.paginacao == 'S'">
+            <li id="mob" :class="{'disabled' : pager.currentPage === 1}">
                 <a @click="setPage(1)">&Ll;</a>
             </li>
-            <li :class="{'disabled' : pager.currentPage === 1}">
+            <li id="mob" :class="{'disabled' : pager.currentPage === 1}">
                 <a @click="setPage(pager.currentPage - 1)">	&Lt;</a>
             </li>
             <li v-for="page in pager.pages" :class="{'active' : pager.currentPage === page}">
                 <a @click="setPage(page)" v-html="page"></a>
             </li>
-            <li :class="{'disabled' : pager.currentPage === pager.totalPages}">
+            <li id="mob" :class="{'disabled' : pager.currentPage === pager.totalPages}">
                 <a @click="setPage(pager.currentPage + 1)">	&Gt;</a>
             </li>
-            <li :class="{'disabled' : pager.currentPage === pager.totalPages}">
+            <li id="mob" :class="{'disabled' : pager.currentPage === pager.totalPages}">
                 <a @click="setPage(pager.totalPages)">&ggg;</a>
             </li>
         </ul>
@@ -352,7 +544,7 @@ var myMixin = {
     GetPager: function (totalItems, currentPage, pageSize) {
       currentPage = currentPage || 1;
 
-      pageSize = pageSize || 11;
+      pageSize = pageSize || <?php if($conf['item'] == null || $conf['paginacao'] == 'N'){echo 100000000; }else{echo $conf['item']; }?>;
 
       var totalPages = Math.ceil(totalItems / pageSize);
 
@@ -368,7 +560,7 @@ var myMixin = {
           startPage = totalPages - 9;
           endPage = totalPages;
         } else {
-          startPage = currentPage - 11;
+          startPage = currentPage - <?php if($conf['item'] == null || $conf['paginacao'] == 'N'){echo 100000000; }else{echo $conf['item']; }?>;
           endPage = currentPage + 4;
         }
       }
@@ -426,7 +618,7 @@ methods: {
         }
         
         if (itemsToFilter != null) {
-            this.pager = this.GetPager(itemsToFilter.length, page, 11);
+            this.pager = this.GetPager(itemsToFilter.length, page, <?php if($conf['item'] == null || $conf['paginacao'] == 'N'){echo 100000000; }else{echo $conf['item']; }?>);
         
             this.tokens = itemsToFilter.slice(
               this.pager.startIndex,
@@ -435,7 +627,7 @@ methods: {
         
         
         } else if (itemsToFilter == null || itemsToFilter.length <= 0) {
-            this.pager = this.GetPager(this.tokenDumms.length, page, 11);
+            this.pager = this.GetPager(this.tokenDumms.length, page, <?php if($conf['item'] == null || $conf['paginacao'] == 'N'){echo 100000000; }else{echo $conf['item']; }?>);
         
             this.tokens = this.tokenDumms.slice(
               this.pager.startIndex,
