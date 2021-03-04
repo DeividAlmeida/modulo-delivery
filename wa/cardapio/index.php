@@ -23,6 +23,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo ConfigPainel('base_url') ?>epack/css/elements/animate.css" >
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <?php  echo DBRead('cardapio','*',"WHERE id = '1'")[0]['modo']; ?>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js'></script>
 
@@ -170,15 +171,6 @@ html{
     font-size:25px;
     color:<?php echo $conf['lis_titulo'] ?>;
 }
-.dois { 
-    width:60%;
-    padding:10px;
-    height:70px;
-    white-space:nowrap;
-    text-overflow:ellipsis;
-    position:relative;
-    top:15%;
-}
 
 #box{
     position: fixed;
@@ -250,7 +242,18 @@ html{
 .quatro{
     display:none;
 }
+
 <?php if($conf['estilo'] == 1){ ?>
+.dois { 
+    width:60%;
+    padding:10px;
+    height:70px;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    position:relative;
+    top:15%;
+    overflow:hidden;
+}
 #menu{
     position:relative;
     left:8%;
@@ -389,8 +392,52 @@ html{
     color:<?php echo $conf['lis_descricao'] ?>;
     width:175%;
 }
+.dois { 
+    width:auto;
+    padding:10px;
+    height:70px;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    position:relative;
+    top:15%;
+    overflow:hidden;
+}
 <?php } ?>
+
 @media only screen and (max-width: 1000px) {
+    .talvez{
+        font-weight: bolder;
+        white-space: nowrap;
+        text-align: center;
+        margin: 0;
+        position: relative;
+        top: 0%;
+        color:<?php echo $conf['mob_preco'] ?>;
+        left:16px;
+        top:0;
+        font-size:120%;
+    }
+    .sim {
+    color:<?php echo $conf['mob_preco_pro'] ?>;
+    font-weight: bolder;
+    white-space: nowrap;
+    margin: 0;
+    position: relative;
+    color: #f51c1c;
+    left: 2%;
+    top:1px;
+    font-size:120%;
+    box-sizing: border-box;
+}
+.nao {
+    text-decoration: line-through;
+    margin: 0;
+    color: <?php echo $conf['mob_preco_pro_1'] ?>;
+    top: 0%;
+    left: 2%;
+    position: relative !important;
+    font-size: 75%;
+}
   #dashboard {
     display:grid;
   }
@@ -399,20 +446,33 @@ html{
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
      border-radius: 20px;
+     border:0;
   }
   .column {
     float: left;
     width: 70%;
-    height:120px;
     display:flex;
-    border:solid 3px <?php echo $conf['borda'] ?>;
     margin: 1%;
     cursor:pointer;
-    background:<?php echo $conf['lis_fundo'] ?>;
+    background:<?php echo $conf['mob_fundo']?>;
+    border:0px;
     overflow:hidden;
     }
     .um img {
     width: 155px;
+}
+.column:hover {
+    background:<?php echo $conf['mob_fundo']?>;
+}
+hr{
+    position: relative;
+    width: 70%;
+    display: flex !important;
+    right: 14%;
+    top:4px;
+    border:0;
+    height:1px;
+    background:<?php echo $conf['mob_divisor']?>;
 }
 
 .dois {
@@ -423,12 +483,10 @@ html{
     padding: 0;
     white-space: normal;
 }
-.dois p{
-    overflow: scroll;
-    margin: 0;
-    height: 80px;
-    width:100%;
-    position:absolute;
+
+.dois b{
+font-size:120%;
+color:<?php echo $conf['mob_titulo']?>;
 }
 .tres{
  display:none;   
@@ -449,58 +507,87 @@ html{
 #mob{
     display:none;
 }
-.column:hover {
-    background:<?php echo $conf['mob_fundo']?>;
+
+select {
+    background:<?php echo $conf['mob_fundo_categoria']?>;
+    color:<?php echo $conf['mob_texto_categoria']?>;
+    font:FontAwesome;
 }
-.column {
-    background:<?php echo $conf['mob_fundo']?>;
+input{
+    background:<?php echo $conf['mob_fundo_pesquisa']?>;
+    color:<?php echo $conf['mob_texto_pesquisa']?>;
 }
-.nao {
-    text-decoration: line-through;
-    margin: 0;
-    text-align: center;
-    color: #43869c;
-    left: 0%;
-    top: 10%;
-    position: absolute !important;
+input::placeholder {
+    color: <?php echo $conf['mob_texto_pesquisa']?>;
+}
+}
+.um {
+    height: auto;
+    overflow: hidden;
 }
 <?php if($conf['mob_img'] == 'N'){?>
     .um img {
         display: none;
     }
+    .dois p{
+        overflow: scroll;
+        margin: 0;
+        height: 70px;
+        width: 100%;
+        position: relative;
+        top:5%;
+        font-size: 75%;
+        color:<?php echo $conf['mob_descricao']?>;
+    }
+<?php }else{?>
+   .dois p{
+        overflow: scroll;
+        margin: 0;
+        height: 85px;
+        width: 100%;
+        position: relative;
+        top:5%;
+        font-size: 75%;
+        color:<?php echo $conf['mob_descricao']?>;
+    } 
 <?php }?>
+
 }
+
 </style>
 </header>
 <body>
     <div id="controller">
         <div id="dashboard">
             <select @change="categor($event)" v-if="!categoria" class="search">
-                <option selected>Escolha a categoria que deseja </option>
+                <option selected> Escolha a categoria que deseja </option>
                 <option  v-for="cat, i of categorias" :value="cat.id">{{cat.nome}}</option>
             </select>
-            <input class="search"  v-model="searchQuery" placeholder="Digite aqui o que está procurando... &#128269;" @keyup="resultQuery()" />
+            <input class="search"  v-model="searchQuery"  placeholder=" Digite aqui o que está procurando...  &#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
         </div>
         
         <div id="menu" >
-            <div :class="item.promocao == 'S'?'promocao column':'column'" class="" v-for="(item, index) in tokens" @click="select(index)">
+            <div v-for="(item, index) in tokens">
+            <div :class="item.promocao == 'S'?'promocao column':'column'" class=""  @click="select(index)">
                 <div class="um">
                     <img :src="origin+'wa/cardapio/uploads/'+item.img">
                 </div>
                 <div class="dois">
                     <b>{{item.nome}}</b>
-                    <div class="quatro">
-                        <p :class="item.promocao == 'S'?'nao':'talvez'">R$ {{item.preco.replace('.',',')}}</p>
-                        <p class="sim" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</p>
-                    </div>
+                    
+                        <span :class="item.promocao == 'S'?'nao quatro':'talvez quatro'">R$ {{item.preco.replace('.',',')}}</span>
+                        <span class="sim quatro" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</span>
+                    
                     <p>{{item.descricao}}</p>
                 </div>
                 <div class="tres">
                     <p class="sim" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</p>
                     <p :class="item.promocao == 'S'?'nao':'talvez'">R$ {{item.preco.replace('.',',')}}</p>
                 </div>
+                </div>
+                <hr class="quatro">
             </div>
-            
+
         </div>
         <div id="mob" v-if="idx != null">
             <div id="box" @click="close()">

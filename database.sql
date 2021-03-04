@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `cardapio_config` (
     `mob_titulo` varchar(255) DEFAULT NULL,
     `mob_descricao` varchar(255) DEFAULT NULL,
     `mob_preco` varchar(255) DEFAULT NULL,
+    `mob_preco_pro_1` varchar(255) DEFAULT NULL,
     `mob_preco_pro` varchar(255) DEFAULT NULL
     
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -104,5 +105,6 @@ CREATE TABLE IF NOT EXISTS `cardapio_config` (
         `mob_titulo`, 
         `mob_descricao`, 
         `mob_preco`, 
+        `mob_preco_pro_1`, 
         `mob_preco_pro`) 
-   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

@@ -373,7 +373,20 @@ if(isset($query)){
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Cor do Preço da Promoção:</label>
+                        <label>Cor do Preço da Promoção 1:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                          <input value="<?php echo $a['mob_preco_pro_1'] ?>" class="form-control" name="mob_preco_pro_1" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Cor do Preço da Promoção 2:</label>
                         <div class="color-picker input-group colorpicker-element focused">
                           <input value="<?php echo $a['mob_preco_pro'] ?>" class="form-control" name="mob_preco_pro" >
                             <span class="input-group-append">
