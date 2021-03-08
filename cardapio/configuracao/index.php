@@ -177,6 +177,19 @@ if(isset($query)){
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                    <label>Cor do Fundo:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                            <input value="<?php echo $a['pop_fundo'] ?>" class="form-control" name="pop_fundo" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                     <label>Cor do Título:</label>
                         <div class="color-picker input-group colorpicker-element focused">
                             <input value="<?php echo $a['pop_titulo'] ?>" class="form-control" name="pop_titulo" >
@@ -188,6 +201,8 @@ if(isset($query)){
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                     <label>Cor da Descrição:</label>
@@ -201,8 +216,6 @@ if(isset($query)){
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                     <label>Cor do Botão Fechar:</label>

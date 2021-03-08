@@ -24,13 +24,14 @@ $query = json_encode(DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria
                             <th>ID</th>
                             <th>Imagem</th>
                             <th>Nome</th>
-
+                            <th>Preço</th>
                             <th width="53px">Ações</th>
                         </tr>
                         <tr v-for="ctrl, index in ctrls">
                             <td>{{index+1}}</td>
                             <td><img v-if="ctrl.img" height="40" :src="folder+ctrl.img"></td>
                             <td>{{ctrl.nome}}</td>
+                            <td>R$ {{ctrl.preco.replace('.',',')}}</td>
                             
                             <td>
                                 <div class="dropdown">
@@ -42,7 +43,7 @@ $query = json_encode(DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria
                                             <a class="dropdown-item"  @click="move(ctrl.id, index)" href="#!"><i class="text-primary icon icon-pencil" ></i> Editar</a>
                                         <?php } ?>
                                         <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'deletar')) { ?>
-                                            <a class="dropdown-item" :data-id="ctrl.id"  onclick="DeletarItem(getAttribute('data-id'), 'DeletarItem');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a>
+                                            <a class="dropdown-item" :data-id="ctrl.id"  onclick="DeletarItem(getAttribute('data-id'), 'catego=<?php echo $categoria ?>&DeletarItem');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a>
                                         <?php } ?>
                                     </div>
                                 </div>
@@ -69,7 +70,7 @@ $query = json_encode(DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria
                     </div>
                     <div class="form-group">
                         <label>Descrição: </label>
-                        <textarea class="form-control" v-model="ctrls[idx].descricao" name="descricao" required>{{ctrls[idx].descricao}}</textarea>
+                        <textarea rows="10"  class="form-control" v-model="ctrls[idx].descricao" name="descricao" required>{{ctrls[idx].descricao}}</textarea>
                     </div>
                     <div class="form-group">
                         <label>Preço: </label>
@@ -86,7 +87,7 @@ $query = json_encode(DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria
                     </div>
                     <div v-if="ctrls[idx].promocao =='S'" class="form-group">
                         <label>Valor: </label>
-                        <input class="form-control" type="number" v-model="ctrls[idx].valor" name="valor" min="0.00" step="0.01" required>
+                        <input class="form-control" type="number" v-model="ctrls[idx].valor" name="valor" :min="ctrls[idx].preco" step="0.01" required>
                     </div>
                     <div class="justify-content-md-center" >
                         <div class="form-group offset-sm-0 text-center">
@@ -109,11 +110,11 @@ $query = json_encode(DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria
                     </div>
                     <div class="form-group">
                         <label>Descrição: </label>
-                        <textarea class="form-control"  name="descricao" required></textarea>
+                        <textarea rows="10" class="form-control"  name="descricao" required></textarea>
                     </div>
                     <div class="form-group">
                         <label>Preço: </label>
-                        <input class="form-control" type="number"  name="preco" min="0.00" step="0.01" required>
+                        <input class="form-control" type="number" v-model="preco" name="preco" min="0.00" step="0.01" required>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -126,7 +127,7 @@ $query = json_encode(DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria
                     </div>
                     <div v-if="idx =='S'" class="form-group">
                         <label>Valor: </label>
-                        <input class="form-control" type="number"  name="valor" min="0.00" step="0.01" required>
+                        <input class="form-control" type="number"  name="valor" :min="preco" step="0.01" required>
                     </div>
                     <div class="justify-content-md-center" >
                         <div class="form-group offset-sm-0 text-center">
@@ -155,6 +156,7 @@ $query = json_encode(DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria
             idx:"",
             status:"<?php echo $status ?>",
             ctrls:<?php echo $query ?>,
+            preco:0
         },
         methods:{
             move: function(a, b){

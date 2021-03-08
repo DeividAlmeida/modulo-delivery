@@ -26,16 +26,18 @@ $status = $_GET['Cat'];
                             <td>Todas as categorias</td>
                             <td>
                                 <button id="btnCopiarCodSite0" class="btn btn-primary btn-xs m-1" onclick="CopiadoCodSite(0)"  data-clipboard-text="<iframe onload='frame(this)'  src='<?php echo ConfigPainel('base_url') ?>wa/cardapio/' ></iframe>" type="button">
-                                    <i class="icon icon-code"></i> Copiar Código 
+                                    <i class="icon icon-code"></i> Copiar Cod. do Site 
                                 </button>
                             </td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr v-for="ctrl, index in ctrls">
                             <td>{{index+1}}</td>
                             <td>{{ctrl.nome}}</td>
                             <td>
                                 <button :id="'btnCopiarCodSite'+ctrls[index].id" class="btn btn-primary btn-xs m-1" :idi="ctrls[index].id" onclick="CopiadoCodSite(getAttribute('idi'))"  :data-clipboard-text="codigo[index]" type="button">
-                                    <i class="icon icon-code"></i> Copiar Código 
+                                    <i class="icon icon-code"></i> Copiar Cod. do Site
                                 </button>
                             </td>
                             <td>

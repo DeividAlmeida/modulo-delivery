@@ -29,7 +29,8 @@
 
 <style>
 html{
-    overflow-x: hidden;;
+    overflow-x: hidden;
+    font-family: Montserrat, Arial, Helvetica, 'Liberation Sans', FreeSans, sans-serif;
 }
     #menu{
     position:relative;
@@ -150,7 +151,7 @@ html{
   cursor: pointer;
 }
 #dashboard{
-    margin:10px 7%; 
+
     display: flex;
     justify-content: center;
  }
@@ -158,7 +159,7 @@ html{
   box-sizing: border-box;
 }
 .search{
-    width:250px;
+    width:100% !important;
     height: 35px;
     margin:15px;
 }
@@ -183,7 +184,7 @@ html{
 }
 #popup{
     position: fixed;
-    background-color: #fff;
+    background-color: <?php echo $conf['pop_fundo'] ?>;
     z-index: 10000001;
     height: 250px;
     width: 750px;
@@ -237,7 +238,7 @@ html{
 }
 
 .promocao{
-    background:<?php  echo $conf['lis_fundo_pro'] ?>;
+    background:<?php  echo $conf['lis_fundo_pro'] ?> !important;
 }
 .quatro{
     display:none;
@@ -259,21 +260,20 @@ html{
     left:8%;
 }
 .column {
-    float: left;
-    width: 40%;
-    height:120px;
+
     display:flex;
-    border:solid 3px <?php echo $conf['borda'] ?>;
+    border:solid 1px <?php echo $conf['borda'] ?>;
     margin: 1%;
     cursor:pointer;
     background:<?php echo $conf['lis_fundo'] ?>;
 }
 .um img{
     height:120px;
+    position:relative;
+
 }
 .um{
     width:120px;
-    overflow:hidden;
 }
 .tres{
     padding-bottom:10px;
@@ -331,7 +331,7 @@ html{
 <?php }?>
 .column {
     float: left;
-    border:solid 3px <?php echo $conf['borda'] ?>;
+    border:solid 1px <?php echo $conf['borda'] ?>;
     margin: 1%;
     cursor:pointer;
     background:<?php echo $conf['lis_fundo'] ?>;
@@ -340,7 +340,6 @@ html{
 }
 .um{
     height:180px;
-    overflow:hidden;
 }
 .um img{
     width:100%;
@@ -405,6 +404,33 @@ html{
 <?php } ?>
 
 @media only screen and (max-width: 1000px) {
+    <?php if($conf['mob_img'] == 'N'){?>
+    .um img {
+        display: none;
+    }
+    .dois p{
+        overflow: scroll;
+        margin: 0;
+        height: 70px;
+        width: 100%;
+        position: relative;
+        top:5%;
+        font-size: 75%;
+        color:<?php echo $conf['mob_descricao']?>;
+    }
+<?php }else{?>
+
+   .dois p{
+        overflow: scroll;
+        margin: 0;
+        height: 85px;
+        width: 100%;
+        position: relative;
+        top:5%;
+        font-size: 75%;
+        color:<?php echo $conf['mob_descricao']?>;
+    } 
+<?php }?>
     .talvez{
         font-weight: bolder;
         white-space: nowrap;
@@ -418,7 +444,7 @@ html{
         font-size:120%;
     }
     .sim {
-    color:<?php echo $conf['mob_preco_pro'] ?>;
+    color:<?php echo $conf['mob_preco_pro'] ?> !important;
     font-weight: bolder;
     white-space: nowrap;
     margin: 0;
@@ -439,7 +465,7 @@ html{
     font-size: 75%;
 }
   #dashboard {
-    display:grid;
+    display:block;
   }
   .search{
     margin:5px;
@@ -450,7 +476,7 @@ html{
   }
   .column {
     float: left;
-    width: 70%;
+
     display:flex;
     margin: 1%;
     cursor:pointer;
@@ -459,16 +485,19 @@ html{
     overflow:hidden;
     }
     .um img {
-    width: 155px;
+    width: auto;
+    height: 123px;
+    position: relative;
+
 }
 .column:hover {
     background:<?php echo $conf['mob_fundo']?>;
 }
 hr{
     position: relative;
-    width: 70%;
+    width: 100%;
     display: flex !important;
-    right: 14%;
+    margin-bottom: 10px !important;
     top:4px;
     border:0;
     height:1px;
@@ -523,67 +552,41 @@ input::placeholder {
 }
 .um {
     height: auto;
-    overflow: hidden;
 }
-<?php if($conf['mob_img'] == 'N'){?>
-    .um img {
-        display: none;
-    }
-    .dois p{
-        overflow: scroll;
-        margin: 0;
-        height: 70px;
-        width: 100%;
-        position: relative;
-        top:5%;
-        font-size: 75%;
-        color:<?php echo $conf['mob_descricao']?>;
-    }
-<?php }else{?>
-   .dois p{
-        overflow: scroll;
-        margin: 0;
-        height: 85px;
-        width: 100%;
-        position: relative;
-        top:5%;
-        font-size: 75%;
-        color:<?php echo $conf['mob_descricao']?>;
-    } 
-<?php }?>
+
 
 }
 
 </style>
 </header>
 <body>
-    <div id="controller">
-        <div id="dashboard">
-            <select @change="categor($event)" v-if="!categoria" class="search">
+    <div id="controller" >
+        <div id="dashboard" class="container-fluid">
+            <select @change="categor($event)" v-if="!categoria" class="search col-sm-6">
                 <option selected> Escolha a categoria que deseja </option>
                 <option  v-for="cat, i of categorias" :value="cat.id">{{cat.nome}}</option>
             </select>
-            <input class="search"  v-model="searchQuery"  placeholder=" Digite aqui o que está procurando...  &#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
+            <input class="search col-sm-6"  v-model="searchQuery"  placeholder=" Digite aqui o que está procurando...  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
         </div>
         
-        <div id="menu" >
-            <div v-for="(item, index) in tokens">
-            <div :class="item.promocao == 'S'?'promocao column':'column'" class=""  @click="select(index)">
-                <div class="um">
-                    <img :src="origin+'wa/cardapio/uploads/'+item.img">
-                </div>
-                <div class="dois">
-                    <b>{{item.nome}}</b>
-                    
-                        <span :class="item.promocao == 'S'?'nao quatro':'talvez quatro'">R$ {{item.preco.replace('.',',')}}</span>
-                        <span class="sim quatro" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</span>
-                    
-                    <p>{{item.descricao}}</p>
-                </div>
-                <div class="tres">
-                    <p class="sim" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</p>
-                    <p :class="item.promocao == 'S'?'nao':'talvez'">R$ {{item.preco.replace('.',',')}}</p>
-                </div>
+        <div class="container-fluid" >
+            <div class="col-sm-6" v-for="(item, index) in tokens">
+                <div :class="item.promocao == 'S'?'promocao column ':'column '" class=""  @click="select(index)">
+                    <div class="um">
+                        <img :src="origin+'wa/cardapio/uploads/'+item.img">
+                    </div>
+                    <div class="dois">
+                        <b>{{item.nome}}</b>
+                        
+                            <span :class="item.promocao == 'S'?'nao quatro':'talvez quatro'">R$ {{item.preco.replace('.',',')}}</span>
+                            <span class="sim quatro" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</span>
+                        
+                        <p>{{item.descricao}}</p>
+                    </div>
+                    <div class="tres">
+                        <p class="sim" v-if="item.promocao == 'S'">R$ {{item.valor.replace('.',',')}}</p>
+                        <p :class="item.promocao == 'S'?'nao':'talvez'">R$ {{item.preco.replace('.',',')}}</p>
+                    </div>
                 </div>
                 <hr class="quatro">
             </div>

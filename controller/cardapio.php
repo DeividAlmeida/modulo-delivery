@@ -76,7 +76,7 @@ if(isset($_GET['DeletarCategoria'])){
 if(isset($_GET['DeletarItem'])){
     $id     = get('DeletarItem');
     $cat = DBRead('cardapio_item','*' ,"WHERE id = '{$id}'")[0];
-    $route ='&Item&Catego='.$cat;
+    $route ='&Item&Catego='.$_GET['catego'];
     $query  = DBDelete('cardapio_item',"id = '{$id}'");
 }
 
