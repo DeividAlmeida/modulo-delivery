@@ -1,6 +1,9 @@
 <?php
 $query = json_encode(DBRead('cardapio_categoria','*'));
 $status = $_GET['Cat'];
+$cod="<script src='https://cdn.jsdelivr.net/npm/vue@2'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js'></script>
+<div id='cardapio'></div>";
 ?>
 <div class="card"  >
     <div id="control" v-if="!status">
@@ -25,7 +28,7 @@ $status = $_GET['Cat'];
                             <td>0</td>
                             <td>Todas as categorias</td>
                             <td>
-                                <button id="btnCopiarCodSite0" class="btn btn-primary btn-xs m-1" onclick="CopiadoCodSite(0)"  data-clipboard-text="<iframe onload='frame(this)'  src='<?php echo ConfigPainel('base_url') ?>wa/cardapio/' ></iframe>" type="button">
+                                <button id="btnCopiarCodSite0" class="btn btn-primary btn-xs m-1" onclick="CopiadoCodSite(0)"  data-clipboard-text="<?php  echo $cod?><script>$('#cardapio').load('<?php echo ConfigPainel('base_url') ?>wa/cardapio/')</script>" type="button">
                                     <i class="icon icon-code"></i> Copiar Cod. do Site 
                                 </button>
                             </td>
@@ -36,7 +39,7 @@ $status = $_GET['Cat'];
                             <td>{{index+1}}</td>
                             <td>{{ctrl.nome}}</td>
                             <td>
-                                <button :id="'btnCopiarCodSite'+ctrls[index].id" class="btn btn-primary btn-xs m-1" :idi="ctrls[index].id" onclick="CopiadoCodSite(getAttribute('idi'))"  :data-clipboard-text="codigo[index]" type="button">
+                                <button :id="'btnCopiarCodSite'+ctrls[index].id" class="btn btn-primary btn-xs m-1" :idi="ctrls[index].id" onclick="CopiadoCodSite(getAttribute('idi'))"  :data-clipboard-text="'<script '+underscore+'></script><script '+vue+'></script><div '+div+'></div><script>'+codigo[index]+'</script>'" type="button">
                                     <i class="icon icon-code"></i> Copiar Cod. do Site
                                 </button>
                             </td>
@@ -112,6 +115,9 @@ $status = $_GET['Cat'];
             idx:"",
             status:"<?php echo $status ?>",
             ctrls:<?php echo $query ?>,
+            vue:'src="https://cdn.jsdelivr.net/npm/vue@2"',
+            underscore:'src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"',
+            div:'id="cardapio"',
             codigo:[]
         },
         methods:{
@@ -121,7 +127,7 @@ $status = $_GET['Cat'];
             }
         }
     })
-    for(let i = 0; i<vue.ctrls.length; i++){
-        vue.codigo.push("<iframe onload='frame(this)'  src='<?php echo ConfigPainel('base_url') ?>wa/cardapio/?id="+vue.ctrls[i].id+"' ></iframe>")
+    for(let i = 0; i < vue.ctrls.length; i++){
+        vue.codigo.push("$('#cardapio').load('https://www.templateswebacappella.com.br/wacontrol-aula/wa/cardapio/?id="+vue.ctrls[i].id+"')")
     }
 </script>

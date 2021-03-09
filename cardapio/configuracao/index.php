@@ -166,8 +166,8 @@ if(isset($query)){
                     <div class="form-group">
                         <label>Número de colunas: </label>
                         <select   name='colunas' class='form-control'  v-model='idx.colunas'> 
-                            <option value='25%'>3 Colunas</option>
-                            <option value='20%'>4 Colunas</option></option>
+                            <option value='4'>3 Colunas</option>
+                            <option value='3'>4 Colunas</option></option>
                         </select>
                     </div>
                 </div>

@@ -32,128 +32,13 @@ html{
     overflow-x: hidden;
     font-family: Montserrat, Arial, Helvetica, 'Liberation Sans', FreeSans, sans-serif;
 }
-    #menu{
-    position:relative;
-    left:6%;
-    }
-.pagination {
-    width: 100%;
-    display: inline-block;
-    padding-left: 0;
-    margin: 20px 9%;
-    border-radius: 4px;
-}
 
-.pagination > li {
-  display: inline;
-}
-
-.pagination > li > a,
-.pagination > li > span {
-  position: relative;
-  float: left;
-  padding: 10px 16px;
-  margin-left: -2px;
-  line-height: 1.42857143;
-  color: #fff !important;
-  text-decoration: none;
-  background-color: #1c2228;
-  border: 1px solid #000;
-}
-
-.pagination > li:first-child > a,
-.pagination > li:first-child > span {
-  margin-left: 0;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.pagination > li:last-child > a,
-.pagination > li:last-child > span {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-.pagination > li > a:focus,
-.pagination > li > a:hover,
-.pagination > li > span:focus,
-.pagination > li > span:hover {
-  z-index: 3;
-  color: #fff;
-  background-color: #000;
-  border-color: #000;
-}
-
-.pagination > .active > a,
-.pagination > .active > a:focus,
-.pagination > .active > a:hover,
-.pagination > .active > span,
-.pagination > .active > span:focus,
-.pagination > .active > span:hover {
-  z-index: 2;
-  color: #fff;
-  cursor: default;
-  background: linear-gradient(-68deg, #000, #000);
-  border-color: #000;
-}
-
-.pagination > .disabled > a,
-.pagination > .disabled > a:focus,
-.pagination > .disabled > a:hover,
-.pagination > .disabled > span,
-.pagination > .disabled > span:focus,
-.pagination > .disabled > span:hover {
-  color: #777 !important;
-  cursor: not-allowed;
-  background-color: #1c2228;
-  border-color: #000;
-}
-
-.pagination-lg > li > a,
-.pagination-lg > li > span {
-  padding: 10px 16px;
-  font-size: 18px;
-  line-height: 1.3333333;
-}
-
-.pagination-lg > li:first-child > a,
-.pagination-lg > li:first-child > span {
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-}
-
-.pagination-lg > li:last-child > a,
-.pagination-lg > li:last-child > span {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
-.pagination-sm > li > a,
-.pagination-sm > li > span {
-  padding: 5px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.pagination-sm > li:first-child > a,
-.pagination-sm > li:first-child > span {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-
-.pagination-sm > li:last-child > a,
-.pagination-sm > li:last-child > span {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
-
-.pagination a {
-  cursor: pointer;
+.pagination{
+    padding-left:15px!important;
 }
 #dashboard{
-
     display: flex;
-    justify-content: center;
+    position:relative;
  }
 * {
   box-sizing: border-box;
@@ -165,6 +50,7 @@ html{
 }
 
 .column:hover{
+    transition: 0.3s;
     background:<?php echo $conf['lis_hover_fundo'] ?>;
 }
 
@@ -192,6 +78,7 @@ html{
     border-radius: 25px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     overflow:hidden;
+    top:20%;
 }
 #fechar{
     font-size: 50px;
@@ -215,23 +102,28 @@ html{
     margin: 2% 0% 0% 38%;
     width: 440px;
     overflow: hidden;
-    white-space: break-spaces
+    white-space: break-spaces;
+    height:225px;
+}
+
+#dois b{
+    font-size: 35px;
+   color: <?php  echo $conf['pop_titulo'] ?>;
+   line-height:30px;
+   position:relative;
+   bottom:2px;
+
 }
 #dois p{
     height:150px;
     overflow-y:scroll;
     color: <?php  echo $conf['pop_descricao'] ?>;
+   position:relative;
+   top:9%;
 }
-#dois b{
-    font-size: 35px;
-   color: <?php  echo $conf['pop_titulo'] ?>;
-}
-            
 ::-webkit-scrollbar {
   width: 10px;
-
 }
-
 ::-webkit-scrollbar-thumb {
   background-color: rgb(0,0,0,0.2);
   border-radius: 10px;
@@ -255,10 +147,7 @@ html{
     top:15%;
     overflow:hidden;
 }
-#menu{
-    position:relative;
-    left:8%;
-}
+
 .column {
 
     display:flex;
@@ -270,7 +159,6 @@ html{
 .um img{
     height:120px;
     position:relative;
-
 }
 .um{
     width:120px;
@@ -317,25 +205,21 @@ html{
     color:<?php echo $conf['lis_descricao'] ?>;
 }
 <?php } else { 
-    if($conf['colunas']=='20%'){
+    if($conf['colunas']=='4'){
     ?>
-#menu{
-    position:relative;
-    left:6%;
-}
+
+
+
 <?php }else{ ?>
-#menu{
-    position:relative;
-    left:9%;
-}
+
+
+
 <?php }?>
 .column {
-    float: left;
-    border:solid 1px <?php echo $conf['borda'] ?>;
+    border:solid 1px <?php echo $conf['borda'] ?> !important;
     margin: 1%;
     cursor:pointer;
-    background:<?php echo $conf['lis_fundo'] ?>;
-    width: <?php echo $conf['colunas'] ?>;
+    background:<?php echo $conf['lis_fundo'] ?> !important;
     display: block;
 }
 .um{
@@ -389,7 +273,6 @@ html{
     overflow: hidden; 
     margin:0;
     color:<?php echo $conf['lis_descricao'] ?>;
-    width:175%;
 }
 .dois { 
     width:auto;
@@ -404,9 +287,12 @@ html{
 <?php } ?>
 
 @media only screen and (max-width: 1000px) {
+.col-sm-4, .col-sm-3 {
+    width: 100% !important;
+}
     <?php if($conf['mob_img'] == 'N'){?>
-    .um img {
-        display: none;
+    .um {
+        display: none !important;
     }
     .dois p{
         overflow: scroll;
@@ -423,7 +309,7 @@ html{
    .dois p{
         overflow: scroll;
         margin: 0;
-        height: 85px;
+        height: 100px;
         width: 100%;
         position: relative;
         top:5%;
@@ -466,6 +352,8 @@ html{
 }
   #dashboard {
     display:block;
+    position:relative;
+    right:5px;
   }
   .search{
     margin:5px;
@@ -488,7 +376,6 @@ html{
     width: auto;
     height: 123px;
     position: relative;
-
 }
 .column:hover {
     background:<?php echo $conf['mob_fundo']?>;
@@ -505,6 +392,7 @@ hr{
 }
 
 .dois {
+    height:100px;
     width: 100%;
     margin: 10px;
     top: 0;
@@ -525,10 +413,7 @@ color:<?php echo $conf['mob_titulo']?>;
 }
 
 
-#menu{
-    position: relative;
-    width: 122%;
-}
+
 ::-webkit-scrollbar {
   width: 0;
 
@@ -538,16 +423,16 @@ color:<?php echo $conf['mob_titulo']?>;
 }
 
 select {
-    background:<?php echo $conf['mob_fundo_categoria']?>;
-    color:<?php echo $conf['mob_texto_categoria']?>;
+    background:<?php echo $conf['mob_fundo_categoria']?> !important;
+    color:<?php echo $conf['mob_texto_categoria']?> !important;
     font:FontAwesome;
 }
 input{
-    background:<?php echo $conf['mob_fundo_pesquisa']?>;
-    color:<?php echo $conf['mob_texto_pesquisa']?>;
+    background:<?php echo $conf['mob_fundo_pesquisa']?> !important;
+    color:<?php echo $conf['mob_texto_pesquisa']?> !important;
 }
 input::placeholder {
-    color: <?php echo $conf['mob_texto_pesquisa']?>;
+    color: <?php echo $conf['mob_texto_pesquisa']?> !important;
 }
 }
 .um {
@@ -560,8 +445,8 @@ input::placeholder {
 </style>
 </header>
 <body>
-    <div id="controller" >
-        <div id="dashboard" class="container-fluid">
+    <div id="controller" class="container-fluid">
+        <div id="dashboard" >
             <select @change="categor($event)" v-if="!categoria" class="search col-sm-6">
                 <option selected> Escolha a categoria que deseja </option>
                 <option  v-for="cat, i of categorias" :value="cat.id">{{cat.nome}}</option>
@@ -569,8 +454,8 @@ input::placeholder {
             <input class="search col-sm-6"  v-model="searchQuery"  placeholder=" Digite aqui o que está procurando...  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
         </div>
         
-        <div class="container-fluid" >
-            <div class="col-sm-6" v-for="(item, index) in tokens">
+        
+            <div class="col-sm-<?php if($conf['estilo'] == 1){ echo '6';}else{ echo $conf['colunas'];} ?>" v-for="(item, index) in tokens">
                 <div :class="item.promocao == 'S'?'promocao column ':'column '" class=""  @click="select(index)">
                     <div class="um">
                         <img :src="origin+'wa/cardapio/uploads/'+item.img">
@@ -591,7 +476,7 @@ input::placeholder {
                 <hr class="quatro">
             </div>
 
-        </div>
+
         <div id="mob" v-if="idx != null">
             <div id="box" @click="close()">
             </div>
@@ -607,7 +492,7 @@ input::placeholder {
                 </div>
             </div>
         </div>
-        <ul  class="pagination" v-if="config.paginacao == 'S'">
+        <ul  class="pagination col-sm-12" v-if="config.paginacao == 'S'">
             <li id="mob" :class="{'disabled' : pager.currentPage === 1}">
                 <a @click="setPage(1)">&Ll;</a>
             </li>
@@ -700,7 +585,8 @@ methods: {
         this.idx=null;
     },
     categor: function(i){
-        window.location.href = '<?php echo ConfigPainel('base_url') ?>wa/cardapio/?id='+i.target.value
+        $('#cardapio').load("<?php echo ConfigPainel('base_url') ?>wa/cardapio/?id="+i.target.value)
+        alert(i.target.value)
     },
     setPage: function (page, itemsToFilter) {
         if (page < 1 || page > this.pager.totalPages) {
@@ -735,6 +621,7 @@ methods: {
         if (this.searchQuery) {
             this.searchFilters = this.tokenDumms.filter((item) => {
                 return this.searchQuery
+                .replace(",",".")
                 .toLowerCase()
                 .split(" ")
                 .every((v) => {
@@ -744,6 +631,8 @@ methods: {
                         return item.nome.toLowerCase().includes(v);
                     } else if (item.descricao.toLowerCase().includes(v)) {
                         return item.descricao.toLowerCase().includes(v);
+                    } else if (item.valor!= null && item.valor.toLowerCase().includes(v)) {
+                        return item.valor.toLowerCase().includes(v);
                     }
                 });
             });
