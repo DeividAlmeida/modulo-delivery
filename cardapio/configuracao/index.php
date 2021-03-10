@@ -153,6 +153,32 @@ if(isset($query)){
                         <input class="form-control" type="number"  name="item" value="<?php echo $a['item'] ?>" min="1" step="0" >
                     </div>
                 </div>
+                <div class="col-md-4" v-if="paginacao == 'S'">
+                    <div class="form-group">
+                        <label>Cor do Fundo da Paginação:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                            <input value="<?php echo $a['pag_fundo'] ?>" class="form-control" name="pag_fundo" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" v-if="paginacao == 'S'">
+                    <div class="form-group">
+                        <label>Cor do texto da Paginação:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                            <input value="<?php echo $a['pag_texto'] ?>" class="form-control" name="pag_texto" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Estilo de Listagem: </label>

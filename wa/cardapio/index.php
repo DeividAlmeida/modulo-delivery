@@ -7,7 +7,10 @@
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
 	    $fetch = DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria}'");
-	    
+	elseif (isset($_GET['$categoria'])):
+	    $cat = $_GET['categoria'];
+	    $fetch = DBRead('cardapio_item','*' ,"WHERE categoria = '{$cat}'");
+	    $categoria = 'null';
 	else:
 	    $categoria = 'null';
 	    $fetch = DBRead('cardapio_item','*');
@@ -24,8 +27,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo ConfigPainel('base_url') ?>epack/css/elements/animate.css" >
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-    <?php  echo DBRead('cardapio','*',"WHERE id = '1'")[0]['modo']; ?>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js'></script>
+
 
 <style>
 html{
@@ -35,6 +37,17 @@ html{
 
 .pagination{
     padding-left:15px!important;
+
+}
+.pagination>.active>a{
+    cursor:pointer !important;
+}
+.pagination a{
+    color:<?php echo $conf['pag_texto'] ?> !important;
+    background:<?php echo $conf['pag_fundo'] ?> !important;
+    border-color:#fff !important;
+}
+.pagination li{
 }
 #dashboard{
     display: flex;
@@ -585,8 +598,7 @@ methods: {
         this.idx=null;
     },
     categor: function(i){
-        $('#cardapio').load("<?php echo ConfigPainel('base_url') ?>wa/cardapio/?id="+i.target.value)
-        alert(i.target.value)
+        $('#cardapio').load("<?php echo ConfigPainel('base_url') ?>wa/cardapio/?categoria="+i.target.value)
     },
     setPage: function (page, itemsToFilter) {
         if (page < 1 || page > this.pager.totalPages) {

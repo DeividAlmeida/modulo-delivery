@@ -51,6 +51,8 @@ CREATE TABLE IF NOT EXISTS `cardapio_config` (
     `borda` varchar(255) DEFAULT NULL,
     `paginacao` varchar(255) DEFAULT NULL,
     `item` varchar(255) DEFAULT NULL,
+    `pag_fundo` varchar(255) DEFAULT NULL,
+    `pag_texto` varchar(255) DEFAULT NULL,
         #POPUP
     `pop_fundo` varchar(255) DEFAULT NULL,
     `pop_titulo` varchar(255) DEFAULT NULL,
@@ -88,7 +90,8 @@ CREATE TABLE IF NOT EXISTS `cardapio_config` (
         `borda`, 
         `paginacao`, 
         `item`,
-
+        `pag_fundo`,
+        `pag_texto`,
             #POPUP
         `pop_fundo`, 
         `pop_titulo`, 
@@ -109,4 +112,4 @@ CREATE TABLE IF NOT EXISTS `cardapio_config` (
         `mob_preco`, 
         `mob_preco_pro_1`, 
         `mob_preco_pro`) 
-   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
