@@ -87,7 +87,7 @@ $query = json_encode(DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria
                     </div>
                     <div v-if="ctrls[idx].promocao =='S'" class="form-group">
                         <label>Valor: </label>
-                        <input class="form-control" type="number" v-model="ctrls[idx].valor" name="valor" :min="ctrls[idx].preco" step="0.01" required>
+                        <input class="form-control" type="number" v-model="ctrls[idx].valor" name="valor" :max="ctrls[idx].preco" step="0.01" required>
                     </div>
                     <div class="justify-content-md-center" >
                         <div class="form-group offset-sm-0 text-center">
@@ -127,7 +127,7 @@ $query = json_encode(DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria
                     </div>
                     <div v-if="idx =='S'" class="form-group">
                         <label>Valor: </label>
-                        <input class="form-control" type="number"  name="valor" :min="preco" step="0.01" required>
+                        <input class="form-control" type="number"  name="valor" :max="preco" step="0.01" required>
                     </div>
                     <div class="justify-content-md-center" >
                         <div class="form-group offset-sm-0 text-center">

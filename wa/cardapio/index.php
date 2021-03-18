@@ -7,7 +7,7 @@
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
 	    $fetch = DBRead('cardapio_item','*' ,"WHERE categoria = '{$categoria}'");
-	elseif (isset($_GET['$categoria'])):
+	elseif (isset($_GET['categoria'])):
 	    $cat = $_GET['categoria'];
 	    $fetch = DBRead('cardapio_item','*' ,"WHERE categoria = '{$cat}'");
 	    $categoria = 'null';
@@ -85,38 +85,38 @@ html{
     position: fixed;
     background-color: <?php echo $conf['pop_fundo'] ?>;
     z-index: 10000001;
-    height: 250px;
-    width: 750px;
-    margin: 5% 18%;
-    border-radius: 25px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    overflow:hidden;
-    top:20%;
+    width: 70%;
+    margin: 16% 22%;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    overflow: hidden;
+    top: -50px;
+    left: -8%;
 }
+
 #fechar{
-    font-size: 50px;
-    margin: 0px 10px;
+    font-size: 40px;
     position: absolute;
     right: 5px;
     cursor: pointer;
-    font-weight: bolder;
+    top: -2%;
     color: <?php  echo $conf['pop_fechar'] ?>;
 }
 #um{
     position: absolute;
     overflow: hidden;
-    width: 250px;
+    width: 350px;
 }
 #um img{
-    height:250px;
+height:350px;
 }
 #dois {
     position: initial;
-    margin: 2% 0% 0% 38%;
-    width: 440px;
+    margin: 4% 0% 4% 350px;
     overflow: hidden;
     white-space: break-spaces;
-    height:225px;
+    height: 270px;
+    padding: 25px;
+    max-width: 60%;
 }
 
 #dois b{
@@ -133,6 +133,7 @@ html{
     color: <?php  echo $conf['pop_descricao'] ?>;
    position:relative;
    top:9%;
+   text-align: justify;
 }
 ::-webkit-scrollbar {
   width: 10px;
@@ -164,7 +165,7 @@ html{
 .column {
 
     display:flex;
-    border:solid 1px <?php echo $conf['borda'] ?>;
+    border:<?php if(!empty($conf['borda'])){echo 'solid 1px '.$conf['borda'];} ?>;
     margin: 1%;
     cursor:pointer;
     background:<?php echo $conf['lis_fundo'] ?>;
@@ -229,10 +230,10 @@ html{
 
 <?php }?>
 .column {
-    border:solid 1px <?php echo $conf['borda'] ?> !important;
-    margin: 1%;
+    border:<?php if(!empty($conf['borda'])){echo 'solid 1px '.$conf['borda'];} ?>;
+    margin: 16px 1%;
     cursor:pointer;
-    background:<?php echo $conf['lis_fundo'] ?> !important;
+    background:<?php echo $conf['lis_fundo'] ?>;
     display: block;
 }
 .um{
@@ -259,7 +260,8 @@ html{
     position: relative;
     top: 5%;
     color:<?php echo $conf['lis_preco'] ?>;
-    left:16px;
+    left:30px;
+    padding-bottom: 15px;
 }
 .sim{
     font-size: 20px;
@@ -270,16 +272,18 @@ html{
     position: relative;
     top: 5%;
     color:<?php echo $conf['lis_preco_pro'] ?>;
-    left:36%;
+    left:27%;
+    padding-bottom: 15px;
 }
 .nao{
     text-decoration: line-through;
     margin: 0;
     text-align: center;
     color:<?php echo $conf['lis_preco'] ?>;
-    left:7%;
+    left:9%;
     bottom:32%;
     position:absolute;
+    padding-bottom:10px;
 }
 .dois p{
     text-overflow: ellipsis;
@@ -289,8 +293,9 @@ html{
 }
 .dois { 
     width:auto;
-    padding:10px;
-    height:70px;
+    padding:25px;
+    padding-bottom:5px;
+
     white-space:nowrap;
     text-overflow:ellipsis;
     position:relative;
@@ -469,7 +474,7 @@ input::placeholder {
         
         
             <div class="col-sm-<?php if($conf['estilo'] == 1){ echo '6';}else{ echo $conf['colunas'];} ?>" v-for="(item, index) in tokens">
-                <div :class="item.promocao == 'S'?'promocao column ':'column '" class=""  @click="select(index)">
+                <div :class="item.promocao == 'S'?'promocao column post-grid-content':'column post-grid-content'"  @click="select(index)">
                     <div class="um">
                         <img :src="origin+'wa/cardapio/uploads/'+item.img">
                     </div>

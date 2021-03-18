@@ -450,7 +450,12 @@ if(isset($query)){
             estilo:'',
             paginacao:'',
             idx:<?php echo $banco ?>
-        }, 
+        },
+        updated: function(){
+            this.$nextTick(function(){
+                $('.color-picker').colorpicker();                               
+            })
+        },
         methods: {
 
         }

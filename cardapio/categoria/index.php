@@ -128,6 +128,6 @@ $cod="<script src='https://cdn.jsdelivr.net/npm/vue@2'></script>
         }
     })
     for(let i = 0; i < vue.ctrls.length; i++){
-        vue.codigo.push("$('#cardapio').load('https://www.templateswebacappella.com.br/wacontrol-aula/wa/cardapio/?id="+vue.ctrls[i].id+"')")
+        vue.codigo.push("$('#cardapio').load('<?php echo ConfigPainel('base_url')?>wa/cardapio/?id="+vue.ctrls[i].id+"')")
     }
 </script>
