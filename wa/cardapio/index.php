@@ -465,11 +465,12 @@ input::placeholder {
 <body>
     <div id="controller" class="container-fluid">
         <div id="dashboard" >
-            <select @change="categor($event)" v-if="!categoria" class="search col-sm-6">
-                <option selected> Escolha a categoria que deseja </option>
+            <select  @change="categor($event)" v-if="!categoria" class="search col-sm-6">
+                <option value="" selected disabled> Escolha uma categoria </option>
+                <option value="all"> Todas Categorias</option>
                 <option  v-for="cat, i of categorias" :value="cat.id">{{cat.nome}}</option>
             </select>
-            <input class="search col-sm-6"  v-model="searchQuery"  placeholder=" Digite aqui o que está procurando...  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
+            <input class="search col-sm-6" @input='here=>searchQuery=here.target.value' placeholder=" Digite aqui o que está procurando...  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
         </div>
         
         
@@ -603,7 +604,11 @@ methods: {
         this.idx=null;
     },
     categor: function(i){
-        $('#cardapio').load("<?php echo ConfigPainel('base_url') ?>wa/cardapio/?categoria="+i.target.value)
+        if(i.target.value != "all"){
+            $('#cardapio').load("<?php echo ConfigPainel('base_url') ?>wa/cardapio/?categoria="+i.target.value)
+        }else{
+            $('#cardapio').load("<?php echo ConfigPainel('base_url') ?>wa/cardapio/")
+        }
     },
     setPage: function (page, itemsToFilter) {
         if (page < 1 || page > this.pager.totalPages) {
