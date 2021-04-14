@@ -18,7 +18,7 @@ if(isset($_GET['modo'])){
         $vue= '<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>';
     }
         
-    $query  = DBUpdate('cardapio', array('modo' => $vue), "id = '1'");
+    $query  = DBUpdate('delivery', array('modo' => $vue), "id = '1'");
   
 }
     #CATEGORIA
@@ -27,7 +27,7 @@ if(isset($_GET['C_id'])):
         $data[$nome]=$valor;
     }
     $id = $_GET['C_id'];
-    $db = 'cardapio_categoria';
+    $db = 'delivery_categoria';
     if($id == 0){
         $query = DBCreate($db, $data, true);  
     }else{
@@ -37,12 +37,12 @@ if(isset($_GET['C_id'])):
     #ITEM
 elseif(isset($_GET['I_id'])):
     $id = $_GET['I_id'];
-    $db = 'cardapio_item';
+    $db = 'delivery_item';
     if($_FILES['img']['name'] == null && $id != "0"){
-        $keep = DBRead('cardapio_item','*' ,"WHERE id = '{$id}'")[0];
+        $keep = DBRead('delivery_item','*' ,"WHERE id = '{$id}'")[0];
         $data['img'] = $keep['img'];
      }else{
-         $upload_folder = 'wa/cardapio/uploads/';
+         $upload_folder = 'wa/delivery/uploads/';
          $handle = new Upload($_FILES['img']);
          $handle->file_new_name_body = md5(uniqid(rand(), true));
          $handle->Process($upload_folder);
@@ -63,11 +63,11 @@ endif;
 #DELETAR CATEGORIA
 if(isset($_GET['DeletarCategoria'])){
     $id     = get('DeletarCategoria');
-    $query  = DBDelete('cardapio_categoria',"id = '{$id}'");
-    $itens = DBRead('cardapio_item','*' ,"WHERE categoria = '{$id}'")[0];
+    $query  = DBDelete('delivery_categoria',"id = '{$id}'");
+    $itens = DBRead('delivery_item','*' ,"WHERE categoria = '{$id}'")[0];
     if(is_array($itens)):
         foreach($itens as $num){
-            DBDelete('cardapio_item',"categoria = '{$id}'");
+            DBDelete('delivery_item',"categoria = '{$id}'");
         }
     endif;
 }
@@ -75,9 +75,9 @@ if(isset($_GET['DeletarCategoria'])){
 #DELETAR ITEM
 if(isset($_GET['DeletarItem'])){
     $id     = get('DeletarItem');
-    $cat = DBRead('cardapio_item','*' ,"WHERE id = '{$id}'")[0];
+    $cat = DBRead('delivery_item','*' ,"WHERE id = '{$id}'")[0];
     $route ='&Item&Catego='.$_GET['catego'];
-    $query  = DBDelete('cardapio_item',"id = '{$id}'");
+    $query  = DBDelete('delivery_item',"id = '{$id}'");
 }
 
 if(isset($query)){
