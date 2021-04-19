@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS `delivery_item` (
     `preco` float(50,2) DEFAULT NULL DEFAULT NULL,
     `valor` float(50,2) DEFAULT NULL DEFAULT NULL,
     `promocao` varchar(255) DEFAULT NULL,
-    `img` text DEFAULT NULL
+    `img` text DEFAULT NULL,
+    `variacoes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- CONFIGURACAO
