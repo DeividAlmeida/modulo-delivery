@@ -156,17 +156,25 @@ $query = json_encode(DBRead('delivery_item','*' ,"WHERE categoria = '{$categoria
                     <div class="col-md-5">
                         <div class="form-group aside" >
                             <label>Título: </label>
-                            <input class="form-control" v-model="field.titulo" :key="index+field">
-                            <button type="button" @click="sub-add" class="btn btn-primary btnAdd" style="margin-left:5px"><i class=" icon-plus"></i></button>
+                            <input class="form-control" v-model="field.nome" :key="index+field">
+                            <button type="button" @click="sub_add(index)" class="btn btn-primary btnAdd" style="margin-left:5px"><i class=" icon-plus"></i></button>
                             <button type="button" @click="remove(index)" class="btn btn-danger btnRemove" style="margin-left:5px"><i class="icon-trash"></i></button>
                         </div>
                     </div>                                            
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            
-                        </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-md-10">
+                        <table id="DataTable" class="table m-0 table-striped">
+                            <tr>
+                                <th>Termo</th>
+                            </tr>                            
+                                <tr v-for='termo, i in ctrls[idx].variacoes[index].atributo'>
+                                    <td :id="'nome'+i" >
+                                        <input v-if="field.status == i+'nome' || termo.nome == ''" :value="termo.nome "  @change='{termo.nome = $event.target.value; field.status =""}'>
+                                        <span v-else style="cursor:pointer"  @click="field.status = i+'nome'" >{{termo.nome}}</span>
+                                    </td>
+                                </tr>                            
+                        </table>
                     </div>
                 </div>
             </div>
@@ -189,8 +197,8 @@ $query = json_encode(DBRead('delivery_item','*' ,"WHERE categoria = '{$categoria
         updated: function(){
             this.$nextTick( function(){
                  !Array.isArray(this.ctrls[this.idx].variacoes)?
-                 this.ctrls[this.idx].variacoes = []:
-                 void(0)
+                    this.ctrls[this.idx].variacoes = []:
+                    void(0)
             })
         },
         methods:{
@@ -207,10 +215,11 @@ $query = json_encode(DBRead('delivery_item','*' ,"WHERE categoria = '{$categoria
                 reader.readAsDataURL(input.files[0]);
             },
             add: function(){
-                this.status == 0? 
-                    this.ctrls[this.idx].variacoes.push({'titulo':''}):
-                    this.ctrls[this.idx].variacoes.push({'titulo':''})
+                    this.ctrls[this.idx].variacoes.push({atributo:[], nome:'', status:''})
             }, 
+            sub_add: function(a){
+                    this.ctrls[this.idx].variacoes[a].atributo.push({nome:''})
+            },
             remove: function(index){
                 this.status == 0? this.ctrls[this.idx].variacoes.splice(index, 1): this.ctrls[this.idx].variacoes.splice(index, 1)
             }
