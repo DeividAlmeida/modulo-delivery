@@ -1,7 +1,11 @@
 <?php
 $status = $_GET['Item'];
 $categoria = $_GET['Catego'];
-$query = json_encode(DBRead('delivery_item','*' ,"WHERE categoria = '{$categoria}'"));
+if($status !== '0'){ 
+    $query = json_encode(DBRead('delivery_item','*' ,"WHERE categoria = '{$categoria}'"));
+}else{
+    $query = '[{"id":"0","categoria":"","nome":"","descricao":"","preco":"","valor":"","promocao":"","img":"","variacoes":[]}]';
+}
 ?>
 <style>
     .text-center img{
@@ -73,7 +77,8 @@ td input[type=number] {
     <div class="card-body" v-else>
         <form method="post" :action="'?I_id='+status" enctype="multipart/form-data">
             <input type="hidden" value="<?php echo $categoria ?>" name="categoria">
-            <div class="row" v-if="status !=0">
+            <input type="hidden" name="variacoes" id="variacoes" > 
+            <div class="row" v-if="status != 0">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nome: </label>
@@ -111,10 +116,10 @@ td input[type=number] {
                             <img id="food" v-if="ctrls[idx].img" :src="folder+ctrls[idx].img "  />
                         </div>
                     </div>
-                </div>                 
+                </div>                              
             </div>
-            <input type="hidden" name="variacoes" id="variacoes" > 
-            <div class="row" v-if="status == 0">
+
+            <div class="row" v-if="status == 0">            
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nome: </label>
@@ -153,7 +158,6 @@ td input[type=number] {
                         </div>
                     </div>
                 </div>
-                  
             </div>
             <hr>  
             <div class="row justify-content-md-center">
@@ -167,7 +171,7 @@ td input[type=number] {
                     </div>
                 </div> 
             </div>     
-            <div v-for='field, index in ctrls[this.idx].variacoes' >
+            <div v-for='field, index in ctrls[idx].variacoes' >
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group" >
@@ -200,26 +204,26 @@ td input[type=number] {
                                 <th>Valor</th>
                                 <th>Deletar</th>
                             </tr>                            
-                                <tr v-for='termo, i in ctrls[idx].variacoes[index].atributo'>
-                                    <td :id="'nome'+i" >
-                                        <input v-if="field.status == i+'nome' || termo.nome == ''" :value="termo.nome "  @change='{termo.nome = $event.target.value; field.status =""}'>
-                                        <span v-else style="cursor:pointer"  @click="field.status = i+'nome'" >{{termo.nome}}</span>
-                                    </td>
-                                    <td :id="'valor'+i" >
-                                        <input v-if="field.status == i+'valor' || termo.valor == ''" :value="termo.valor " type="number" min="0" step="0.01" @change='{termo.valor = $event.target.value; field.status =""}'>
-                                        <span v-else style="cursor:pointer"  @click="field.status = i+'valor'" >R$ {{termo.valor.replace('.',',')}}</span>
-                                    </td>
-                                    <td>
-                                        <button type="button"@click="sub_remove(i, index)" class="btn btn-danger btnRemove" style="margin-left:5px"><i class="icon-trash"></i></button>
-                                    </td>
-                                </tr>                            
+                            <tr v-for='termo, i in ctrls[idx].variacoes[index].atributo'>
+                                <td :id="'nome'+i" >
+                                    <input v-if="field.status == i+'nome' || termo.nome == ''" :value="termo.nome "  @change='{termo.nome = $event.target.value; field.status =""}'>
+                                    <span v-else style="cursor:pointer"  @click="field.status = i+'nome'" >{{termo.nome}}</span>
+                                </td>
+                                <td :id="'valor'+i" >
+                                    <input v-if="field.status == i+'valor' || termo.valor == ''" :value="termo.valor " type="number" min="0" step="0.01" @change='{termo.valor = $event.target.value; field.status =""}'>
+                                    <span v-else style="cursor:pointer"  @click="field.status = i+'valor'" >R$ {{termo.valor.replace('.',',')}}</span>
+                                </td>
+                                <td>
+                                    <button type="button"@click="sub_remove(i, index)" class="btn btn-danger btnRemove" style="margin-left:5px"><i class="icon-trash"></i></button>
+                                </td>
+                            </tr>                            
                         </table>
                     </div>
                 </div>
-            </div>            
+            </div>                 
             <div class="card-footer white">
                 <button style="margin-bottom: 7px;" class="btn btn-primary float-right" type="submit"><i class="icon icon-save" aria-hidden="true"></i> Salvar</button>
-            </div>
+            </div>            
         </form>
     </div>
 </div>
@@ -228,7 +232,7 @@ td input[type=number] {
         el:".card",
         data: {
             folder:'wa/delivery/uploads/',
-            idx:"",
+            idx:0,
             status:"<?php echo $status ?>",
             ctrls:<?php echo $query ?>,
             preco:0
@@ -271,5 +275,5 @@ td input[type=number] {
             }
         }
     })
-;
+
 </script>
