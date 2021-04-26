@@ -437,18 +437,34 @@ if(isset($query)){
                     </div>
                 </div>
             </div>
+            <hr>
+            <h4>Configuração Horário de Funcionamento</h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dia
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a href="javascript:void(0)" class="dropdown-item" v-for="dia, i of dias" @click="add(i)">{{dia}}</a>
+                        </div>
+                    </div>
+                </div>                
+            </div>
             <div class="card-footer white">
                 <button style="margin-bottom: 7px;" class="btn btn-primary float-right" type="submit"><i class="icon icon-save" aria-hidden="true"></i> Salvar</button>
             </div>
         </form>
     </div>
 </div>
+<!-- https://codare.aurelio.net/2009/04/03/javascript-obter-e-mostrar-data-e-hora/#:~:text=Para%20obter%20a%20data%20(e,uma%20vari%C3%A1vel%20var%20dia%20%3D%20data.-->
 <script>
    const vue= new Vue({
         el:".card",
         data: {
             estilo:'',
             paginacao:'',
+            dias:['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira', 'Sábado'],
             idx:<?php echo $banco ?>
         },
         updated: function(){
@@ -457,7 +473,9 @@ if(isset($query)){
             })
         },
         methods: {
-
+            add: function(i){
+                alert(i)
+            }
         }
     })
     vue.estilo = vue.idx.estilo;
