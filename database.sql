@@ -72,7 +72,9 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
     `mob_descricao` varchar(255) DEFAULT NULL,
     `mob_preco` varchar(255) DEFAULT NULL,
     `mob_preco_pro_1` varchar(255) DEFAULT NULL,
-    `mob_preco_pro` varchar(255) DEFAULT NULL
+    `mob_preco_pro` varchar(255) DEFAULT NULL,
+        #Horario
+    `horario` text DEFAULT NULL,
     
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
    INSERT INTO `delivery_config` (
@@ -112,5 +114,9 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
         `mob_descricao`, 
         `mob_preco`, 
         `mob_preco_pro_1`, 
-        `mob_preco_pro`) 
-   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        `mob_preco_pro`,
+
+            #Horario
+        `horario`
+        ) 
+   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

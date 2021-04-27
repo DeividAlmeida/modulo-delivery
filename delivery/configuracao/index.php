@@ -1,5 +1,16 @@
 <?php 
     $a =DBRead('delivery_config','*')[0];
+    if(empty($a['horario'])){
+        $a['horario'] = [
+            'Domingo' => ['hora-fim' => [], 'hora-inicio' => [], 'minuto-fim' => [], 'minuto-inicio' => []],
+            'Segunda-feira' => ['hora-fim' => [], 'hora-inicio' => [], 'minuto-fim' => [], 'minuto-inicio' => []],
+            'Terça-feira' => ['hora-fim' => [], 'hora-inicio' => [], 'minuto-fim' => [], 'minuto-inicio' => []],
+            'Quarta-feira' => ['hora-fim' => [], 'hora-inicio' => [], 'minuto-fim' => [], 'minuto-inicio' => []],
+            'Quinta-feira' => ['hora-fim' => [], 'hora-inicio' => [], 'minuto-fim' => [], 'minuto-inicio' => []],
+            'Sexta-feira' => ['hora-fim' => [], 'hora-inicio' => [], 'minuto-fim' => [], 'minuto-inicio' => []],
+            'Sábado' => ['hora-fim' => [], 'hora-inicio' => [], 'minuto-fim' => [], 'minuto-inicio' => []]   
+        ];
+    }
     $banco = json_encode($a);
     if(isset($_GET['editaConfig'])){
     $id = 1;
@@ -19,7 +30,17 @@ if(isset($query)){
     }
 }
 ?>
-
+<style>
+.grided{
+    display: grid;
+    grid-template-columns: 100px 50px 50px;
+}
+td input::-webkit-outer-spin-button,
+td input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>
 <div class="card"  >
     <div class="card-header white" >
         <strong>Configuração </strong>
@@ -439,18 +460,43 @@ if(isset($query)){
             </div>
             <hr>
             <h4>Configuração Horário de Funcionamento</h4>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="btn-group" role="group">
-                        <button id="btnGroupDrop1" type="button" class="btn btn-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dia
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a href="javascript:void(0)" class="dropdown-item" v-for="dia, i of dias" @click="add(i)">{{dia}}</a>
+            <div  v-for="dia, i of idx.horario">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group grided">
+                            <label>{{i}}: </label>
+                            <button  type="button" @click="add(i)" class="btn btn-primary btnAdd" style="margin-left:5px"><i class=" icon-plus"></i></button>
                         </div>
+                    </div>   
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-md-10">
+                        <table id="DataTable" class="table m-0 table-striped">
+                            <tr>
+                                <th>Inicio</th>
+                                <th>Fim</th>
+                                <th>Deletar</th>
+                            </tr>                            
+                            <tr v-for='hora, id of idx.horario[i]["hora-fim"]'>                                        
+                                <td >
+                                    <input v-if="status == i+id+'a'"  min="0" max="23" step="0" type="number" :value='idx.horario[i]["hora-inicio"][id]' @change='idx.horario[i]["hora-inicio"][id] = $event.target.value; status=""'> 
+                                    <input v-if="status == i+id+'a'"  min="0" max="23" step="0" type="number" :value='idx.horario[i]["minuto-inicio"][id]' @change='idx.horario[i]["minuto-inicio"][id] = $event.target.value; status=""'> 
+                                    <span  v-else style="cursor:pointer"  @click="status = i+id+'a'" >{{idx.horario[i]["hora-inicio"][id]+" : "+idx.horario[i]["minuto-inicio"][id]}} </span>
+                                </td> 
+                                <td >
+                                    <input v-if="status == i+id+'b'"  min="0" max="23" step="0" type="number" :value='idx.horario[i]["hora-fim"][id]' @change='idx.horario[i]["hora-fim"][id] = $event.target.value; status=""'> 
+                                    <input v-if="status == i+id+'b'"  min="0" max="23" step="0" type="number" :value='idx.horario[i]["minuto-fim"][id]' @change='idx.horario[i]["minuto-fim"][id] = $event.target.value; status=""'>
+                                    <span  v-else style="cursor:pointer"  @click="status = i+id+'b'" >{{idx.horario[i]["hora-fim"][id]+" : "+idx.horario[i]["minuto-fim"][id]}} </span>
+                                </td> 
+                                <td>
+                                    <button type="button" @click="remove(id, i)" class="btn btn-danger btnRemove" style="margin-left:5px"><i class="icon-trash"></i></button>
+                                </td>                                                                           
+                            </tr>                  
+                        </table><br>
                     </div>
-                </div>                
+                </div>               
             </div>
+            <input type="hidden" name="horario" id="horario" > 
             <div class="card-footer white">
                 <button style="margin-bottom: 7px;" class="btn btn-primary float-right" type="submit"><i class="icon icon-save" aria-hidden="true"></i> Salvar</button>
             </div>
@@ -463,21 +509,35 @@ if(isset($query)){
         el:".card",
         data: {
             estilo:'',
+            status:'',
             paginacao:'',
-            dias:['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira', 'Sábado'],
             idx:<?php echo $banco ?>
         },
         updated: function(){
             this.$nextTick(function(){
-                $('.color-picker').colorpicker();                               
+                document.getElementById('horario').value = JSON.stringify(this.idx.horario)
+                $('.color-picker').colorpicker();  
+
             })
         },
         methods: {
-            add: function(i){
-                alert(i)
+            add: function(i){                
+                this.idx.horario[i]["hora-inicio"].push('00')
+                this.idx.horario[i]["hora-fim"].push('00')   
+                this.idx.horario[i]["minuto-inicio"].push('00')   
+                this.idx.horario[i]["minuto-fim"].push('00')   
+            },
+            remove: function(index, i){
+                this.idx.horario[i]["hora-inicio"].splice(index, 1)
+                this.idx.horario[i]["hora-fim"].splice(index, 1)
+                this.idx.horario[i]["minuto-inicio"].splice(index, 1)
+                this.idx.horario[i]["minuto-fim"].splice(index, 1)
             }
         }
     })
     vue.estilo = vue.idx.estilo;
     vue.paginacao = vue.idx.paginacao;
+    typeof(vue.idx.horario) == "string"?
+        vue.idx.horario = JSON.parse(vue.idx.horario):
+        void(0)
 </script>
