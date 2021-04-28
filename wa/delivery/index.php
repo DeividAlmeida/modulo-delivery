@@ -25,6 +25,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js'></script>
     <link rel="stylesheet" href="<?php echo ConfigPainel('base_url') ?>epack/css/elements/animate.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" >
@@ -740,6 +742,26 @@ mounted: function () {
     this.initController(); //index method used to call the setPage method
   },
 });
+
+vue.config.horario = JSON.parse(vue.config.horario)
+let tag = 0
+let hoje = new Date()
+let agora = parseInt(String(hoje.getHours())+hoje.getMinutes())
+for (key in vue.config.horario) {
+    
+    if(tag == hoje.getDay()){             
+            for(let c =0 ; c < vue.config.horario[key]["hora-inicio"].length ; c++){
+                let inicio = parseInt(String(vue.config.horario[key]["hora-inicio"][c])+String(vue.config.horario[key]["minuto-inicio"][c]))
+                let fim = parseInt(String(vue.config.horario[key]["hora-fim"][c])+String(vue.config.horario[key]["minuto-fim"][c]))
+                if(agora>fim || agora<inicio ){
+                    alert(agora )
+                    break
+                }
+                    
+            }        
+    }
+    tag++
+}
 </script>
 
 </body>

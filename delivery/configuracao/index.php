@@ -40,6 +40,13 @@ td input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+tr{
+    display: grid;
+    grid-template-columns: 200px 200px 200px auto;
+}
+td input{
+    width:20%;
+}
 </style>
 <div class="card"  >
     <div class="card-header white" >
@@ -460,39 +467,55 @@ td input::-webkit-inner-spin-button {
             </div>
             <hr>
             <h4>Configuração Horário de Funcionamento</h4>
-            <div  v-for="dia, i of idx.horario">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group grided">
-                            <label>{{i}}: </label>
-                            <button  type="button" @click="add(i)" class="btn btn-primary btnAdd" style="margin-left:5px"><i class=" icon-plus"></i></button>
+            <table id="DataTable" class="table m-0 ">
+                <tr>
+                    <th>
+                        <div class="btn-group" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dia
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <a @click="add($event.target.innerText)" class="dropdown-item" href="javascript:void(0)">Domingo</a>
+                                <a @click="add($event.target.innerText)" class="dropdown-item" href="javascript:void(0)">Segunda-feira</a>
+                                <a @click="add($event.target.innerText)" class="dropdown-item" href="javascript:void(0)">Terça-feira</a>
+                                <a @click="add($event.target.innerText)" class="dropdown-item" href="javascript:void(0)">Quarta-feira</a>
+                                <a @click="add($event.target.innerText)" class="dropdown-item" href="javascript:void(0)">Quinta-feira</a>
+                                <a @click="add($event.target.innerText)" class="dropdown-item" href="javascript:void(0)">Sexta-feira</a>
+                                <a @click="add($event.target.innerText)" class="dropdown-item" href="javascript:void(0)">Sábado</a>
+                            </div>
                         </div>
-                    </div>   
-                </div>
-                <div class="row justify-content-md-center">
-                    <div class="col-md-10">
-                        <table id="DataTable" class="table m-0 table-striped">
-                            <tr>
-                                <th>Inicio</th>
-                                <th>Fim</th>
-                                <th>Deletar</th>
-                            </tr>                            
-                            <tr v-for='hora, id of idx.horario[i]["hora-fim"]'>                                        
+                    </th>
+                    <th>Inicio</th>
+                    <th>Fim</th>
+                    <th>Deletar</th>
+                </tr> 
+            </table>
+            <div  v-for="dia, i of idx.horario">                
+                <div class="row ">
+                    <div class="col-md-12">
+                        <table id="DataTable" class="table m-0 ">
+                                                        
+                            <tr v-for='hora, id of idx.horario[i]["hora-fim"]'>  
+                                <td>{{i}}</td>                                      
                                 <td >
-                                    <input v-if="status == i+id+'a'"  min="0" max="23" step="0" type="number" :value='idx.horario[i]["hora-inicio"][id]' @change='idx.horario[i]["hora-inicio"][id] = $event.target.value; status=""'> 
-                                    <input v-if="status == i+id+'a'"  min="0" max="23" step="0" type="number" :value='idx.horario[i]["minuto-inicio"][id]' @change='idx.horario[i]["minuto-inicio"][id] = $event.target.value; status=""'> 
-                                    <span  v-else style="cursor:pointer"  @click="status = i+id+'a'" >{{idx.horario[i]["hora-inicio"][id]+" : "+idx.horario[i]["minuto-inicio"][id]}} </span>
+                                    <input v-if="status == i+id+'a'"  type="number" :value='idx.horario[i]["hora-inicio"][id]'  @change='hora_inicio($event.target.value,i,id)'> 
+                                    <span  v-if="status != i+id+'a'" style="cursor:pointer"  @click="status = i+id+'a'" >{{idx.horario[i]["hora-inicio"][id]}} </span>
+                                    <span> : </span>
+                                    <input v-if="status == i+id+'aa'"  type="number" :value='idx.horario[i]["minuto-inicio"][id]' @change='minuto_inicio($event.target.value,i,id)'> 
+                                    <span  v-if="status != i+id+'aa'" style="cursor:pointer"  @click="status = i+id+'aa'" >{{idx.horario[i]["minuto-inicio"][id]}} </span>
                                 </td> 
                                 <td >
-                                    <input v-if="status == i+id+'b'"  min="0" max="23" step="0" type="number" :value='idx.horario[i]["hora-fim"][id]' @change='idx.horario[i]["hora-fim"][id] = $event.target.value; status=""'> 
-                                    <input v-if="status == i+id+'b'"  min="0" max="23" step="0" type="number" :value='idx.horario[i]["minuto-fim"][id]' @change='idx.horario[i]["minuto-fim"][id] = $event.target.value; status=""'>
-                                    <span  v-else style="cursor:pointer"  @click="status = i+id+'b'" >{{idx.horario[i]["hora-fim"][id]+" : "+idx.horario[i]["minuto-fim"][id]}} </span>
+                                    <input v-if="status == i+id+'b'"  type="number" :value='idx.horario[i]["hora-fim"][id]' @change='hora_fim($event.target.value,i,id)'> 
+                                    <span  v-if="status != i+id+'b'"style="cursor:pointer"  @click="status = i+id+'b'" >{{idx.horario[i]["hora-fim"][id]}} </span>
+                                    <span> : </span>
+                                    <input v-if="status == i+id+'bb'"  step="0" type="number" :value='idx.horario[i]["minuto-fim"][id]' @change='minuto_fim($event.target.value,i,id)'>
+                                    <span  v-if="status != i+id+'bb'" style="cursor:pointer"  @click="status = i+id+'bb'" >{{idx.horario[i]["minuto-fim"][id]}} </span>
                                 </td> 
                                 <td>
                                     <button type="button" @click="remove(id, i)" class="btn btn-danger btnRemove" style="margin-left:5px"><i class="icon-trash"></i></button>
                                 </td>                                                                           
                             </tr>                  
-                        </table><br>
+                        </table>
                     </div>
                 </div>               
             </div>
@@ -532,7 +555,42 @@ td input::-webkit-inner-spin-button {
                 this.idx.horario[i]["hora-fim"].splice(index, 1)
                 this.idx.horario[i]["minuto-inicio"].splice(index, 1)
                 this.idx.horario[i]["minuto-fim"].splice(index, 1)
-            }
+            }, 
+            hora_inicio: function(a,b,c){
+                let valor = parseInt(a)
+                if(valor >= 0 && valor<=23){
+                    this.idx.horario[b]["hora-inicio"][c] = valor;                    
+                    this.status=""
+                }else{ 
+                    this.status=""
+                }  
+            },
+            minuto_inicio: function(a,b,c){
+                let valor = parseInt(a)
+                if(valor >= 0 && valor<=59){
+                    this.idx.horario[b]["minuto-inicio"][c] = valor; this.status=""
+                }else{ 
+                    this.status=""
+                }  
+            },
+            hora_fim: function(a,b,c){
+                let valor = parseInt(a)
+                if(valor >= this.idx.horario[b]["hora-inicio"][c] && valor<=23){
+                    this.idx.horario[b]["hora-fim"][c] = valor; this.status=""
+                }else{ 
+                    this.status=""
+                }  
+            },
+            minuto_fim: function(a,b,c){
+                let valor = parseInt(a)
+                let menor = parseInt(String(this.idx.horario[b]["hora-inicio"][c])+String(this.idx.horario[b]["minuto-inicio"][c]))
+                let maior = parseInt(String(this.idx.horario[b]["hora-fim"][c])+String(valor))
+                if(menor < maior && valor<=59){
+                    this.idx.horario[b]["minuto-fim"][c] = valor; this.status=""
+                }else{ 
+                    this.status=""
+                }  
+            },
         }
     })
     vue.estilo = vue.idx.estilo;
