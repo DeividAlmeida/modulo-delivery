@@ -27,6 +27,13 @@
     					<a class="dropdown-item " href="?">Categorias</a>
     						<a class="dropdown-item" href="?Cat=0">Cadastrar Categoria</a>
     				</div>
+    			</span>	
+				<span class="dropdown">
+    			    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Complementos</a>
+    				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
+    					<a class="dropdown-item" href="?Comp=0">Cadastrar Complementos</a>
+    					<a class="dropdown-item " href="?Comp">Complementos Cadastrados</a>
+    				</div>
     			</span>			
     			<a class="btn btn-sm btn-primary" href="?Config">Configuração</a>
     		</div>
@@ -35,6 +42,8 @@
                 require_once('delivery/configuracao/index.php'); 
             elseif (isset($_GET['Item']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :
                 require_once('delivery/delivery/item/index.php'); 
+			elseif (isset($_GET['Comp']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :
+				require_once('delivery/complemento/index.php'); 
             else:
                 if(checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'categoria', 'adicionar')){
             		require_once('delivery/delivery/index.php'); 
@@ -44,4 +53,10 @@
         </div>
     </body>
 </div>
-<?php  require_once('includes/footer.php'); ?>
+<?php  
+if(isset($_GET['Deletar'])){
+    $id     = $_GET['Deletar'];
+    $db     = $_GET['db'];
+    $query  = DBDelete($db,"id = '{$id}'");
+}
+require_once('includes/footer.php'); ?>

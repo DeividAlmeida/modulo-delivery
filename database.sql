@@ -35,6 +35,17 @@ CREATE TABLE IF NOT EXISTS `delivery_item` (
     `variacoes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- COMPLEMENTO
+CREATE TABLE IF NOT EXISTS `delivery_complemento` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `nome` varchar(255) DEFAULT NULL,
+    `categoria` varchar(255) DEFAULT NULL,
+    `tipo` varchar(255) DEFAULT NULL,
+    `status` varchar(255) DEFAULT NULL,
+    `opcoes` text DEFAULT NULL,
+    `descricao` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- CONFIGURACAO
 CREATE TABLE IF NOT EXISTS `delivery_config` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,

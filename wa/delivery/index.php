@@ -746,19 +746,22 @@ mounted: function () {
 vue.config.horario = JSON.parse(vue.config.horario)
 let tag = 0
 let hoje = new Date()
-let agora = parseInt(String(hoje.getHours())+hoje.getMinutes())
-for (key in vue.config.horario) {
-    
+let minuto_agora = String(hoje.getMinutes())
+if(minuto_agora.length<2){minuto_agora ='0'+minuto_agora}
+let agora = parseInt(String(hoje.getHours())+minuto_agora)
+for (key in vue.config.horario) {  
     if(tag == hoje.getDay()){             
-            for(let c =0 ; c < vue.config.horario[key]["hora-inicio"].length ; c++){
-                let inicio = parseInt(String(vue.config.horario[key]["hora-inicio"][c])+String(vue.config.horario[key]["minuto-inicio"][c]))
-                let fim = parseInt(String(vue.config.horario[key]["hora-fim"][c])+String(vue.config.horario[key]["minuto-fim"][c]))
-                if(agora>fim || agora<inicio ){
-                    alert(agora )
-                    break
-                }
-                    
-            }        
+        for(let c =0 ; c < vue.config.horario[key]["hora-inicio"].length ; c++){
+            let inicio = parseInt(String(vue.config.horario[key]["hora-inicio"][c])+String(vue.config.horario[key]["minuto-inicio"][c]))
+            let fim = parseInt(String(vue.config.horario[key]["hora-fim"][c])+String(vue.config.horario[key]["minuto-fim"][c]))                                  
+            let switch1 = 0
+            if(agora<=fim && agora>=inicio){
+                switch1 = 1                                   
+            }
+            if(c+1 == vue.config.horario[key]["hora-inicio"].length && switch1 == 0 ){
+                alert('Estamos Fechado')
+            }
+        }        
     }
     tag++
 }

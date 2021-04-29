@@ -566,9 +566,10 @@ td input{
                 }  
             },
             minuto_inicio: function(a,b,c){
+                if(a.length<2){a="0"+a}
                 let valor = parseInt(a)
                 if(valor >= 0 && valor<=59){
-                    this.idx.horario[b]["minuto-inicio"][c] = valor; this.status=""
+                    this.idx.horario[b]["minuto-inicio"][c] = a; this.status=""
                 }else{ 
                     this.status=""
                 }  
@@ -582,11 +583,12 @@ td input{
                 }  
             },
             minuto_fim: function(a,b,c){
+                if(a.length<2){a="0"+a}
                 let valor = parseInt(a)
                 let menor = parseInt(String(this.idx.horario[b]["hora-inicio"][c])+String(this.idx.horario[b]["minuto-inicio"][c]))
-                let maior = parseInt(String(this.idx.horario[b]["hora-fim"][c])+String(valor))
+                let maior = parseInt(String(this.idx.horario[b]["hora-fim"][c])+a)
                 if(menor < maior && valor<=59){
-                    this.idx.horario[b]["minuto-fim"][c] = valor; this.status=""
+                    this.idx.horario[b]["minuto-fim"][c] = a; this.status=""
                 }else{ 
                     this.status=""
                 }  

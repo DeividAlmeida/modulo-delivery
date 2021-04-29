@@ -4,7 +4,7 @@ $categoria = $_GET['Catego'];
 if($status !== '0'){ 
     $query = json_encode(DBRead('delivery_item','*' ,"WHERE categoria = '{$categoria}'"));
 }else{
-    $query = '[{"id":"0","categoria":"","nome":"","descricao":"","preco":"","valor":"","promocao":"","img":"","variacoes":[]}]';
+    $query = '[{"id":"0","categoria":"","nome":"","descricao":"","preco":"","valor":"","promocao":"","img":"","variacoes":null}]';
 }
 ?>
 <style>
@@ -27,7 +27,7 @@ td input[type=number] {
     <div id="control" v-if="!status">
         <div class="card-header white" >
             <strong>Adicionar Item</strong>
-                <a class="adicionarListagemItem tooltips" data-tooltip="Adicionar" @click="move('0')" >
+                <a class="adicionarListagemItem tooltips" data-tooltip="Adicionar" @click="move('0',0)" >
                     <i class="icon-plus blue lighten-2 avatar"></i> 
                 </a>
         </div>
@@ -214,7 +214,7 @@ td input[type=number] {
                                     <span v-else style="cursor:pointer"  @click="field.status = i+'valor'" >R$ {{termo.valor.replace('.',',')}}</span>
                                 </td>
                                 <td>
-                                    <button type="button"@click="sub_remove(i, index)" class="btn btn-danger btnRemove" style="margin-left:5px"><i class="icon-trash"></i></button>
+                                    <button type="button" @click="sub_remove(i, index)" class="btn btn-danger btnRemove" style="margin-left:5px"><i class="icon-trash"></i></button>
                                 </td>
                             </tr>                            
                         </table>
@@ -248,7 +248,9 @@ td input[type=number] {
         methods:{
             move: function(a, b){
                 this.status = a;
-                this.idx = b;
+                a == 0?
+                    this.ctrls = [{"id":"0","categoria":"","nome":"","descricao":"","preco":"","valor":"","promocao":"","img":"","variacoes":null}]:
+                    this.idx = b
                 !Array.isArray(this.ctrls[this.idx].variacoes) && typeof(this.ctrls[this.idx].variacoes) != "string"?
                     this.ctrls[this.idx].variacoes = []:
                     this.ctrls[this.idx].variacoes =JSON.parse(this.ctrls[this.idx].variacoes)
