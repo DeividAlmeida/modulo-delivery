@@ -1,5 +1,5 @@
 <?php
-$db='delivery_complemento';
+$db='delivery_adicional';
 if(isset($_GET['id'])){
     foreach($_POST as $chave => $valor){
         $dado[$chave] =$valor;
@@ -11,8 +11,8 @@ if(isset($_GET['id'])){
         $query =  DBUpdate($db, $dado, "id = '{$id}'");
     };   
 }
-if(isset($_GET['Comp'])){
-    $status = $_GET['Comp'];
+if(isset($_GET['Adic'])){
+    $status = $_GET['Adic'];
     if($status !== '0'){ 
         $data = DBRead($db,'*');
     }else{        
@@ -21,22 +21,23 @@ if(isset($_GET['Comp'])){
                 'nome'=>null,
                 'status'=>'Inativo',
                 'categoria'=>'Selecione a categoria',
-                'tipo'=> 'Selecione o tipo',
-                'opcoes'=>[]
+                'valor'=> 0
                 ]
             ];
         }
     }else{
         $status ="";
         $data = DBRead($db,'*');
+        $data = DBRead('delivery_adicional','*');
 }
 $query = json_encode($data);
 $categoria = json_encode(DBRead('delivery_categoria','*'));
+
 ?>
 <style>
 tr{
     display: grid;
-    grid-template-columns: 40px 300px 300px 200px  200px;
+    grid-template-columns: 40px 200px 200px 150px 200px 250px;
     text-align:center;
 }
 </style>
@@ -50,6 +51,7 @@ tr{
                             <th>ID</th>
                             <th>Nome</th>                            
                             <th>Categoria</th>
+                            <th>Valor</th>
                             <th>Status</th>
                             <th >Ações</th>
                         </tr>                        
@@ -57,6 +59,11 @@ tr{
                             <td>{{index+1}}</td>
                             <td>{{ctrl.nome}}</td>                            
                             <td>{{ctrl.categoria}}</td>                            
+                            <td>
+                                <div class="input-group mb-3">                                    
+                                    <input class="form-control" :id="index+'_'+ctrl.id" v-model="ctrl.valor" v-money="money"  @change="valor(index, ctrl.id, $event.target.value)" >                                
+                                </div>
+                            </td>                            
                             <td>
                                 <button type="button" :class="ctrl.status == 'Ativo'? 'btn btn-success':'btn btn-danger'" :id="index" @click="ativar(index, ctrl.id)">{{ctrl.status}}</button>                            
                             </td>                          
@@ -70,7 +77,7 @@ tr{
                                             <a class="dropdown-item"  @click="move(ctrl.id, index)" href="#!"><i class="text-primary icon icon-pencil" ></i> Editar</a>
                                         <?php } ?>
                                         <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'deletar')) { ?>
-                                            <a class="dropdown-item" :data-id="ctrl.id"  onclick="DeletarItem(getAttribute('data-id'), 'header=Comp&db=<?php echo $db; ?>&Deletar');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a>
+                                            <a class="dropdown-item" :data-id="ctrl.id"  onclick="DeletarItem(getAttribute('data-id'), 'header=Adic&db=<?php echo $db; ?>&Deletar');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a>
                                         <?php } ?>
                                     </div>
                                 </div>
@@ -82,19 +89,13 @@ tr{
         </div>
         <div class="card-body" v-else>
             <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) { ?>
-                <div class="alert alert-info">Nenhum registro adicionado a essa listagem até o momento, <a class="adicionarListagemItem" href="?Comp=0" >clique aqui</a> para adicionar.</div>
+                <div class="alert alert-info">Nenhum registro adicionado a essa listagem até o momento, <a class="adicionarListagemItem" href="?Adic=0" >clique aqui</a> para adicionar.</div>
             <?php } ?>
         </div>
     </div>
     <div class="card-body" v-else>
-        <form method="post"  :action="'?Comp&id='+status">            
+        <form method="post"  :action="'?Adic&id='+status">            
             <div class="row" >
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Nome: </label>
-                        <input v-model="ctrls[idx].nome" placeholder="Nome do item" class="form-control"  name="nome" required>
-                    </div>
-                </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Categoria: </label>
@@ -106,49 +107,17 @@ tr{
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Tipo: </label>
-                        <select v-model="ctrls[idx].tipo" name='tipo' class='form-control'  > 
-                            <option disable>Selecione o tipo</option>
-                            <option value="0">Multiplas escolhas</option>
-							<option value="1">Escolha única</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <input type="hidden" id="opcoes" name="opcoes" :value="ctrls[idx].opcoes">
-            <input type="hidden"  name="status" :value="ctrls[idx].status">
-            <div class="row">
-                <div class="col-md-12" >                    
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <button type="button" @click="add" class="btn btn-primary btnAdd" style="margin-bottom: 15px;">
-                                <i class=" icon-plus"></i>
-                            </button> &nbsp; &nbsp; Adicionar opções 
-                        </div>
-                    </div>
-                </div> 
-            </div>
-            <div class="row" style="margin-left: 50px;" v-for=" opicao, i of ctrls[idx].opcoes">
-                <div class="col-md-4">
-                    <div class="form-group">
                         <label>Nome: </label>
-                        <input class="form-control" v-model="opicao.nome"  placeholder="Meio a Meio, Grande, Médio, Pequeno, etc..."   required>
-                        <small>Exemplo: Meio a Meio, Grande, Médio, Pequeno, etc...</small>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Valor R$: </label>
-                        <input class="form-control" v-model="opicao.valor" v-money="money"  placeholder="+ R$ 0,00"  required>
-                        <small style="white-space: nowrap;">Coloque 0 para não cobrar</small>
+                        <input v-model="ctrls[idx].nome" placeholder="Nome do item" class="form-control"  name="nome" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <button type="button"@click="remove(i)" class="btn btn-danger btnRemove" style="margin-top: 26px;"><i class="icon-trash"></i></button>    
+                        <label>Valor: </label>
+                        <input v-model="ctrls[idx].valor" placeholder="Valor do item" class="form-control" v-money="money"  name="valor" required>
                     </div>
                 </div>
-            </div>
+            </div>                         
 
             <div class="card-footer white">
                 <button style="margin-bottom: 7px;" class="btn btn-primary float-right" type="submit"><i class="icon icon-save" aria-hidden="true"></i> Salvar</button>
@@ -158,12 +127,8 @@ tr{
 </div>
 <script>
     const vue = new Vue({
-        el:".card",
+        el:".card",        
         data: {
-            idx:0,
-            status:"<?php echo $status ?>",
-            ctrls:<?php echo $query ?>,
-            categorias: <?php echo $categoria ?>,
             money: {
                 decimal: ',',
                 thousands: '.',
@@ -171,6 +136,11 @@ tr{
                 precision: 2,
                 masked: false 
             },
+            idx:0,
+            status:"<?php echo $status ?>",
+            ctrls:<?php echo $query ?>,
+            categorias: <?php echo $categoria ?>,
+            
         },
         updated: function(){
             this.$nextTick(function () {
@@ -198,18 +168,32 @@ tr{
                 if(this.ctrls[a].status == 'Ativo'){
                     form.append('status','Inativo')
                     this.ctrls[a].status = 'Inativo'
-                    fetch('?Comp&id='+b, {
+                    fetch('?Adic&id='+b, {
                         method: 'POST',
                         body: form
                     }) 
                 }else{
                     this.ctrls[a].status = 'Ativo'
                     form.append('status','Ativo')
-                    fetch('?Comp&id='+b, {
+                    fetch('?Adic&id='+b, {
                         method: 'POST',
                         body: form
                     })  
                 }
+            },
+            valor: function (a, b, c) { 
+                let form = new FormData()            
+                form.append('valor',c)
+                fetch('?Adic&id='+b, {
+                    method: 'POST',
+                    body: form
+                }).then(function(res){  
+                    if(res.status == 200) {
+                        document.getElementById(a+'_'+b).addEventListener('focusout', function (event) {
+                            swal("Salvo", "Valor Salvo com sucesso!!", "success");  
+                        });                    
+                    }                 
+                })     
             }
         }
     }) 

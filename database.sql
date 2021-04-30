@@ -41,9 +41,18 @@ CREATE TABLE IF NOT EXISTS `delivery_complemento` (
     `nome` varchar(255) DEFAULT NULL,
     `categoria` varchar(255) DEFAULT NULL,
     `tipo` varchar(255) DEFAULT NULL,
-    `status` varchar(255) DEFAULT NULL,
+    `status` varchar(255)  DEFAULT 'Inativo',
     `opcoes` text DEFAULT NULL,
     `descricao` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ADICIONAL
+CREATE TABLE IF NOT EXISTS `delivery_adicional` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `nome` varchar(255) DEFAULT NULL,
+    `categoria` varchar(255) DEFAULT NULL,
+    `valor` varchar(255) DEFAULT NULL,
+    `status` varchar(255)  DEFAULT 'Inativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- CONFIGURACAO
