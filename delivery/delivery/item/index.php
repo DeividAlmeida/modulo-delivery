@@ -150,7 +150,7 @@ td input[type=number] {
                         <div class="form-group offset-sm-0 text-center">
                             <div>
                                 <input  @change="capa(this);"  style="width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; z-index: -1;" type="file" multiple accept='image/*' name="img" id="capa">
-                                <label multiple accept='image/*' class="btn btn-primary" for="capa">
+                                <label  multipleaccept='image/*' class="btn btn-primary" for="capa">
                                     <i class="icon icon-cloud-upload" aria-hidden="true"></i>Upload Foto 
                                 </lable>
                             </div>

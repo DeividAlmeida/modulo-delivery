@@ -55,6 +55,20 @@ CREATE TABLE IF NOT EXISTS `delivery_adicional` (
     `status` varchar(255)  DEFAULT 'Inativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- PRODUTO
+CREATE TABLE IF NOT EXISTS `delivery_produto` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `nome` varchar(255) DEFAULT NULL,
+    `categoria` varchar(255) DEFAULT NULL,
+    `valor` varchar(255) DEFAULT NULL,
+    `imagem` varchar(255) DEFAULT NULL,
+    `complementos` varchar(255) DEFAULT NULL,
+    `adicionais` varchar(255) DEFAULT NULL,
+    `descricao` varchar(255) DEFAULT NULL,
+    `dias` varchar(255) DEFAULT NULL,
+    `status` varchar(255)  DEFAULT 'Inativo'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- CONFIGURACAO
 CREATE TABLE IF NOT EXISTS `delivery_config` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,

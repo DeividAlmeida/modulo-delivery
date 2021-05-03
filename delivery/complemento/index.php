@@ -9,7 +9,14 @@ if(isset($_GET['id'])){
         $query = DBCreate($db, $dado, true);  
     }else{
         $query =  DBUpdate($db, $dado, "id = '{$id}'");
-    };   
+    };
+    if(isset($query)){
+		if ($query != 0)  {
+			Redireciona('?sucesso&Comp');
+		} else {
+			Redireciona('?erro&Comp');
+		}
+	}    
 }
 if(isset($_GET['Comp'])){
     $status = $_GET['Comp'];
