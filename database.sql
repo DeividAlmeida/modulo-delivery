@@ -22,19 +22,6 @@ CREATE TABLE IF NOT EXISTS `delivery_categoria` (
     `descricao` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- ITEM
-CREATE TABLE IF NOT EXISTS `delivery_item` (
-    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `categoria` int(11) DEFAULT NULL,
-    `nome` varchar(255) DEFAULT NULL,
-    `descricao` text DEFAULT NULL,
-    `preco` float(50,2) DEFAULT NULL DEFAULT NULL,
-    `valor` float(50,2) DEFAULT NULL DEFAULT NULL,
-    `promocao` varchar(255) DEFAULT NULL,
-    `img` text DEFAULT NULL,
-    `variacoes` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 -- COMPLEMENTO
 CREATE TABLE IF NOT EXISTS `delivery_complemento` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -108,8 +95,7 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
     `mob_preco_pro_1` varchar(255) DEFAULT NULL,
     `mob_preco_pro` varchar(255) DEFAULT NULL,
         #Horario
-    `horario` text DEFAULT NULL,
-    
+    `horario` text DEFAULT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
    INSERT INTO `delivery_config` (
        `id`,
