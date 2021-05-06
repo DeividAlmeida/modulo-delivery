@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `delivery_complemento` (
     `nome` varchar(255) DEFAULT NULL,
     `categoria` varchar(255) DEFAULT NULL,
     `tipo` varchar(255) DEFAULT NULL,
-    `status` varchar(255)  DEFAULT 'Inativo',
+    `status` varchar(255)  DEFAULT 'Ativo',
     `opcoes` text DEFAULT NULL,
     `descricao` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `delivery_adicional` (
     `nome` varchar(255) DEFAULT NULL,
     `categoria` varchar(255) DEFAULT NULL,
     `valor` varchar(255) DEFAULT NULL,
-    `status` varchar(255)  DEFAULT 'Inativo'
+    `status` varchar(255)  DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- PRODUTO
@@ -49,11 +49,11 @@ CREATE TABLE IF NOT EXISTS `delivery_produto` (
     `categoria` varchar(255) DEFAULT NULL,
     `valor` varchar(255) DEFAULT NULL,
     `imagem` varchar(255) DEFAULT NULL,
-    `complementos` varchar(255) DEFAULT NULL,
-    `adicionais` varchar(255) DEFAULT NULL,
-    `descricao` varchar(255) DEFAULT NULL,
-    `dias` varchar(255) DEFAULT NULL,
-    `status` varchar(255)  DEFAULT 'Inativo'
+    `complementos` text DEFAULT NULL,
+    `adicionais` text DEFAULT NULL,
+    `descricao` text DEFAULT NULL,
+    `dias` text DEFAULT NULL,
+    `status` varchar(255)  DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- CONFIGURACAO

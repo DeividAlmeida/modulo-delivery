@@ -26,7 +26,7 @@ if(isset($_GET['Comp'])){
         $data =[
             [
                 'nome'=>null,
-                'status'=>'Inativo',
+                'status'=>'Ativo',
                 'categoria'=>'Selecione a categoria',
                 'tipo'=> 'Selecione o tipo',
                 'opcoes'=>[]

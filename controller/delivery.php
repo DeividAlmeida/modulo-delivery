@@ -34,56 +34,11 @@ if(isset($_GET['C_id'])):
         $query =  DBUpdate($db, $data, "id = '{$id}'");
     };
 
-    #ITEM
-elseif(isset($_GET['I_id'])):
-    $id = $_GET['I_id'];
-    $db = 'delivery_item';
-    if($_FILES['img']['name'] == null && $id != "0"){
-        $keep = DBRead('delivery_item','*' ,"WHERE id = '{$id}'")[0];
-        $data['img'] = $keep['img'];
-     }else{
-         $upload_folder = 'wa/delivery/uploads/';
-         $handle = new Upload($_FILES['img']);
-         $handle->file_new_name_body = md5(uniqid(rand(), true));
-         $handle->Process($upload_folder);
-         $data['img'] = $handle->file_dst_name;
-     }
-     foreach($_POST as $nome => $valor){
-         $data[$nome]=$valor;
-     }
-     if($id == 0){
-        $query = DBCreate($db, $data, true);
-        $route ='&Item&Catego='.$_POST['categoria'];
-    }else{
-        $query =  DBUpdate($db, $data, "id = '{$id}'");
-        $route ='&Item&Catego='.$_POST['categoria'];
-    };
 endif;
 
 #DELETAR CATEGORIA
 if(isset($_GET['DeletarCategoria'])){
     $id     = get('DeletarCategoria');
     $query  = DBDelete('delivery_categoria',"id = '{$id}'");
-    $itens = DBRead('delivery_item','*' ,"WHERE categoria = '{$id}'")[0];
-    if(is_array($itens)):
-        foreach($itens as $num){
-            DBDelete('delivery_item',"categoria = '{$id}'");
-        }
-    endif;
 }
 
-#DELETAR ITEM
-if(isset($_GET['DeletarItem'])){
-    $id     = get('DeletarItem');
-    $cat = DBRead('delivery_item','*' ,"WHERE id = '{$id}'")[0];
-    $route ='&Item&Catego='.$_GET['catego'];
-    $query  = DBDelete('delivery_item',"id = '{$id}'");
-}
-
-if(isset($query)){
-    if ($query != 0)  {
-        Redireciona($UrlPage.'?sucesso'.$route);
-    } else {
-        Redireciona($UrlPage.'?erro'.$route);
-    }
-}

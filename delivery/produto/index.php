@@ -63,7 +63,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
 <style>
 #DataTable tr{
     display: grid;
-    grid-template-columns: 40px 225px 225px 200px 250px;
+    grid-template-columns: 40px 250px 250px 200px 200px auto;
     text-align:center;
 }
 .form-group .btn{
@@ -87,10 +87,13 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
     top: 50px;
 }
 .imgs:before{
-    content: "Enviar Imagem...";
+    width: 190px;
+    content: "Enviar Imagem... Resolução recomendada de 800x800";
     position: absolute;
-    top: 68%;
-    font-size: 15px;   
+    top: 60%;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;  
 }
 .imgs img{
     max-height: 230px;
@@ -105,6 +108,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                     <table id="DataTable" class="table m-0 table-striped">
                         <tr>
                             <th>ID</th>
+                            <th>Imagem</th>
                             <th>Nome</th>                            
                             <th>Categoria</th>                            
                             <th>Status</th>
@@ -112,6 +116,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                         </tr>                        
                         <tr v-for="ctrl, index in ctrls">
                             <td>{{index+1}}</td>
+                            <td><img v-if="ctrl.imagem" height="40" :src="folder+ctrl.imagem"></td> 
                             <td>{{ctrl.nome}}</td>                            
                             <td>{{ctrl.categoria}}</td>                                                   
                             <td>
@@ -179,8 +184,8 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div>
-                                    <label>Dias Em Que o Item Aparece Para o Cliente: </label>
-                                    <multiselect  :show-labels="false"  :hide-selected="true" v-model="ctrls[idx].dias"  placeholder=""   :options="dias"   :multiple="true" :taggable="true"  ></multiselect>
+                                    <label>Dias em que o item aparece para o Cliente: </label>
+                                    <multiselect  :show-labels="false"  :hide-selected="true" v-model="ctrls[idx].dias" :group-select="true" group-values="semana" group-label="tudo" placeholder=""   :options="dias"   :multiple="true" :taggable="true"  ></multiselect>
                                     <input type="hidden" name="dias" id="dias" :value="ctrls[idx].dias">
                                 </div>
                             </div>
@@ -236,9 +241,9 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                                 </div>
                                 <div class="form-group">
                                     <label>{{status_opc}}: </label>
-                                    <select class='form-control' v-model="opcao" onchange="pesquisa2(this.value)" > 
+                                    <select class='form-control' onchange="pesquisa2(this.value, this.options[this.selectedIndex].innerText)" > 
                                         <option disable selected>Selecione os {{status_opc}}</option>
-                                        <option v-for="option, key of index" :value="option.nome">{{option.nome}}</option>  
+                                        <option v-for="option, key of index" :value="option.valor">{{option.nome}}</option>  
                                     </select>
                                 </div>                                
                                 <div class="form-group" v-if="status_opc == 'Complementos' && index2.length > 0">                                    
@@ -249,6 +254,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                                     <button @click="add()" class="btn btn-primary" style="background: #86939e !important; border:#86939e !important"type="button">Adicionar</button>
                                 </div>
                                 <div class="form-group" >
+                                    <small style="color:red">{{alerta}}</small>
                                     <table class="table m-0 table-striped" v-if="status_opc=='Adicionais' && ctrls[idx].adicionais.length > 0">
                                         <tr>
                                             <th>Nome</th>
@@ -269,7 +275,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                                         <tr>
                                             <th>Nome</th>
                                             <th>Opções</th>
-                                            <th>Grates Até x Opções</th>
+                                            <th>Grátis Até x Opções</th>
                                             <th></th>
                                         </tr>
                                         <tr v-for="complemento, ii of ctrls[idx].complementos">
@@ -308,6 +314,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                 precision: 2,
                 masked: false 
             },
+            alerta:null,
             opcao:null,
             vlr:null,
             catego:null,
@@ -317,7 +324,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
             index:[],
             index2:[],
             status:"<?php echo $status ?>",
-            dias:['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+            dias:[{tudo: 'Selecionar tudo',semana:['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']}],
             ctrls:<?php echo $query ?>,
             categorias: <?php echo $categoria ?>,
             complementos: <?php echo $complemento ?>,
@@ -352,10 +359,23 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                     this.ctrls[this.idx].complementos =JSON.parse(this.ctrls[this.idx].complementos)
             },
             add: function(){
-                this.status_opc == 'Complementos'?
-                    this.ctrls[this.idx].complementos.push({nome:this.opcao, max:0, opcao:this.value}):
-                    this.ctrls[this.idx].adicionais.push({nome:this.opcao, valor:this.vlr})
-                    this.value =[]
+                switch(this.opcao){
+                    case 'Selecione os Complementos':
+                        this.alerta = 'Preencha os campos obrigatórios acima'
+                    break;
+                    case 'Selecione os Adicionais':
+                        this.alerta = 'Preencha os campos obrigatórios acima'
+                    break;
+                    case null:
+                        this.alerta = 'Preencha os campos obrigatórios acima'
+                    break;
+                    default:
+                    this.status_opc == 'Complementos'?
+                        this.ctrls[this.idx].complementos.push({nome:this.opcao, max:0, opcao:this.value}):
+                        this.ctrls[this.idx].adicionais.push({nome:this.opcao, valor:this.vlr})
+                        this.value =[]
+                        this.alerta = null
+                }
             },
             remove: function(i){
                 this.status_opc == 'Complementos'?
@@ -399,7 +419,9 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                 function(b,i){     
                     return [a].every(()=>{
                         if(b.categoria.includes(a)){
-                            vue.complementos[i].opcoes = JSON.parse(vue.complementos[i].opcoes)
+                             !Array.isArray(vue.complementos[i].opcoes)?
+                                vue.complementos[i].opcoes = JSON.parse(vue.complementos[i].opcoes):
+                                void(0)
                             vue.index.push(b)
                         }   
                     });
@@ -418,9 +440,9 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
             );         
         }
     }
-    function pesquisa2(a){
+    function pesquisa2(a,c){
         vue.index2 = [] 
-        vue.value = []             
+        vue.value = [] 
         if(vue.status_opc == "Complementos"){          
             vue.complementos.filter(
                 function(b,i){     
@@ -432,6 +454,8 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                 }                
             ); 
         }
+        vue.opcao = c
+        vue.vlr = a
         vue.index2 = vue.index2[0];
     }
 </script>

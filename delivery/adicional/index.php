@@ -26,7 +26,7 @@ if(isset($_GET['Adic'])){
         $data =[
             [
                 'nome'=>null,
-                'status'=>'Inativo',
+                'status'=>'Ativo',
                 'categoria'=>'Selecione a categoria',
                 'valor'=> 0
                 ]
