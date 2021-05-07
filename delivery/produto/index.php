@@ -1,5 +1,18 @@
 <?php
 $db='delivery_produto';
+if(isset($_GET['two'])){
+    $id = $_GET['two'];
+    $data = DBRead($db,'*',"WHERE id = '{$id}'")[0];
+    unset($data['id']);    
+    $query = DBCreate($db,$data, true);
+    if(isset($query)){
+		if ($query != 0)  {
+			Redireciona('?sucesso&Prod');
+		} else {
+			Redireciona('?erro&Prod');
+		}
+	}  
+}
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     foreach($_POST as $chave => $valor){
@@ -58,12 +71,41 @@ $complemento = json_encode(DBRead('delivery_complemento','*'));
 $adicional = json_encode(DBRead('delivery_adicional','*'));
 
 ?>
+
+<script src='https://cdn.rawgit.com/matfish2/vue-tables-2/master/dist/vue-tables-2.min.js'></script>
 <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
-<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">  
+<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+
+
 <style>
+.VuePagination__pagination-item-prev-chunk{
+    display:none 
+}
+.VuePagination__pagination-item-next-chunk{
+    display:none
+}
+.VueTables__limit{
+    position: absolute;
+    right: 3.5%;
+    top: 20%;
+}
+.VueTables__search{
+    margin: 20px;
+}
+.pagination{
+    margin-left:20px
+}
+.VueTables__sortable {
+    cursor:pointer;
+}
+.VueTables__heading{
+    font-weight: bold;
+    font-size: 15px;
+}
+}
 #DataTable tr{
     display: grid;
-    grid-template-columns: 40px 250px 250px 200px 200px auto;
+    grid-template-columns: 40px 200px 200px 200px 150px 150px auto;
     text-align:center;
 }
 .form-group .btn{
@@ -87,12 +129,12 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
     top: 50px;
 }
 .imgs:before{
-    width: 190px;
+    width: 170px;
     content: "Enviar Imagem... Resolução recomendada de 800x800";
     position: absolute;
-    top: 60%;
+    top: 70%;
     font-size: 15px;
-    line-height: 20px;
+    line-height: 15px;
     text-align: center;  
 }
 .imgs img{
@@ -103,44 +145,25 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
 <div class="card"  >
     <div id="control" v-if="!status">        
         <div class="card-body p-0" v-if="ctrls">
-            <div>
-                <div>
-                    <table id="DataTable" class="table m-0 table-striped">
-                        <tr>
-                            <th>ID</th>
-                            <th>Imagem</th>
-                            <th>Nome</th>                            
-                            <th>Categoria</th>                            
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>                        
-                        <tr v-for="ctrl, index in ctrls">
-                            <td>{{index+1}}</td>
-                            <td><img v-if="ctrl.imagem" height="40" :src="folder+ctrl.imagem"></td> 
-                            <td>{{ctrl.nome}}</td>                            
-                            <td>{{ctrl.categoria}}</td>                                                   
-                            <td>
-                                <button type="button" :class="ctrl.status == 'Ativo'? 'btn btn-success':'btn btn-danger'" :id="index" @click="ativar(index, ctrl.id)">{{ctrl.status}}</button>                            
-                            </td>                          
-                            <td>
-                                <div class="dropdown">
-                                    <a class="" href="#" data-toggle="dropdown">
-                                        <i class="icon-apps blue lighten-2 avatar"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                                        <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'deletar')) { ?>
-                                            <a class="dropdown-item"  @click="move(ctrl.id, index)" href="#!"><i class="text-primary icon icon-pencil" ></i> Editar</a>
-                                        <?php } ?>
-                                        <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'deletar')) { ?>
-                                            <a class="dropdown-item" :data-id="ctrl.id"  onclick="DeletarItem(getAttribute('data-id'), 'header=Prod&db=<?php echo $db; ?>&Deletar');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+            <v-client-table :columns="columns" :data="table" :options="options" class="thead-dark">
+                <img slot="imagem" slot-scope="props"  v-if="ctrls[props.row.index].imagem" height="40" :src="folder+props.row.imagem">
+                <input type="text" slot="valor" slot-scope="props"  class="form-control" :id="props.row.index+'_'+props.row.id" v-model="ctrls[props.row.index].valor" v-money="money"  @change="valor(props.row.index,props.row.id, $event.target.value)" >                                
+                <button type="button" slot="status" slot-scope="props" :class="props.row.status == 'Ativo'? 'btn btn-success':'btn btn-danger'" :id="props.row.index" @click="ativar(props.row.index, props.row.id)">{{props.row.status}}</button>                            
+                <div class="dropdown" slot="acoes" slot-scope="props">                
+                    <a class="" href="#" data-toggle="dropdown">
+                        <i class="icon-apps blue lighten-2 avatar"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
+                        <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'deletar')) { ?>
+                            <a class="dropdown-item"  @click="move(props.row.id, props.row.index)" href="#!"><i class="text-primary icon icon-pencil" ></i> Editar</a>
+                            <a class="dropdown-item"  :href="'?Prod&two='+props.row.id"><i class="text-primary icon icon-clone" ></i> Duplicar</a>
+                        <?php } ?>
+                        <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'deletar')) { ?>
+                            <a class="dropdown-item" :data-id="props.row.id"  onclick="DeletarItem(getAttribute('data-id'), 'header=Prod&db=<?php echo $db; ?>&Deletar');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a>
+                        <?php } ?>
+                    </div>
+                </div>        
+            </v-client-table>            
         </div>
         <div class="card-body" v-else>
             <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) { ?>
@@ -275,7 +298,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                                         <tr>
                                             <th>Nome</th>
                                             <th>Opções</th>
-                                            <th>Grátis Até x Opções</th>
+                                            <th>Grátis até x Opções</th>
                                             <th></th>
                                         </tr>
                                         <tr v-for="complemento, ii of ctrls[idx].complementos">
@@ -302,11 +325,42 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
         </div>
     </div>
 </div>
-<script>
+<script>    
+    Vue.use(VueTables.ClientTable);
     const vue = new Vue({
         el:".card",        
         components: { Multiselect: window.VueMultiselect.default },
-        data: {
+        data:{            
+            columns: ['id', 'imagem', 'nome', 'categoria', 'valor', 'status', 'acoes'],            
+            sortable: true,
+            options: {                           
+                headings: {
+                    id: '#',
+                    imagem:'Imagem',
+                    nome: 'Nome',
+                    categoria:'Categoria',
+                    valor: 'Valor', 
+                    status: 'Status',
+                    acoes: 'Ações',
+                },                
+                sortable: ['id', 'imagem', 'nome', 'categoria', 'valor', 'status', 'acoes'],
+                filterable: ['id', 'imagem', 'nome', 'categoria', 'valor', 'status', 'acoes'],
+                texts: {
+                    count: "Mostrando de {from} a {to} total {count} registros|{count} registros|Um registro",
+                    first: 'Primeiro',
+                    last: 'Último',
+                    filter: "Filtro:",
+                    filterPlaceholder: "Pesquisa",
+                    limit: "Registros:",
+                    page: "Página:",
+                    noResults: "Sem registros correspondentes",
+                    filterBy: "Filtrar por {column}",
+                    loading: 'Carregando...',
+                    defaultOption: 'Selecione {column}',
+                    columns: 'Colunas'
+                },             
+            }, 
+            table:[],
             money: {
                 decimal: ',',
                 thousands: '.',
@@ -328,7 +382,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
             ctrls:<?php echo $query ?>,
             categorias: <?php echo $categoria ?>,
             complementos: <?php echo $complemento ?>,
-            adicionais: <?php echo $adicional ?>,             
+            adicionais: <?php echo $adicional ?>,
             value: []
         },
         updated: function(){
@@ -378,9 +432,19 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                 }
             },
             remove: function(i){
-                this.status_opc == 'Complementos'?
-                this.ctrls[this.idx].complementos.splice(i, 1):
-                this.ctrls[this.idx].adicionais.splice(i, 1)
+                swal({
+                title: "Você tem certeza?", 
+                text: "Deseja realmente deletar este item?", 
+                icon: "info",
+                buttons: true}
+                ).then((a)=>{
+                    if(a) {
+                    this.status_opc == 'Complementos'?
+                        this.ctrls[this.idx].complementos.splice(i, 1):
+                        this.ctrls[this.idx].adicionais.splice(i, 1)
+                        swal("Deletado", "Item deletado com sucesso!!", "success");  
+                    }
+                });  
             },
             capa: function(a){
                 var input = event.target
@@ -408,6 +472,20 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                         body: form
                     })  
                 }
+            },
+            valor: function (a, b, c) { 
+                let form = new FormData()            
+                form.append('valor',c)
+                fetch('?Prod&id='+b, {
+                    method: 'POST',
+                    body: form
+                }).then(function(res){  
+                    if(res.status == 200) {
+                        document.getElementById(a+'_'+b).addEventListener('focusout', function (event) {
+                            swal("Salvo", "Valor Salvo com sucesso!!", "success");  
+                        });                    
+                    }                 
+                })     
             }   
         }
     }); 
@@ -447,7 +525,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
             vue.complementos.filter(
                 function(b,i){     
                     return [a].every(()=>{
-                        if(b.nome.includes(a)){
+                        if(b.nome.includes(c)){
                             vue.index2.push(b.opcoes)                            
                         }   
                     });
@@ -457,5 +535,9 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
         vue.opcao = c
         vue.vlr = a
         vue.index2 = vue.index2[0];
+    }
+    for(let i = 0; i < vue.ctrls.length; i++){
+        Object.assign(vue.ctrls[i],{index:i})        
+        vue.table.push(vue.ctrls[i])        
     }
 </script>
