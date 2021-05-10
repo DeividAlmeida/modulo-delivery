@@ -102,12 +102,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
     font-weight: bold;
     font-size: 15px;
 }
-}
-#DataTable tr{
-    display: grid;
-    grid-template-columns: 40px 200px 200px 200px 150px 150px auto;
-    text-align:center;
-}
+
 .form-group .btn{
     margin-top: 26px;
 }
@@ -140,14 +135,23 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
 .imgs img{
     max-height: 230px;
 }
+tbody td{
+    text-align: center;
+}
+thead th{
+    text-align: center;
+}
 .multiselect__tag, .multiselect__option--highlight, .multiselect__tag-icon, .multiselect__tag-icon:after{ background: #86939e !important}
 </style>
 <div class="card"  >
     <div id="control" v-if="!status">        
         <div class="card-body p-0" v-if="ctrls">
-            <v-client-table :columns="columns" :data="table" :options="options" class="thead-dark">
+            <button style="position: absolute; right: 50%; top: 4.5%; position: absolute; cursor: pointer; z-index: 1;" type="button" class="btn btn-danger btnRemove" onclick="massa()"> <i class="icon icon-trash" aria-hidden="true"></i> Deletar</button>
+            <v-client-table :columns="columns" :data="table" :options="options" class="thead-dark" id="DataTable">                
+                <input class="form-control" slot="check" slot-scope="props" :value="props.row.id" type="checkbox" :id="'checkbx'+props.row.index">
+                <span slot="index" slot-scope="props" > {{props.row.index+1}}</span>
                 <img slot="imagem" slot-scope="props"  v-if="ctrls[props.row.index].imagem" height="40" :src="folder+props.row.imagem">
-                <input type="text" slot="valor" slot-scope="props"  class="form-control" :id="props.row.index+'_'+props.row.id" v-model="ctrls[props.row.index].valor" v-money="money"  @change="valor(props.row.index,props.row.id, $event.target.value)" >                                
+                <input style="width:120px; display:inline" type="text" slot="valor" slot-scope="props"  class="form-control" :id="props.row.index+'_'+props.row.id" v-model="ctrls[props.row.index].valor" v-money="money"  @change="valor(props.row.index,props.row.id, $event.target.value)" >                                
                 <button type="button" slot="status" slot-scope="props" :class="props.row.status == 'Ativo'? 'btn btn-success':'btn btn-danger'" :id="props.row.index" @click="ativar(props.row.index, props.row.id)">{{props.row.status}}</button>                            
                 <div class="dropdown" slot="acoes" slot-scope="props">                
                     <a class="" href="#" data-toggle="dropdown">
@@ -159,7 +163,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                             <a class="dropdown-item"  :href="'?Prod&two='+props.row.id"><i class="text-primary icon icon-clone" ></i> Duplicar</a>
                         <?php } ?>
                         <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'deletar')) { ?>
-                            <a class="dropdown-item" :data-id="props.row.id"  onclick="DeletarItem(getAttribute('data-id'), 'header=Prod&db=<?php echo $db; ?>&Deletar');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a>
+                            <!--<a class="dropdown-item" :data-id="props.row.id"  onclick="DeletarItem(getAttribute('data-id'), 'header=Prod&db=<?php echo $db; ?>&Deletar');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a> -->
                         <?php } ?>
                     </div>
                 </div>        
@@ -330,12 +334,29 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
     const vue = new Vue({
         el:".card",        
         components: { Multiselect: window.VueMultiselect.default },
-        data:{            
-            columns: ['id', 'imagem', 'nome', 'categoria', 'valor', 'status', 'acoes'],            
+        data:{   
+            test:true,         
+            columns: ['check','index', 'imagem', 'nome', 'categoria', 'valor', 'status', 'acoes'],            
             sortable: true,
             options: {                           
                 headings: {
-                    id: '#',
+                    check:function (h) {
+                        return h('input', {
+                            attrs: {
+                            type: 'checkbox',
+                            id: 'selectAllCheckbox',
+                            class:'form-control'
+                            },
+                            on: {
+                                click: (e) => {                                    
+                                    for(let i = 1; i < document.querySelectorAll('input[type=checkbox]').length; i++){               
+                                        document.querySelectorAll('input[type=checkbox]')[i].checked = e.srcElement.checked   
+                                    }                                   
+                                }
+                            }                            
+                        })
+                    },
+                    index: 'ID',
                     imagem:'Imagem',
                     nome: 'Nome',
                     categoria:'Categoria',
@@ -343,8 +364,8 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                     status: 'Status',
                     acoes: 'Ações',
                 },                
-                sortable: ['id', 'imagem', 'nome', 'categoria', 'valor', 'status', 'acoes'],
-                filterable: ['id', 'imagem', 'nome', 'categoria', 'valor', 'status', 'acoes'],
+                sortable: ['index', 'imagem', 'nome', 'categoria', 'valor', 'status', 'acoes'],
+                filterable: ['index', 'imagem', 'nome', 'categoria', 'valor', 'status', 'acoes'],
                 texts: {
                     count: "Mostrando de {from} a {to} total {count} registros|{count} registros|Um registro",
                     first: 'Primeiro',
@@ -386,7 +407,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
             value: []
         },
         updated: function(){
-            this.$nextTick(function () {
+            this.$nextTick(function () {                               
                 document.getElementById('complementos') != undefined?
                     document.getElementById('complementos').value = JSON.stringify(this.ctrls[this.idx].complementos):
                     void(0)
@@ -472,7 +493,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
                         body: form
                     })  
                 }
-            },
+            },            
             valor: function (a, b, c) { 
                 let form = new FormData()            
                 form.append('valor',c)
@@ -538,6 +559,27 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
     }
     for(let i = 0; i < vue.ctrls.length; i++){
         Object.assign(vue.ctrls[i],{index:i})        
+        Object.assign(vue.ctrls[i],{checked:false})        
         vue.table.push(vue.ctrls[i])        
-    }
+    }   
+ function massa(){
+    swal({
+        title: "Você tem certeza?", 
+        text: "Deseja realmente deletar este(s) dado(s)?", 
+        icon: "info",
+        buttons: true}
+        ).then((a)=>{
+            if(a) {
+                for(let i= 0; i<document.querySelectorAll('input[type=checkbox]').length-1;i++){                    
+                    if(document.getElementById('checkbx'+i).checked == true){
+                        fetch('?header=Prod&db=<?php echo $db; ?>&Deletar='+document.getElementById('checkbx'+i).value)
+                    }
+                    if(parseInt(i+2) == document.querySelectorAll('input[type=checkbox]').length){
+                        setTimeout(window.location = "?sucesso&Prod",5000)                              
+                    }
+                }
+            }
+        })
+            
+}
 </script>
