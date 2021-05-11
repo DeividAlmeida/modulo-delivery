@@ -127,7 +127,7 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
     width: 170px;
     content: "Enviar Imagem... Resolução recomendada de 800x800";
     position: absolute;
-    top: 70%;
+    top: 65%;
     font-size: 15px;
     line-height: 15px;
     text-align: center;  
@@ -144,9 +144,11 @@ thead th{
 .multiselect__tag, .multiselect__option--highlight, .multiselect__tag-icon, .multiselect__tag-icon:after{ background: #86939e !important}
 </style>
 <div class="card"  >
-    <div id="control" v-if="!status">        
+    <div id="control" v-if="!status"> 
+        <div class="card-header white" v-if="ctrls">
+                <button type="button" class="btn btn-danger btnRemove" onclick="massa()"> <i class="icon icon-trash" aria-hidden="true"></i> Excluir em Massa</button>
+        </div>
         <div class="card-body p-0" v-if="ctrls">
-            <button style="position: absolute; right: 50%; top: 4.5%; position: absolute; cursor: pointer; z-index: 1;" type="button" class="btn btn-danger btnRemove" onclick="massa()"> <i class="icon icon-trash" aria-hidden="true"></i> Deletar</button>
             <v-client-table :columns="columns" :data="table" :options="options" class="thead-dark" id="DataTable">                
                 <input class="form-control" slot="check" slot-scope="props" :value="props.row.id" type="checkbox" :id="'checkbx'+props.row.index">
                 <span slot="index" slot-scope="props" > {{props.row.index+1}}</span>
@@ -163,7 +165,7 @@ thead th{
                             <a class="dropdown-item"  :href="'?Prod&two='+props.row.id"><i class="text-primary icon icon-clone" ></i> Duplicar</a>
                         <?php } ?>
                         <?php if (checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'deletar')) { ?>
-                            <!--<a class="dropdown-item" :data-id="props.row.id"  onclick="DeletarItem(getAttribute('data-id'), 'header=Prod&db=<?php echo $db; ?>&Deletar');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a> -->
+                            <a class="dropdown-item" :data-id="props.row.id"  onclick="DeletarItem(getAttribute('data-id'), 'header=Prod&db=<?php echo $db; ?>&Deletar');" href="#!"><i class="text-danger icon icon-remove"></i> Excluir </a>
                         <?php } ?>
                     </div>
                 </div>        
@@ -370,9 +372,9 @@ thead th{
                     count: "Mostrando de {from} a {to} total {count} registros|{count} registros|Um registro",
                     first: 'Primeiro',
                     last: 'Último',
-                    filter: "Filtro:",
+                    filter: "",
                     filterPlaceholder: "Pesquisa",
-                    limit: "Registros:",
+                    limit: "",
                     page: "Página:",
                     noResults: "Sem registros correspondentes",
                     filterBy: "Filtrar por {column}",
@@ -575,7 +577,7 @@ thead th{
                         fetch('?header=Prod&db=<?php echo $db; ?>&Deletar='+document.getElementById('checkbx'+i).value)
                     }
                     if(parseInt(i+2) == document.querySelectorAll('input[type=checkbox]').length){
-                        setTimeout(window.location = "?sucesso&Prod",5000)                              
+                        setTimeout(function(){window.location = "?sucesso&Prod"},1000)                              
                     }
                 }
             }
