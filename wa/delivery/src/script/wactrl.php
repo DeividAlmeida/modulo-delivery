@@ -1,4 +1,5 @@
 <script>
+
 window.onscroll = function(){
   let x = parseInt(document.body.getBoundingClientRect().height - document.body.getBoundingClientRect().bottom)
   let y = parseInt(document.getElementById('delivery').getBoundingClientRect().height - document.getElementById('delivery').getBoundingClientRect().bottom)
@@ -74,9 +75,12 @@ data: {
     pagamento:''
 },
 methods: {
-    select: function(a){
-        this.idx=a;
-    
+    select: function(a){      
+      document.querySelectorAll('iframe#carrinho')[0].src=vue.origin+"wa/delivery/modal.php?id="+a
+        setTimeout( function(){
+          window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "open")')
+        }, 300)
+        this.idx=a;        
     },
     close: function(){
         this.idx=null;

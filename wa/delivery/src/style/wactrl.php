@@ -431,7 +431,7 @@ input::placeholder {
     select:focus, input:focus{
     outline: none;
     }
-    .input-group-prepend .btn{
+    .picon .btn{
     pointer-events: none;
     margin: 2px;
     background: #ffad1d  !important;
@@ -474,5 +474,9 @@ input::placeholder {
     z-index: 10000;
     background: white;
     display:none
+}
+.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
 }
 </style>

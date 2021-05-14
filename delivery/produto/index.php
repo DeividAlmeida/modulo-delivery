@@ -125,10 +125,19 @@ $adicional = json_encode(DBRead('delivery_adicional','*'));
 }
 .imgs:before{
     width: 170px;
-    content: "Enviar Imagem... Resolução recomendada de 800x800";
+    content: "Enviar Imagem...";
     position: absolute;
     top: 65%;
     font-size: 15px;
+    line-height: 15px;
+    text-align: center;  
+}
+.imgs:after{
+    width: 170px;
+    content: "Resolução recomendada de 800x800";
+    position: absolute;
+    top: 70%;
+    font-size: 13px;
     line-height: 15px;
     text-align: center;  
 }

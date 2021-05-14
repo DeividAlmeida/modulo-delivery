@@ -6,14 +6,14 @@
 	#$_GET['id'] = 4;
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
-	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$categoria}'");
+	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$categoria}' AND status = 'Ativo'");
 	elseif (isset($_GET['categoria'])):
 	    $cat = $_GET['categoria'];
-	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$cat}'");
+	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$cat}' AND status = 'Ativo'");
 	    $categoria = 'null';
 	else:
 	    $categoria = 'null';
-	    $fetch = DBRead('delivery_produto','*');
+	    $fetch = DBRead('delivery_produto','*','WHERE status = "Ativo"');
 
 	endif;
 	    $categorias = json_encode(DBRead('delivery_categoria','*'));
@@ -191,7 +191,7 @@
         <div class="row dashboard" id="no-fixed">
             <div id="dashboard" class="col-sm-5">
                 <div class="input-group mb-3 input_sty1">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend picon">
                         <a class=" fa btn"  type="button">
                             <i style="font-size:20px" class="fas fa-list"></i>
                         </a>
@@ -207,7 +207,7 @@
             <div class="col-sm-7">
                 <div class="input-group mb-3 input_sty2">
                     <input class="search" @input='here=>searchQuery=here.target.value' placeholder=" Faça uma busca  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend picon">
                         <a class=" fa btn"  type="button">
                             <i style="font-size:20px" class="fas fa-search"></i>
                         </a>
@@ -218,7 +218,7 @@
         <div class="row dashboard fixed" >
             <div id="dashboard" class="col-sm-5">
                 <div class="input-group mb-3 input_sty1">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend picon">
                         <a class=" fa btn"  type="button">
                             <i style="font-size:20px" class="fas fa-list"></i>
                         </a>
@@ -234,7 +234,7 @@
             <div class="col-sm-7">
                 <div class="input-group mb-3 input_sty2">
                     <input class="search" @input='here=>searchQuery=here.target.value' placeholder=" Faça uma busca  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend picon">
                         <a class=" fa btn"  type="button">
                             <i style="font-size:20px" class="fas fa-search"></i>
                         </a>
@@ -244,37 +244,25 @@
         </div>        
         
         
-            <div class="col-sm-3" v-for="(item, index) in tokens">
-                <div :class="item.promocao == 'S'?'promocao column post-grid-content':'column post-grid-content'"  @click="select(index)">
-                    <div class="um">
-                        <img :src="origin+'wa/delivery/uploads/'+item.imagem">
-                    </div>
-                    <span class="etiqueta">Realizar Pedido</span>
-                    <div class="dois">
-                        <b>{{item.nome}}</b>                       
-                    </div>
-                    <div class="tres">                        
-                        <b >{{item.valor}}</b>
-                    </div>
-                </div>                
-            </div>
-
-
-        <div id="mob" v-if="idx != null">
-            <div id="box" @click="close()">
-            </div>
-            <div id="popup" :class='config.entrada'>
-                <span id="fechar"  @click="close()"> 	&times;
-                </span>
-                <div id="um">
-                    <img :src="origin+'wa/delivery/uploads/'+tokens[idx].img">
+        <div class="col-sm-3" v-for="(item, index) in tokens">
+            <div :class="item.promocao == 'S'?'promocao column post-grid-content':'column post-grid-content'"  @click="select(item.id)">
+                <div class="um">
+                    <img :src="origin+'wa/delivery/uploads/'+item.imagem">
                 </div>
-                <div id="dois">
-                    <b>{{tokens[idx].nome}}</b>
-                    <p>{{tokens[idx].descricao}}</p>
+                <span class="etiqueta">Realizar Pedido</span>
+                <div class="dois">
+                    <b>{{item.nome}}</b>                       
                 </div>
-            </div>
+                <div class="tres">                        
+                    <b >{{item.valor}}</b>
+                </div>
+            </div>                
         </div>
+    
+
+        <div id="mob" v-if="idx != null">                       
+        </div>
+
         <ul  class="pagination col-sm-12" v-if="config.paginacao == 'S'">
             <li id="mob" :class="{'disabled' : pager.currentPage === 1}">
                 <a @click="setPage(1)">&Ll;</a>
