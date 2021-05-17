@@ -38,7 +38,7 @@ input[type=number] {
             </div>
             <div class="body" v-for="produto, id of produtos">
                 <div class="nomeProduto">
-                    <h3 class="price">{{produto.valor}}</h3>
+                    <h3 class="price">{{produto.valor.replace('.','')}}</h3>
                     <h3>{{produto.nome}}</h3>
                     <p>{{produto.descricao}}</p>
                     <input type="hidden" name="complex-product-uuid" value="78bf3955-10da-445d-897b-9b39cc7fc036">
@@ -49,7 +49,7 @@ input[type=number] {
                         <span class="required">Obrigatório</span>
                         <h4>{{complemento.nome}}</h4>
                     </div>
-                    <div class="row selected_qtt">
+                    <div class="row selected_qtt" v-if="complemento.tipo == 0">
                         <div class="col-12"> 
                             Você deve selecionar ao menos 
                             <span class="green">1</span>
@@ -58,7 +58,15 @@ input[type=number] {
                             opções.
                             <br>
                             Você selecionou 
-                            <span class="qtt green">0</span>.
+                            <span class="qtt green">{{pedido.complementos[idc][1]}}</span>.
+                        </div>
+                    </div>
+                    <div class="row selected_qtt" v-else>
+                        <div class="col-12">
+                            Você deve selecionar
+                            <span class="green">1</span> opção.                        
+                            <br>Você selecionou 
+                            <span class="qtt green" :id="'sel'+idc">0</span>.
                         </div>
                     </div>
                     <div class="option" v-for="opcao, idp of produtos[id].complementos[idc].opcao" data-uuid="0f66c8e7-aed9-4a79-8bd9-337c2fba72bf">
@@ -69,19 +77,19 @@ input[type=number] {
                             <div class="col-5 align-self-center text-right">                                
                                 <div class="input-group " v-if="complemento.tipo == 0">
                                     <div class="input-group-prepend">
-                                        <button style="min-width: 2.5rem"  class="btn btn-decrement btn-outline-secondary" type="button" @click="remove(idc, idp+1, 'c')">
+                                        <button style="min-width: 2.5rem"  class="btn btn-decrement btn-outline-secondary" type="button" @click="remove(idc, idp+2, 'c', opcao.valor.replace(/[^0-9,-]+/g,''))">
                                             <strong>-</strong>
                                         </button>
                                     </div>
-                                    <input type="number" min="0" inputmode="decimal" v-model="pedido.complementos[idc][idp+1].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
+                                    <input type="number" min="0" inputmode="decimal" @change="edit(idc,idp+2,'c',$event.target.value, complemento.max, opcao.valor.replace(/[^0-9,-]+/g,'') )" :value="pedido.complementos[idc][idp+2].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
                                     <div class="input-group-append">
-                                        <button style="min-width: 2.5rem" @click="add(idc, idp+1, 'c')" class="btn btn-increment btn-outline-secondary" type="button">
+                                        <button style="min-width: 2.5rem" @click="add(idc, idp+2, 'c', complemento.max, opcao.valor.replace(/[^0-9,-]+/g,''))" class="btn btn-increment btn-outline-secondary" type="button">
                                             <strong>+</strong>
                                         </button>
                                     </div>
                                 </div>
                                 <div v-else class="checkbox">                             
-                                    <input type="radio" :name="complemento.nome" v-model="pedido.complementos[idc].escolha" class="option-qtt" :value="opcao.nome" :id="opcao.nome" data-name="Mini" data-price="15.00">
+                                    <input type="radio" :name="complemento.nome" @change="sel(idc, opcao.valor.replace(/[^0-9,-]+/g,''))" v-model="pedido.complementos[idc].escolha" class="option-qtt" :value="opcao.nome" :id="opcao.nome" data-name="Mini" data-price="15.00">
                                     <label :for="opcao.nome"></label>                              
                                 </div>                         
                                 <p class="price">{{opcao.valor == 'R$ 0,00'?'Grátis':'+ '+opcao.valor}}</p>
@@ -93,14 +101,7 @@ input[type=number] {
                     <div class="title">                        
                         <h4>ADICIONAIS</h4>                      
                     </div>                    
-                    <div class="row selected_qtt">
-                        <div class="col-12">
-                            Você deve selecionar
-                            <span class="green">1</span> opção.                        
-                            <br>Você selecionou 
-                            <span class="qtt green">0</span>.
-                        </div>
-                    </div>
+                    
                     <div class="option" data-uuid="70e720cc-a8c8-4dfd-8429-0a443b2804c2">
                         <div class="row">
                             <div class="col-7 align-self-center">
@@ -109,13 +110,13 @@ input[type=number] {
                             <div class="col-5 align-self-center text-right">                          
                                 <div class="input-group " >
                                     <div class="input-group-prepend">
-                                        <button style="min-width: 2.5rem" @click="remove(ida,null, 'a')"  class="btn btn-decrement btn-outline-secondary" type="button">
+                                        <button style="min-width: 2.5rem" @click="remove(ida, null, 'a', adicional.valor.replace(/[^0-9,-]+/g,''))"  class="btn btn-decrement btn-outline-secondary" type="button">
                                             <strong>-</strong>
                                         </button>
                                     </div>
-                                    <input type="number" min="0"  inputmode="decimal" v-model="pedido.adicionais[ida].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
+                                    <input type="number" min="0"  inputmode="decimal" @change="edit(ida,null,'a',$event.target.value, null, adicional.valor.replace(/[^0-9,-]+/g,''))" :value="pedido.adicionais[ida].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
                                     <div class="input-group-append">
-                                        <button style="min-width: 2.5rem" @click="add(ida,null, 'a')" class="btn btn-increment btn-outline-secondary" type="button">
+                                        <button style="min-width: 2.5rem" @click="add(ida,null, 'a',null, adicional.valor.replace(/[^0-9,-]+/g,''))" class="btn btn-increment btn-outline-secondary" type="button">
                                             <strong>+</strong>
                                         </button>
                                     </div>
@@ -144,7 +145,7 @@ input[type=number] {
                                 </div>
                             </div>
                             <div class="col-7 confirmar">
-                                <button type="button" @click="concluir()" class="adicionar">Adicionar<br>{{produto.valor}}</button>
+                                <button type="button" @click="concluir()" class="adicionar">Adicionar<br>R$ {{pedido.total.replace('.',',')}}</button>
                             </div>
                         </div>
                     </div>
@@ -162,36 +163,78 @@ input[type=number] {
          complementos: <?php echo $complementos ?>, 
          adicionais: <?php echo $adicionais ?>,
          total:0, 
-         pedido:{complementos:[], adicionais:[]}
+         pedido:{total:0,complementos:[], adicionais:[]}
     },
     methods: {
         algo: function(){
             window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden")')
             window.location=""
         },
-        add: function(a,b,c){
+        edit: function(a,b,c,d,e,f){
+            let valor = parseFloat(f.replace(',','.'))
+            let count = parseInt(Math.abs(d))               
             if(c == 'c'){
-                vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd+1
+                for(let i =2; i<vue.pedido.complementos[a].length; i++){
+                    if(vue.pedido.complementos[a][i].nome != vue.pedido.complementos[a][b].nome){
+                       count += vue.pedido.complementos[a][i].qtd 
+                    }
+                }
+                if(count <= e){
+                    let real = parseFloat((count*valor)-(this.pedido.complementos[a][b].qtd*valor))
+                    this.pedido.complementos[a][b].qtd = parseInt(Math.abs(d))
+                    vue.pedido.complementos[a][1] = count                    
+                    vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+real).toFixed(2)
+                }
             }else{
-                vue.pedido.adicionais[a].qtd = vue.pedido.adicionais[a].qtd+1
+                let real = parseFloat((count*valor)-(this.pedido.adicionais[a].qtd*valor))
+                vue.pedido.adicionais[a].qtd = parseInt(Math.abs(d))
+                vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+real).toFixed(2)
             }
             this.$forceUpdate()
         },
-        remove: function(a,b,c){
+        add: function(a,b,c,d,e){
+            let valor = parseFloat(e.replace(',','.')) 
+            if(c == 'c' && vue.pedido.complementos[a][1] < d){
+                vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd+1
+                vue.pedido.complementos[a][1] = vue.pedido.complementos[a][1]+1
+                vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor).toFixed(2)
+            }else if( c != 'c'){
+                vue.pedido.adicionais[a].qtd = vue.pedido.adicionais[a].qtd+1
+                vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor).toFixed(2)
+             
+            }
+            this.$forceUpdate()
+        },
+        remove: function(a,b,c,d){
+            let valor = parseFloat(d.replace(',','.')) 
             if(c == 'c'){
-                vue.pedido.complementos[a][b].qtd <= 0 ?
-                    vue.pedido.complementos[a][b].qtd=0: 
+                if(vue.pedido.complementos[a][b].qtd <= 0){
+                    vue.pedido.complementos[a][b].qtd=0
+                }else{
                     vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd-1
+                    vue.pedido.complementos[a][1] = vue.pedido.complementos[a][1]-1
+                    vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))-valor).toFixed(2)
+                } 
             }else{
-                vue.pedido.adicionais[a].qtd <= 0 ?
-                    vue.pedido.adicionais[a].qtd=0: 
+                if(vue.pedido.adicionais[a].qtd <= 0){
+                    vue.pedido.adicionais[a].qtd=0 
+                }else{
                     vue.pedido.adicionais[a].qtd = vue.pedido.adicionais[a].qtd-1
+                    vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))-valor).toFixed(2)
+                }
             }
             this.$forceUpdate()
         }, 
         concluir: function(){
             window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden")')
             window.location=""
+        },
+        sel: function(a, b){  
+            let valor = parseFloat(b.replace(',','.'))           
+            vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor-vue.pedido.complementos[a][1]).toFixed(2)
+            vue.pedido.complementos[a][1] =  valor.toFixed(2)           
+            document.getElementById('sel'+a).innerText = '1'
+            this.$forceUpdate()
         }   
     },
     mounted: function () {
@@ -214,7 +257,7 @@ input[type=number] {
  vue.produtos[0].complementos.forEach((a,i)=>{
     vue.complementos.filter((b)=>{
         if(b.nome == a.nome && b.status=='Ativo'){
-            vue.pedido.complementos[i] = [b.nome]
+            vue.pedido.complementos[i] = [b.nome, 0]
             if(b.tipo == 1){
                 Object.assign(vue.pedido.complementos[i],{escolha:null}) 
             }
@@ -229,5 +272,6 @@ input[type=number] {
         }    
     })
  })
- 
+let result = vue.produtos[0].valor.replace(/[^0-9,-]+/g,"")
+vue.pedido.total= parseFloat(result.replace(',','.')).toFixed(2)
 </script>
