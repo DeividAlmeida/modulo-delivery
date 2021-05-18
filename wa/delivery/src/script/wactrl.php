@@ -72,6 +72,8 @@ data: {
     searchQuery: null,
     searchFilters: null,
     horario:'',
+    total:0,
+    valor:'0.00',
     pagamento:''
 },
 methods: {
@@ -180,5 +182,10 @@ for (key in vue.config.horario) {
         }        
     }
     tag++
+}
+new atualiza()
+function atualiza(){
+  vue.total = parseFloat(sessionStorage.getItem('delivery_total'))
+  vue.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
 }
 </script>

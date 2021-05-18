@@ -97,7 +97,7 @@ input[type=number] {
                         </div>
                     </div>                                      
                 </div>                
-                <div v-for="adicional, ida of produtos[id].adicionais" class="group" data-uuid="f8a507e3-5637-44af-9bc0-8c26dc753119" data-min-qtt="1" data-max-qtt="1" data-name="Tamanho">
+                <div v-if="pedido.adicionais[ida]" v-for="adicional, ida of produtos[id].adicionais"  class="group" data-uuid="f8a507e3-5637-44af-9bc0-8c26dc753119" data-min-qtt="1" data-max-qtt="1" data-name="Tamanho">
                     <div class="title">                        
                         <h4>ADICIONAIS</h4>                      
                     </div>                    
@@ -132,20 +132,20 @@ input[type=number] {
                             <div class="col-5">                                
                                 <div class="input-group  ">
                                     <div class="input-group-prepend">
-                                        <button style="min-width: 2.5rem" @click="total<= 0?total=0: total--" class="btn btn-decrement btn-outline-secondary"  type="button">
+                                        <button style="min-width: 2.5rem" @click="total<= 1?total=1: total--;pedido.total = Math.abs(parseFloat(valor)*total).toFixed(2)" class="btn btn-decrement btn-outline-secondary"  type="button">
                                             <strong>-</strong>
                                         </button>
                                     </div>
                                     <input type="number" v-model="total" style="text-align: center" class="form-control qtt" >
                                     <div class="input-group-append">
-                                        <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary" @click="total++" type="button">
+                                        <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary" @click="total++;pedido.total = Math.abs(parseFloat(valor)*total).toFixed(2)" type="button">
                                             <strong>+</strong>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-7 confirmar">
-                                <button type="button" @click="concluir()" class="adicionar">Adicionar<br>R$ {{pedido.total.replace('.',',')}}</button>
+                                <button type="button" @click="concluir()" class="adicionar">Adicionar<br>R$ {{pedido.total}}</button>
                             </div>
                         </div>
                     </div>
@@ -162,9 +162,10 @@ input[type=number] {
          produtos: <?php echo $produtos ?>,
          complementos: <?php echo $complementos ?>, 
          adicionais: <?php echo $adicionais ?>,
-         total:0, 
+         total:1, 
+         valor:0,
          pedido:{total:0,complementos:[], adicionais:[]}
-    },
+    },    
     methods: {
         algo: function(){
             window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden")')
@@ -184,11 +185,13 @@ input[type=number] {
                     this.pedido.complementos[a][b].qtd = parseInt(Math.abs(d))
                     vue.pedido.complementos[a][1] = count                    
                     vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+real).toFixed(2)
+                    vue.valor = parseFloat(vue.valor+real)
                 }
             }else{
                 let real = parseFloat((count*valor)-(this.pedido.adicionais[a].qtd*valor))
                 vue.pedido.adicionais[a].qtd = parseInt(Math.abs(d))
                 vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+real).toFixed(2)
+                vue.valor = parseFloat(vue.valor+real)
             }
             this.$forceUpdate()
         },
@@ -198,9 +201,11 @@ input[type=number] {
                 vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd+1
                 vue.pedido.complementos[a][1] = vue.pedido.complementos[a][1]+1
                 vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor).toFixed(2)
+                vue.valor = parseFloat(vue.valor+valor)
             }else if( c != 'c'){
                 vue.pedido.adicionais[a].qtd = vue.pedido.adicionais[a].qtd+1
                 vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor).toFixed(2)
+                vue.valor = parseFloat(vue.valor+valor)
              
             }
             this.$forceUpdate()
@@ -214,6 +219,7 @@ input[type=number] {
                     vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd-1
                     vue.pedido.complementos[a][1] = vue.pedido.complementos[a][1]-1
                     vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))-valor).toFixed(2)
+                    vue.valor = parseFloat(vue.valor-valor)
                 } 
             }else{
                 if(vue.pedido.adicionais[a].qtd <= 0){
@@ -221,18 +227,29 @@ input[type=number] {
                 }else{
                     vue.pedido.adicionais[a].qtd = vue.pedido.adicionais[a].qtd-1
                     vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))-valor).toFixed(2)
+                    vue.valor = parseFloat(vue.valor-valor)
                 }
             }
             this.$forceUpdate()
         }, 
         concluir: function(){
-            window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden")')
+            window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza()')
             window.location=""
+            if(sessionStorage.getItem('delivery_valor') == null){
+                sessionStorage.setItem('delivery_valor',parseFloat(vue.pedido.total)) 
+                sessionStorage.setItem('delivery_total',vue.total) 
+            }else{
+               let valor = parseFloat(sessionStorage.getItem('delivery_valor'))+parseFloat(vue.pedido.total)
+               let total = parseFloat(sessionStorage.getItem('delivery_total'))+vue.total
+               sessionStorage.setItem('delivery_valor',valor) 
+               sessionStorage.setItem('delivery_total',total) 
+            }
         },
         sel: function(a, b){  
             let valor = parseFloat(b.replace(',','.'))           
             vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor-vue.pedido.complementos[a][1]).toFixed(2)
-            vue.pedido.complementos[a][1] =  valor.toFixed(2)           
+            vue.valor = parseFloat(vue.valor+valor-vue.pedido.complementos[a][1])           
+            vue.pedido.complementos[a][1] =  valor.toFixed(2)
             document.getElementById('sel'+a).innerText = '1'
             this.$forceUpdate()
         }   
@@ -240,11 +257,13 @@ input[type=number] {
     mounted: function () {
         this.$nextTick(function () {
             this.produtos[0].adicionais.forEach((a,i)=>{
-                this.adicionais.filter((b)=>{
-                    if(b.nome == a.nome && b.status=='Ativo'){
-                        this.pedido.adicionais.push({nome:this.produtos[0].adicionais[i].nome,qtd:0}) 
-                    }
-                })
+                if(this.adicionais){
+                    this.adicionais.filter((b)=>{
+                        if(b.nome == a.nome && b.status=='Ativo'){                        
+                            this.pedido.adicionais.push({nome:this.produtos[0].adicionais[i].nome,qtd:0}) 
+                        }
+                    })
+                }
             })
         })
     },
@@ -274,4 +293,5 @@ input[type=number] {
  })
 let result = vue.produtos[0].valor.replace(/[^0-9,-]+/g,"")
 vue.pedido.total= parseFloat(result.replace(',','.')).toFixed(2)
+vue.valor = parseFloat(vue.pedido.total)
 </script>

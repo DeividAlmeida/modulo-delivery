@@ -3,17 +3,40 @@
 	require_once('../../includes/funcoes.php');
 	require_once('../../database/config.database.php');
 	require_once('../../database/config.php');
-	#$_GET['id'] = 4;
+    switch (date('N')) {
+        case 1:
+            $dia = "Segunda-feira";
+            break;
+        case 2:
+            $dia = "Terça-feira";
+            break;
+        case 3:
+            $dia = "Quarta-feira";
+            break;
+        case 4:
+            $dia = "Quinta-feira";
+            break;
+        case 5:
+            $dia = "Sexta-feira";
+            break;
+        case 6:
+            $dia = "Sabado";
+            break;
+        case 7:
+            $dia = "Domingo";
+            break;
+    }
+    ECHO $dia;
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
 	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$categoria}' AND status = 'Ativo'");
 	elseif (isset($_GET['categoria'])):
 	    $cat = $_GET['categoria'];
-	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$cat}' AND status = 'Ativo'");
+	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$cat}' AND status = 'Ativo' AND dias LIKE '%$dia%'");
 	    $categoria = 'null';
 	else:
 	    $categoria = 'null';
-	    $fetch = DBRead('delivery_produto','*','WHERE status = "Ativo"');
+	    $fetch = DBRead('delivery_produto','*',"WHERE status = 'Ativo' AND dias LIKE '%$dia%'");
 
 	endif;
 	    $categorias = json_encode(DBRead('delivery_categoria','*'));
@@ -287,10 +310,10 @@
                         <div class="botao openBasket">
                             <div class="title">
                                 <span>Itens do <strong>Seu pedido</strong></span>
-                                <span id="shopping-basket-total-price" class="valor">R$ 0,00</span>
+                                <span id="shopping-basket-total-price" class="valor">R$ {{valor.replace('.',',')}}</span>
                             </div>
                             <div id="shopping-basket-unpaired-marker" class="floating" style="display: none;"><span class="fas fa-exclamation"></span></div>
-                            <div class="floating"><span id="shopping-basket-items-count">0</span></div>
+                            <div class="floating"><span id="shopping-basket-items-count">{{total}}</span></div>
                         </div>
                     </div>
                     <div class="col-6">
