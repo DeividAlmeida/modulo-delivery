@@ -289,7 +289,7 @@ thead th{
                                         <multiselect v-model="value" :show-labels="false" :hide-selected="true" label="nome" track-by="nome" :options="index2" :multiple="true" :taggable="true" ></multiselect>
                                 </div>  
                                 <div class="form-group">
-                                    <button @click="add()" class="btn btn-primary" style="background: #86939e !important; border:#86939e !important"type="button">Adicionar</button>
+                                    <button @click="add()" class="btn btn-primary" type="button">Adicionar</button>
                                 </div>
                                 <div class="form-group" >
                                     <small style="color:red">{{alerta}}</small>

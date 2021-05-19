@@ -26,7 +26,6 @@
             $dia = "Domingo";
             break;
     }
-    ECHO $dia;
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
 	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$categoria}' AND status = 'Ativo'");
@@ -61,27 +60,32 @@
 
 </header>
 <body>
-    <div id="controller" class="container-fluid">
-        <section class="barraDados">
+    <div id="controller" class="container-fluid" style="background:rgba(0,0,0, 0.1)">
+        <section class="barraDados" style="position:relative; right:15px">
             <div class="container">
                 <div class="boxin horario ">
                     <div class="horario-atendimento">
                         
                         <p :class="'btn '+horario" @click="horario == 'ativo'? horario = '': horario = 'ativo'">
                         
-                            <i class="far fa-clock"></i> <strong class="text-success">Estamos abertos</strong>
+                            <i class="far fa-clock"></i> <strong :class="aviso == 'Estamos abertos'?'text-success':'text-danger'">{{aviso}}</strong>
                             
-                            <span>das 00:00  até as  23:59</span>
+                            <span v-if="aviso == 'Estamos abertos'">{{ate}}</span>
                             <i class="fas fa-angle-down"></i>
                             
                         </p>
                         
                         <div class="box-horarios" :style="horario != 'ativo'?'display: none':void(0)">
                             <ul>
-                                <li><strong>Domingo: </strong><span>00:00 - 23:59</span><span class="clearfix"></span></li><li><strong>Segunda-feira: </strong><span>00:00 - 23:59</span><span class="clearfix"></span></li><li><strong>Terça-feira: </strong><span>00:00 - 23:59</span><span class="clearfix"></span></li><li><strong>Quarta-feira: </strong><span>00:00 - 23:59</span><span class="clearfix"></span></li><li><strong>Quinta-feira: </strong><span>00:00 - 23:59</span><span class="clearfix"></span></li><li><strong>Sexta-feira: </strong><span>00:00 - 23:59</span><span class="clearfix"></span></li><li><strong>Sábado: </strong><span>00:00 - 23:59</span><span class="clearfix"></span></li>
+                                <li v-for="hora, dia of config.horario" v-if="!config.horario[dia]['hora-fim'].length<=0">
+                                    <strong>{{dia}}: </strong>
+                                    <span style="white-space: nowrap; letter-spacing: -1px;padding:0" v-for="hinicio, horas of config.horario[dia]['hora-inicio']">
+                                        <span >{{config.horario[dia]['hora-inicio'][horas]+' : '+config.horario[dia]['minuto-inicio'][horas] + '&nbsp;&nbsp;-&nbsp;&nbsp;' + config.horario[dia]['hora-fim'][horas]+' : '+config.horario[dia]['minuto-fim'][horas]}}</span>
+                                        <span class="clearfix"></span>
+                                    </span>
+                                </li>
                             </ul>
                         </div>
-                        
                     </div>
                 </div>
 

@@ -97,34 +97,35 @@ input[type=number] {
                         </div>
                     </div>                                      
                 </div>                
-                <div v-if="pedido.adicionais[ida]" v-for="adicional, ida of produtos[id].adicionais"  class="group" data-uuid="f8a507e3-5637-44af-9bc0-8c26dc753119" data-min-qtt="1" data-max-qtt="1" data-name="Tamanho">
+                <div  class="group" data-uuid="f8a507e3-5637-44af-9bc0-8c26dc753119" data-min-qtt="1" data-max-qtt="1" data-name="Tamanho">
                     <div class="title">                        
                         <h4>ADICIONAIS</h4>                      
                     </div>                    
-                    
-                    <div class="option" data-uuid="70e720cc-a8c8-4dfd-8429-0a443b2804c2">
-                        <div class="row">
-                            <div class="col-7 align-self-center">
-                                <h5>{{adicional.nome}}</h5>                                                     
-                            </div>                
-                            <div class="col-5 align-self-center text-right">                          
-                                <div class="input-group " >
-                                    <div class="input-group-prepend">
-                                        <button style="min-width: 2.5rem" @click="remove(ida, null, 'a', adicional.valor.replace(/[^0-9,-]+/g,''))"  class="btn btn-decrement btn-outline-secondary" type="button">
-                                            <strong>-</strong>
-                                        </button>
-                                    </div>
-                                    <input type="number" min="0"  inputmode="decimal" @change="edit(ida,null,'a',$event.target.value, null, adicional.valor.replace(/[^0-9,-]+/g,''))" :value="pedido.adicionais[ida].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
-                                    <div class="input-group-append">
-                                        <button style="min-width: 2.5rem" @click="add(ida,null, 'a',null, adicional.valor.replace(/[^0-9,-]+/g,''))" class="btn btn-increment btn-outline-secondary" type="button">
-                                            <strong>+</strong>
-                                        </button>
-                                    </div>
-                                </div>                          
-                                <p class="price">{{adicional.valor == 'R$ 0,00'?'Grátis':'+ '+adicional.valor}}</p>
+                   <div v-if="pedido.adicionais[ida]" v-for="adicional, ida of produtos[id].adicionais" >
+                        <div class="option" data-uuid="70e720cc-a8c8-4dfd-8429-0a443b2804c2">
+                            <div class="row">
+                                <div class="col-7 align-self-center">
+                                    <h5>{{adicional.nome}}</h5>                                                     
+                                </div>                
+                                <div class="col-5 align-self-center text-right">                          
+                                    <div class="input-group " >
+                                        <div class="input-group-prepend">
+                                            <button style="min-width: 2.5rem" @click="remove(ida, null, 'a', adicional.valor.replace(/[^0-9,-]+/g,''))"  class="btn btn-decrement btn-outline-secondary" type="button">
+                                                <strong>-</strong>
+                                            </button>
+                                        </div>
+                                        <input type="number" min="0"  inputmode="decimal" @change="edit(ida,null,'a',$event.target.value, null, adicional.valor.replace(/[^0-9,-]+/g,''))" :value="pedido.adicionais[ida].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
+                                        <div class="input-group-append">
+                                            <button style="min-width: 2.5rem" @click="add(ida,null, 'a',null, adicional.valor.replace(/[^0-9,-]+/g,''))" class="btn btn-increment btn-outline-secondary" type="button">
+                                                <strong>+</strong>
+                                            </button>
+                                        </div>
+                                    </div>                          
+                                    <p class="price">{{adicional.valor == 'R$ 0,00'?'Grátis':'+ '+adicional.valor}}</p>
+                                </div>
                             </div>
-                        </div>
-                    </div>                    
+                        </div>                    
+                   </div> 
                 </div>
                 <div class="footer">
                     <div class="right">

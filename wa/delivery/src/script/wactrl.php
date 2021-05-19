@@ -74,6 +74,8 @@ data: {
     horario:'',
     total:0,
     valor:'0.00',
+    aviso:'Estamos fechados',
+    ate:null,
     pagamento:''
 },
 methods: {
@@ -172,12 +174,9 @@ for (key in vue.config.horario) {
         for(let c =0 ; c < vue.config.horario[key]["hora-inicio"].length ; c++){
             let inicio = parseInt(String(vue.config.horario[key]["hora-inicio"][c])+String(vue.config.horario[key]["minuto-inicio"][c]))
             let fim = parseInt(String(vue.config.horario[key]["hora-fim"][c])+String(vue.config.horario[key]["minuto-fim"][c]))                                  
-            let switch1 = 0
             if(agora<=fim && agora>=inicio){
-                switch1 = 1                                   
-            }
-            if(c+1 == vue.config.horario[key]["hora-inicio"].length && switch1 == 0 ){
-                alert('Estamos Fechado')
+                vue.aviso ='Estamos abertos'
+                vue.ate = 'das '+String(vue.config.horario[key]["hora-inicio"][c])+':'+String(vue.config.horario[key]["minuto-inicio"][c])+' até '+String(vue.config.horario[key]["hora-fim"][c])+':'+String(vue.config.horario[key]["minuto-fim"][c])
             }
         }        
     }
@@ -185,7 +184,9 @@ for (key in vue.config.horario) {
 }
 new atualiza()
 function atualiza(){
-  vue.total = parseFloat(sessionStorage.getItem('delivery_total'))
-  vue.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
+    if(sessionStorage.getItem('delivery_valor') != null){
+        vue.total = parseFloat(sessionStorage.getItem('delivery_total'))
+        vue.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
+    }
 }
 </script>

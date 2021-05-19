@@ -443,7 +443,6 @@ input::placeholder {
     }
     .dashboard{
         padding-top:10px;
-        background:rgba(0,0,0, 0.1);
         
     }
 .etiqueta{
@@ -470,7 +469,7 @@ input::placeholder {
 .fixed{
     position: fixed;
     top: 0;
-    width: 84.5%;
+    width: 84.5% !important;
     z-index: 10000;
     background: white;
     display:none
