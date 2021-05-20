@@ -53,6 +53,8 @@ CREATE TABLE IF NOT EXISTS `delivery_produto` (
     `adicionais` text DEFAULT NULL,
     `descricao` text DEFAULT NULL,
     `dias` text DEFAULT NULL,
+    `promocao` text DEFAULT NULL,
+    `v_cortado` text DEFAULT NULL,
     `status` varchar(255)  DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -75,6 +77,10 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
     `item` varchar(255) DEFAULT NULL,
     `pag_fundo` varchar(255) DEFAULT NULL,
     `pag_texto` varchar(255) DEFAULT NULL,
+    `bg_icone` varchar(255) DEFAULT NULL,
+    `cor_icone` varchar(255) DEFAULT NULL,
+    `bg_btn_pedido` varchar(255) DEFAULT NULL,
+    `cor_btn_pedido` varchar(255) DEFAULT NULL,
         #POPUP
     `pop_fundo` varchar(255) DEFAULT NULL,
     `pop_titulo` varchar(255) DEFAULT NULL,
@@ -115,6 +121,10 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
         `item`,
         `pag_fundo`,
         `pag_texto`,
+        `bg_icone`,
+        `cor_icone`,
+        `bg_btn_pedido`,
+        `cor_btn_pedido`,
             #POPUP
         `pop_fundo`, 
         `pop_titulo`, 
@@ -139,4 +149,4 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
             #Horario
         `horario`
         ) 
-   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

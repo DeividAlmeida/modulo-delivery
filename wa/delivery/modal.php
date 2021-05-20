@@ -7,6 +7,8 @@
     $complementos = json_encode(DBRead('delivery_complemento','*',"WHERE status ='Ativo'"));
     $adicionais = json_encode(DBRead('delivery_adicional','*',"WHERE status ='Ativo'"));
     $produtos = json_encode($db);
+    $conf = DBRead('delivery_config','*')[0];
+    $config = json_encode($conf);
 ?>  <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
     <link rel="stylesheet"
         href="<?php echo ConfigPainel('base_url') ?>wa/delivery/teste/bootstrap.min.css">
@@ -28,6 +30,18 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+.modalComplexo .box .nomeProduto:before {
+    border-top: 15px solid <?php echo $conf['pop_fundo']?>  !important;
+}
+.nao{
+    text-decoration: line-through !important;
+    font-weight:700 !important;
+    font-size:13px !important;
+    top: 5px;
+    position: relative;
+    margin-right: 5px !important;
+    color:<?php echo $conf['pop_fechar']?>  !important;
+}
 </style>   
 
 <body>   
@@ -37,10 +51,11 @@ input[type=number] {
                 <span @click="algo()" id="fecharf" onclick="close()" class="fechar" aria-hidden="true">×</span>
             </div>
             <div class="body" v-for="produto, id of produtos">
-                <div class="nomeProduto">
-                    <h3 class="price">{{produto.valor.replace('.','')}}</h3>
-                    <h3>{{produto.nome}}</h3>
-                    <p>{{produto.descricao}}</p>
+                <div class="nomeProduto" style="background:<?php echo $conf['pop_fundo']?>  !important;">
+                    <h3 class="price" style="color:<?php echo $conf['pop_fechar']?>  !important;">{{produto.valor.replace('.','') }}</h3>
+                    <h3 v-if="produto.promocao == 'S'" class="price nao" >{{ produto.v_cortado.replace('.','')}}</h3>
+                    <h3 style="color:<?php echo $conf['pop_titulo']?>  !important;">{{produto.nome}}</h3>
+                    <p style="color:<?php echo $conf['pop_descricao']?>  !important;">{{produto.descricao}}</p>
                     <input type="hidden" name="complex-product-uuid" value="78bf3955-10da-445d-897b-9b39cc7fc036">
                     <input type="hidden" name="complex-product-name" value="Grande">
                 </div>

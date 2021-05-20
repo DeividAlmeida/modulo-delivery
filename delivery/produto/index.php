@@ -52,8 +52,10 @@ if(isset($_GET['Prod'])){
                 'status'=>'Inativo',
                 'categoria'=>'Selecione a categoria',
                 'valor'=> 0,
+                'v_cortado'=> 0,
                 'imagem'=> null,
                 'descricao'=> null,
+                'promocao'=>'N',
                 'dias'=> [],
                 'complementos'=> [],
                 'adicionais'=> []
@@ -208,7 +210,8 @@ thead th{
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Preço Base do Item: </label>
-                                <input v-model="ctrls[idx].valor" placeholder="R$ 00,00" class="form-control" v-money="money"  name="valor" required>
+                                <input @input="ctrls[idx].valor = $event.target.value; ctrls[idx].v_cortado = $event.target.value" :value="ctrls[idx].v_cortado" placeholder="R$ 00,00" class="form-control" v-money="money"  :name="ctrls[idx].promocao == 'N'?'valor':'v_cortado'" required>
+                                <input type="hidden" name="v_cortado" :value="ctrls[idx].v_cortado">
                             </div>
                         </div>
                     </div>
@@ -229,7 +232,7 @@ thead th{
                             </div>
                         </div>
                     </div>
-                </div>               
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-4">
@@ -252,7 +255,22 @@ thead th{
                         <button type="button" class=" btn btn-primary" data-target="#Modal" data-toggle="modal" @click="{status_opc='Adicionais'; index=[]; opcao = 'Selecione os Adicionais'; index2 = []; catego = 'Selecione a categoria'}"> Cadastrar Adicionais</button>
                         <input type="hidden" name="adicionais" id="adicionais">
                     </div>
-                </div>                
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Promoção: </label>
+                        <select v-model="ctrls[idx].promocao" name='promocao' class='form-control'  > 
+                            <option value="S">Sim</option>
+                            <option value="N">Não</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6" v-if="ctrls[idx].promocao == 'S'">
+                    <div class="form-group">
+                        <label>Preço Promocional: </label>
+                        <input v-once :value="ctrls[idx].valor" placeholder="R$ 00,00" class="form-control" v-money="money"  name="valor" required>
+                    </div>
+                </div>
             </div>
             <div class="card-footer white">
                 <button style="margin-bottom: 7px;" class="btn btn-primary float-right" type="submit"><i class="icon icon-save" aria-hidden="true"></i> Salvar</button>

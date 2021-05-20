@@ -129,7 +129,7 @@ methods: {
         if (this.searchQuery) {
             this.searchFilters = this.tokenDumms.filter((item) => {
                 return this.searchQuery
-                .replace(",",".")
+                .replace(".",",")
                 .toLowerCase()
                 .split(" ")
                 .every((v) => {
@@ -139,7 +139,9 @@ methods: {
                         return item.nome.toLowerCase().includes(v);
                     } else if (item.descricao.toLowerCase().includes(v)) {
                         return item.descricao.toLowerCase().includes(v);
-                    } 
+                    } else if (item.v_cortado != null && item.v_cortado.toLowerCase().includes(v)) {
+                        return item.v_cortado.toLowerCase().includes(v);
+                    }   
                 });
             });
     

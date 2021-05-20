@@ -99,7 +99,7 @@ td input{
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                    <label>Cor da Descrição:</label>
+                    <label>Cor do Background Geral:</label>
                         <div class="color-picker input-group colorpicker-element focused">
                             <input value="<?php echo $a['lis_descricao'] ?>" class="form-control" name="lis_descricao" >
                             <span class="input-group-append">
@@ -207,22 +207,56 @@ td input{
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4" >
                     <div class="form-group">
-                        <label>Estilo de Listagem: </label>
-                        <select   name='estilo' class='form-control'  v-model="estilo"> 
-                            <option value='1'>Estilo 1</option>
-                            <option value='2'>Estilo 2</option></option>
-                        </select>
+                        <label>Cor Background do Ícone Pesquisa e Filtro:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                            <input value="<?php echo $a['bg_icone'] ?>" class="form-control" name="bg_icone" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4" v-if="estilo == '2'">
+                <div class="col-md-4" >
                     <div class="form-group">
-                        <label>Número de colunas: </label>
-                        <select   name='colunas' class='form-control'  v-model='idx.colunas'> 
-                            <option value='4'>3 Colunas</option>
-                            <option value='3'>4 Colunas</option></option>
-                        </select>
+                        <label>Cor Ícone Pesquisa e Filtro:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                            <input value="<?php echo $a['cor_icone'] ?>" class="form-control" name="cor_icone" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" >
+                    <div class="form-group">
+                        <label>Cor Botão Realizar Pedido:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                            <input value="<?php echo $a['bg_btn_pedido'] ?>" class="form-control" name="bg_btn_pedido" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" >
+                    <div class="form-group">
+                        <label>Cor Texto do Botão Realizar Pedido:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                            <input value="<?php echo $a['cor_btn_pedido'] ?>" class="form-control" name="cor_btn_pedido" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -231,7 +265,7 @@ td input{
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                    <label>Cor do Fundo:</label>
+                    <label>Cor do Fundo Superior:</label>
                         <div class="color-picker input-group colorpicker-element focused">
                             <input value="<?php echo $a['pop_fundo'] ?>" class="form-control" name="pop_fundo" >
                             <span class="input-group-append">
@@ -272,7 +306,7 @@ td input{
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                    <label>Cor do Botão Fechar:</label>
+                    <label>Cor do Preço:</label>
                         <div class="color-picker input-group colorpicker-element focused">
                             <input value="<?php echo $a['pop_fechar'] ?>" class="form-control" name="pop_fechar" >
                             <span class="input-group-append">
@@ -283,7 +317,7 @@ td input{
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <!--<div class="col-md-6">
                     <div class="form-group">
                         <label>Efeito de Entrada: </label>
                         <select   name='entrada' class='form-control'  v-model='idx.entrada'> 
@@ -299,7 +333,7 @@ td input{
 							<option value="tc-animation-rotate">Rotate</option>
                         </select>
                     </div>
-                </div>
+                </div>-->
             </div>
             <hr>
             <h4>Configuração Mobile</h4>

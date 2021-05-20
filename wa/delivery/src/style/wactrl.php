@@ -188,7 +188,6 @@ height:350px;
     text-overflow: ellipsis;
     overflow: hidden; 
     margin:0;
-    color:<?php echo $conf['lis_descricao'] ?>;
 }
 <?php } else {  ?>
 
@@ -232,32 +231,18 @@ height:350px;
     padding-bottom: 15px;
 }
 .sim{
-    font-size: 20px;
-    font-weight: bolder;
-    white-space: nowrap;
-    text-align: center;
-    margin: 0;
-    position: relative;
-    top: 5%;
     color:<?php echo $conf['lis_preco_pro'] ?>;
-    left:27%;
-    padding-bottom: 15px;
 }
 .nao{
-    text-decoration: line-through;
-    margin: 0;
-    text-align: center;
-    color:<?php echo $conf['lis_preco'] ?>;
-    left:9%;
-    bottom:32%;
-    position:absolute;
-    padding-bottom:10px;
+    text-decoration: line-through !important;
+    font-weight:700 !important;
+    font-size:13px !important;
+    color:<?php echo $conf['lis_preco'] ?> !important;
 }
 .dois p{
     text-overflow: ellipsis;
     overflow: hidden; 
     margin:0;
-    color:<?php echo $conf['lis_descricao'] ?>;
 }
 .dois { 
     width:auto;
@@ -434,8 +419,8 @@ input::placeholder {
     .picon .btn{
     pointer-events: none;
     margin: 2px;
-    background: #ffad1d  !important;
-    color: white;
+    background: <?php echo $conf['bg_icone']?>  !important;
+    color: <?php echo $conf['cor_icone']?>  !important;
     border-radius: 25px;
     height: 40px;
     width: 40px;
@@ -446,8 +431,8 @@ input::placeholder {
         
     }
 .etiqueta{
-    background: #f4ae07;
-    color: white;
+    background: <?php echo $conf['bg_btn_pedido']?>  !important;
+    color: <?php echo $conf['cor_btn_pedido']?>  !important;;
     padding: 8px;
     border-radius: 20px;
     margin: 25%;

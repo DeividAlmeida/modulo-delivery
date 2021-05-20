@@ -60,7 +60,7 @@
 
 </header>
 <body>
-    <div id="controller" class="container-fluid" style="background:rgba(0,0,0, 0.1)">
+    <div id="controller" class="container-fluid" style="background:<?php echo $conf['lis_descricao'] ?>">
         <section class="barraDados" style="position:relative; right:15px">
             <div class="container">
                 <div class="boxin horario ">
@@ -280,8 +280,8 @@
                 <div class="dois">
                     <b>{{item.nome}}</b>                       
                 </div>
-                <div class="tres">                        
-                    <b >{{item.valor}}</b>
+                <div class="tres">                       
+                    <b class="nao" v-if="item.promocao == 'S'" >{{item.v_cortado}}</b> <b class="sim">{{item.valor}}</b>
                 </div>
             </div>                
         </div>

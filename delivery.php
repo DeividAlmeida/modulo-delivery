@@ -49,8 +49,14 @@
     					<a class="dropdown-item" href="?Prod=0">Cadastrar Produtos</a>
     					<a class="dropdown-item " href="?Prod">Produtos Cadastrados</a>
     				</div>
-    			</span>			
-    			<a class="btn btn-sm btn-primary" href="?Config">Configuração</a>
+    			</span>
+    			<span class="dropdown">
+    			    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Configurações</a>
+    				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
+    					<a class="dropdown-item" href="?Config">Geral</a>
+    					<a class="dropdown-item " href="">Configurações de Entrega</a>
+    				</div>
+    			</span>	
     		</div>
             <?php 
             if (isset($_GET['Config']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'configuracao', 'acessar')) :
