@@ -58,6 +58,37 @@ CREATE TABLE IF NOT EXISTS `delivery_produto` (
     `status` varchar(255)  DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+-- ENTREGA
+CREATE TABLE IF NOT EXISTS `delivery_entrega` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `estado` varchar(255) DEFAULT NULL,
+    `cidade` varchar(255) DEFAULT NULL,
+    `bairro` varchar(255) DEFAULT NULL,
+    `numero` text DEFAULT NULL,
+    `rua` text DEFAULT NULL,
+    `cep` text DEFAULT NULL,
+    `tipo` text DEFAULT NULL,
+    `media` text DEFAULT NULL,
+    `tempo` text DEFAULT NULL,
+    `entrega` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `delivery_entrega` (
+    `id`,
+    `estado`,
+    `cidade`,
+    `bairro`,
+    `numero`,
+    `rua`,
+    `cep`,
+    `tipo`,
+    `media`,
+    `tempo`,
+    `entrega`
+)
+ VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+
 -- CONFIGURACAO
 CREATE TABLE IF NOT EXISTS `delivery_config` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,

@@ -317,7 +317,7 @@ section.lista-produtos .grupo-variacao ul li.meia-porcao.ok {border:1px #22a200 
 			.basketContent .itemBasket .collapse {padding-bottom: 10px;}
 			.basketContent .itemBasket .description {color:#606060; margin:0 0 10px; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box;    -webkit-line-clamp: 2; font-size:13px; margin-bottom:0;}
 			.basketContent .itemBasket .options {}
-				.basketContent .itemBasket .options:last-of-type {border-bottom: none;}
+				.basketContent .itemBasket .options:last-of-type {border-bottom: 1px #efefef solid;}
 				.basketContent .itemBasket .options p {margin: 0;}
 				.basketContent .itemBasket .options .paired {border: 1px dashed #22a200;}
 				.basketContent .itemBasket .options .unpaired {border: 1px dashed #c32c31;}

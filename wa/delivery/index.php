@@ -40,6 +40,7 @@
 	endif;
 	    $categorias = json_encode(DBRead('delivery_categoria','*'));
 	    $conf = DBRead('delivery_config','*')[0];
+	    $entrega = json_encode(DBRead('delivery_entrega','*')[0]);
 	    $config = json_encode($conf);
 	    $db = json_encode($fetch);
 ?>
@@ -60,8 +61,8 @@
 
 </header>
 <body>
-    <div id="controller" class="container-fluid" style="background:<?php echo $conf['lis_descricao'] ?>">
-        <section class="barraDados" style="position:relative; right:15px">
+    <div id="controller" class="container-fluid" style="background:<?php echo $conf['lis_descricao'] ?>; padding:0px">
+        <section class="barraDados" style="display:grid;width:auto">
             <div class="container">
                 <div class="boxin horario ">
                     <div class="horario-atendimento">
@@ -207,16 +208,16 @@
                     </div>
                 </div>
                 <!-- entrega -->                    
-                <div class="boxin entrega">
+                <div class="boxin entrega" v-if="entrega.media == 'S'">
                     <div class="tempoEntrega">
                         <strong>Entrega</strong>
-                        <span>De 40 à 60 minutos (aprox.)</span>
+                        <span>{{entrega.tempo}}</span>
                     </div>
                 </div>            
             </div>
         </section>
-        <div class="row dashboard" id="no-fixed">
-            <div id="dashboard" class="col-sm-5">
+        <div class="dashboard row" id="no-fixed" style="margin:0px">
+            <div id="dashboard" class="col-lg-5">
                 <div class="input-group mb-3 input_sty1">
                     <div class="input-group-prepend picon">
                         <a class=" fa btn"  type="button">
@@ -231,7 +232,7 @@
                 </div>
             </div>
             
-            <div class="col-sm-7">
+            <div class="col-lg-7">
                 <div class="input-group mb-3 input_sty2">
                     <input class="search" @input='here=>searchQuery=here.target.value' placeholder=" Faça uma busca  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
                     <div class="input-group-prepend picon">
@@ -242,33 +243,39 @@
                 </div>
             </div>
         </div>
-        <div class="row dashboard fixed" >
-            <div id="dashboard" class="col-sm-5">
-                <div class="input-group mb-3 input_sty1">
-                    <div class="input-group-prepend picon">
-                        <a class=" fa btn"  type="button">
-                            <i style="font-size:20px" class="fas fa-list"></i>
-                        </a>
+        <section class="dashboard filtros-header filtro-fixo" style="display:none">
+            <div class="container">
+				<div class="boxin">
+					<div class="row">
+                        <div id="dashboard" class="col-md-5 col-12 filtro">
+                            <div class="input-group mb-3 input_sty1">
+                                <div class="input-group-prepend picon">
+                                    <a class=" fa btn"  type="button">
+                                        <i style="font-size:20px" class="fas fa-list"></i>
+                                    </a>
+                                </div>
+                                <select  @change="categor($event)"  v-if="!categoria" class="search custom-select" >
+                                    <option value="" selected disabled> &nbsp;Navegar pela Categorias </option>
+                                    <option value="all"> Todas Categorias</option>
+                                    <option  v-for="cat, i of categorias" :value="cat.nome">{{cat.nome}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-7 col-12">
+                            <div class="input-group mb-3 input_sty2" >
+                                <input class="search" @input='here=>searchQuery=here.target.value' placeholder=" Faça uma busca  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
+                                <div class="input-group-prepend picon">
+                                    <a class=" fa btn"  type="button">
+                                        <i style="font-size:20px" class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <select  @change="categor($event)"  v-if="!categoria" class="search custom-select" >
-                        <option value="" selected disabled> &nbsp;Navegar pela Categorias </option>
-                        <option value="all"> Todas Categorias</option>
-                        <option  v-for="cat, i of categorias" :value="cat.nome">{{cat.nome}}</option>
-                    </select>
                 </div>
             </div>
-            
-            <div class="col-sm-7">
-                <div class="input-group mb-3 input_sty2">
-                    <input class="search" @input='here=>searchQuery=here.target.value' placeholder=" Faça uma busca  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
-                    <div class="input-group-prepend picon">
-                        <a class=" fa btn"  type="button">
-                            <i style="font-size:20px" class="fas fa-search"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>        
+        </section>        
         
         
         <div class="col-sm-3" v-for="(item, index) in tokens">
@@ -283,13 +290,9 @@
                 <div class="tres">                       
                     <b class="nao" v-if="item.promocao == 'S'" >{{item.v_cortado}}</b> <b class="sim">{{item.valor}}</b>
                 </div>
+                <span class="etiqueta2">Realizar Pedido</span>
             </div>                
-        </div>
-    
-
-        <div id="mob" v-if="idx != null">                       
-        </div>
-
+        </div>                      
         <ul  class="pagination col-sm-12" v-if="config.paginacao == 'S'">
             <li id="mob" :class="{'disabled' : pager.currentPage === 1}">
                 <a @click="setPage(1)">&Ll;</a>

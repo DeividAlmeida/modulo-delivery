@@ -175,13 +175,13 @@ height:350px;
     margin: 0;
     position: relative;
     top: 5%;
-    color:<?php echo $conf['lis_preco_pro'] ?>;
+    color:<?php echo $conf['lis_preco'] ?>;
 }
 .nao{
     text-decoration: line-through;
     margin: 0;
     text-align: center;
-    color:<?php echo $conf['lis_preco'] ?>;
+    color:<?php echo $conf['lis_preco_pro'] ?>;
     left:20%;
 }
 .dois p{
@@ -231,13 +231,13 @@ height:350px;
     padding-bottom: 15px;
 }
 .sim{
-    color:<?php echo $conf['lis_preco_pro'] ?>;
+    color:<?php echo $conf['lis_preco'] ?>;
 }
 .nao{
     text-decoration: line-through !important;
     font-weight:700 !important;
     font-size:13px !important;
-    color:<?php echo $conf['lis_preco'] ?> !important;
+    color:<?php echo $conf['lis_preco_pro'] ?> !important;
 }
 .dois p{
     text-overflow: ellipsis;
@@ -256,7 +256,7 @@ height:350px;
 }
 <?php } ?>
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 991px) {
 .col-sm-4, .col-sm-3 {
     width: 100% !important;
 }
@@ -300,7 +300,7 @@ height:350px;
         font-size:120%;
     }
     .sim {
-    color:<?php echo $conf['mob_preco_pro'] ?> !important;
+    color:<?php echo $conf['mob_preco'] ?> !important;
     font-weight: bolder;
     white-space: nowrap;
     margin: 0;
@@ -334,8 +334,9 @@ height:350px;
   }
   .column {
     float: left;
-
-    display:flex;
+    grid-template-columns:auto auto auto;
+    grid-template-rows:45px;
+    display:grid !important;
     margin: 1%;
     cursor:pointer;
     background:<?php echo $conf['mob_fundo']?>;
@@ -347,14 +348,18 @@ height:350px;
     height: 123px;
     position: relative;
     }
+    .um{
+        grid-row:1/3; 
+        padding-right:15px;
+    }
 .column:hover {
     background:<?php echo $conf['mob_fundo']?>;
     }
 
 .dois {
     height:100px;
-    width: 100%;
-    margin: 10px;
+    width: auto;
+    margin-top: 25px;
     top: 0;
     position: relative;
     padding: 0;
@@ -374,18 +379,36 @@ color:<?php echo $conf['mob_titulo']?>;
     display:none;
 }
 
-select {
-    background:<?php echo $conf['mob_fundo_categoria']?> !important;
-    color:<?php echo $conf['mob_texto_categoria']?> !important;
-    font:FontAwesome;
+
+.etiqueta2{
+    background: <?php echo $conf['bg_btn_pedido']?>  !important;
+    color: <?php echo $conf['cor_btn_pedido']?>  !important;;
+    padding: 8px;
+    border-radius: 20px;
+    margin: 0% !important;
+    position: relative;
+    white-space: nowrap;
+    bottom: 10px;
+    top: 10px;
+    height: 35px;
+    display:grid !important;
+    width: 115px;
 }
-input{
-    background:<?php echo $conf['mob_fundo_pesquisa']?> !important;
-    color:<?php echo $conf['mob_texto_pesquisa']?> !important;
+.etiqueta{
+    display:none;
 }
-input::placeholder {
-    color: <?php echo $conf['mob_texto_pesquisa']?> !important;
+.tres{
+    width: auto;
+    padding: 22px 25px 0px 5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: relative;
+    overflow: hidden;
+    font-size: 15px;
 }
+}
+.etiqueta2{
+    display:none;
 }
 .um {
     height: auto;

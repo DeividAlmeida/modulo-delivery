@@ -5,9 +5,9 @@ window.onscroll = function(){
   let y = parseInt(document.getElementById('delivery').getBoundingClientRect().height - document.getElementById('delivery').getBoundingClientRect().bottom)
   let z = parseInt(x-y)
   if(window.scrollY > z){
-    document.getElementsByClassName('fixed')[0].style="display: inline"
+    document.getElementsByClassName('filtro-fixo')[0].style="display: inline"
   }else{
-    document.getElementsByClassName('fixed')[0].style="display: none"
+    document.getElementsByClassName('filtro-fixo')[0].style="display: none"
   }
 }
 var myMixin = {
@@ -65,6 +65,7 @@ data: {
     categoria: <?php echo $categoria ?>,
     categorias: <?php echo $categorias ?>,
     config:<?php echo $config ?>,
+    entrega:<?php echo $entrega ?>,
     idx:null,
     tokenDumms: [],
     pager: {},

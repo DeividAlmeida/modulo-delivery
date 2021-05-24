@@ -53,7 +53,7 @@
     			<span class="dropdown">
     			    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Configurações</a>
     				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
-    					<a class="dropdown-item" href="?Config">Geral</a>
+    					<a class="dropdown-item" href="?Config">Configurações Gerais</a>
     					<a class="dropdown-item " href="">Configurações de Entrega</a>
     				</div>
     			</span>	

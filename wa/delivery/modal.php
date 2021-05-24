@@ -117,7 +117,7 @@ input[type=number] {
                         <h4>ADICIONAIS</h4>                      
                     </div>                    
                    <div v-if="pedido.adicionais[ida]" v-for="adicional, ida of produtos[id].adicionais" >
-                        <div class="option" data-uuid="70e720cc-a8c8-4dfd-8429-0a443b2804c2">
+                        <div style="border-bottom: 1px #efefef solid;" class="option" data-uuid="70e720cc-a8c8-4dfd-8429-0a443b2804c2">
                             <div class="row">
                                 <div class="col-7 align-self-center">
                                     <h5>{{adicional.nome}}</h5>                                                     
