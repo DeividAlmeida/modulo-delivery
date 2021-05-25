@@ -389,6 +389,25 @@ td input{
                     </div>
                 </div>               
             </div>
+            <hr>
+            <h4>Configuração de Checkout</h4>
+            <div class="row">
+                <div class="col-6">
+                    <label>Tipo de checkout</label>
+                    <select v-model="idx.checkout" name="checkout" class="form-control custom-select" required>
+                        <option value="whatsapp"> Pelo Whatsapp</option>
+                        <option value="sistema"> Pelo Sistema</option>
+                    </select>
+                </div>
+                <div v-if="idx.checkout == 'whatsapp'" class="col-6">
+                    <div class="form-group">
+                        <label>Número do Whatsapp:</label>                        
+                        <input v-model="idx.whatsapp" class="form-control" name="whatsapp" required type="number">
+                        <small>Lembre-se de inserir seu número completo com Código do País, DDD e Número de Telefone completo Ex. 5511912345678 </small>
+                    </div>
+                </div>
+            </div>
+
             <input type="hidden" name="horario" id="horario" > 
             <div class="card-footer white">
                 <button style="margin-bottom: 7px;" class="btn btn-primary float-right" type="submit"><i class="icon icon-save" aria-hidden="true"></i> Salvar</button>
@@ -396,7 +415,6 @@ td input{
         </form>
     </div>
 </div>
-<!-- https://codare.aurelio.net/2009/04/03/javascript-obter-e-mostrar-data-e-hora/#:~:text=Para%20obter%20a%20data%20(e,uma%20vari%C3%A1vel%20var%20dia%20%3D%20data.-->
 <script>
    const vue= new Vue({
         el:".card",

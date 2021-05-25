@@ -406,6 +406,7 @@ color:<?php echo $conf['mob_titulo']?>;
     overflow: hidden;
     font-size: 15px;
 }
+
 }
 .etiqueta2{
     display:none;

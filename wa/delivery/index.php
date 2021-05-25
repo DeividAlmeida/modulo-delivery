@@ -247,7 +247,7 @@
             <div class="container">
 				<div class="boxin">
 					<div class="row">
-                        <div id="dashboard" class="col-md-5 col-12 filtro">
+                        <div id="dashboard " class="col-md-5 col-12 filtro d-none d-lg-block">
                             <div class="input-group mb-3 input_sty1">
                                 <div class="input-group-prepend picon">
                                     <a class=" fa btn"  type="button">
@@ -262,7 +262,7 @@
                             </div>
                         </div>
                         
-                        <div class="col-md-7 col-12">
+                        <div class="col-12 col-lg-7">
                             <div class="input-group mb-3 input_sty2" >
                                 <input class="search" @input='here=>searchQuery=here.target.value' placeholder=" Faça uma busca  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
                                 <div class="input-group-prepend picon">
@@ -293,7 +293,7 @@
                 <span class="etiqueta2">Realizar Pedido</span>
             </div>                
         </div>                      
-        <ul  class="pagination col-sm-12" v-if="config.paginacao == 'S'">
+        <ul  class="pagination col-12" v-if="config.paginacao == 'S'">
             <li id="mob" :class="{'disabled' : pager.currentPage === 1}">
                 <a @click="setPage(1)">&Ll;</a>
             </li>

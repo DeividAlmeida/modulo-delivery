@@ -71,6 +71,11 @@ CREATE TABLE IF NOT EXISTS `delivery_entrega` (
     `tipo` text DEFAULT NULL,
     `media` text DEFAULT NULL,
     `tempo` text DEFAULT NULL,
+    `delivery` text DEFAULT NULL,
+    `balcao` text DEFAULT NULL,
+    `mesa` text DEFAULT NULL,
+    `msg` text DEFAULT NULL,
+    `min` text DEFAULT NULL,
     `entrega` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -85,9 +90,14 @@ INSERT INTO `delivery_entrega` (
     `tipo`,
     `media`,
     `tempo`,
+    `delivery`,
+    `balcao`,
+    `mesa`,
+    `msg`,
+    `min`,
     `entrega`
 )
- VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+ VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 
 -- CONFIGURACAO
 CREATE TABLE IF NOT EXISTS `delivery_config` (
@@ -131,6 +141,8 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
     `mob_preco` varchar(255) DEFAULT NULL,
     `mob_preco_pro_1` varchar(255) DEFAULT NULL,
     `mob_preco_pro` varchar(255) DEFAULT NULL,
+    `checkout` varchar(255) DEFAULT NULL,
+    `whatsapp` varchar(255) DEFAULT NULL,
         #Horario
     `horario` text DEFAULT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -176,8 +188,10 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
         `mob_preco`, 
         `mob_preco_pro_1`, 
         `mob_preco_pro`,
+        `checkout`,
+        `whatsapp`,
 
             #Horario
         `horario`
         ) 
-   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

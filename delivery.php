@@ -54,13 +54,15 @@
     			    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Configurações</a>
     				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
     					<a class="dropdown-item" href="?Config">Configurações Gerais</a>
-    					<a class="dropdown-item " href="">Configurações de Entrega</a>
+    					<a class="dropdown-item " href="?Entr">Configurações de Entrega</a>
     				</div>
     			</span>	
     		</div>
             <?php 
             if (isset($_GET['Config']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'configuracao', 'acessar')) :
-                require_once('delivery/configuracao/index.php');              
+                require_once('delivery/configuracao/index.php');
+			elseif (isset($_GET['Entr']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'configuracao', 'acessar')) :
+				require_once('delivery/configuracao/entrega.php');              
 			elseif (isset($_GET['Comp']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :
 				require_once('delivery/complemento/index.php'); 
 			elseif (isset($_GET['Adic']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :

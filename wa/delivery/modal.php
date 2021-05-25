@@ -10,12 +10,23 @@
     $conf = DBRead('delivery_config','*')[0];
     $config = json_encode($conf);
 ?>  <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
-    <link rel="stylesheet"
-        href="<?php echo ConfigPainel('base_url') ?>wa/delivery/teste/bootstrap.min.css">
-    <link rel="stylesheet"
-        href="<?php echo ConfigPainel('base_url') ?>wa/delivery/teste/cardapio.css">
+    <link rel="stylesheet" href="<?php echo ConfigPainel('base_url') ?>wa/delivery/src/style/bootstrap.min.css">
+        <?php require_once('../../wa/delivery/src/style/cardapex.php') ?>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 <style>
+
+    
+    .voltar{
+        float: left !important;
+        background: red;
+        padding: 5px 25px !important;
+        margin: 15px;
+        color: white;
+        font-size: 13px !important;
+        border-radius: 25px;
+        cursor:pointer;
+    }
+
     body{
         background:transparent !important;
     }
@@ -49,6 +60,7 @@ input[type=number] {
         <div class="box"> 
             <div class="header">
                 <span @click="algo()" id="fecharf" onclick="close()" class="fechar" aria-hidden="true">×</span>
+                <span @click="algo()" id="fecharf" onclick="close()" class="voltar d-block d-md-none  d-lg-none" aria-hidden="true">voltar</span>
             </div>
             <div class="body" v-for="produto, id of produtos">
                 <div class="nomeProduto" style="background:<?php echo $conf['pop_fundo']?>  !important;">
