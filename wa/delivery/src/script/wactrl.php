@@ -77,6 +77,7 @@ data: {
     valor:'0.00',
     aviso:'Estamos fechados',
     ate:null,
+    pedido:[],
     pagamento:''
 },
 methods: {
@@ -190,6 +191,7 @@ function atualiza(){
     if(sessionStorage.getItem('delivery_valor') != null){
         vue.total = parseFloat(sessionStorage.getItem('delivery_total'))
         vue.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
+        vue.pedido=JSON.parse(sessionStorage.getItem('delivery_pedido'))
     }
 }
 </script>

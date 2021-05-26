@@ -293,7 +293,7 @@ section.lista-produtos .grupo-variacao ul li.meia-porcao.ok {border:1px #22a200 
 		.botoes .botao.openBasket .floating span {display: block; background: #c32c31; border-radius: 50%; width: 28px; height: 28px; text-align: center; color: #fff; font-weight: bold; font-size: 13px; line-height: 28px;}
 #shopping-basket-unpaired-marker {right: 30px; display: none;}
 
-.basket {display: none; background: #00000057; position: fixed; top: 0; left: 0; z-index: 999; width: 100vw; height: 100vh;}
+.basket {background: #00000057; position: fixed; top: 0; left: 0; z-index: 999; width: 100vw; height: 100vh;}
 	.basket .box {display: block; background: #fff; width: 500px; position: absolute; right: -100%; top: 0; height: 100%;}
 		.basket .box button.closeBasket {display: block; position: absolute; left: -44px; top: 30px; padding: 12px 15px; border: 0; background: #fff; color: #c32c31; font-size: 24px; border-radius: 5px 0px 0 5px; text-align: center; cursor: pointer; line-height:20px;}
 	.basket .basketContent {padding:40px 20px; margin: 0;}
@@ -333,7 +333,7 @@ section.lista-produtos .grupo-variacao ul li.meia-porcao.ok {border:1px #22a200 
 				.basketContent .itemBasket .actions.checkout .items {float:left; padding:0px;}
 					.basketContent .itemBasket .actions .left span {font-weight:bold; color:#22a200}
 				.basketContent .itemBasket .actions .right {display:table; float:right; width:130px;}
-					.basketContent .itemBasket .actions .right .btn-decrement, .basketContent .itemBasket .actions .right .btn-increment {border: 0; display: block; width: 38px; background: #099516; color: #fff; border-radius: 50%; min-width: auto !important; opacity: 1;}
+					.basketContent .itemBasket .actions .right .btn-decrement, .basketContent .itemBasket .actions .right .btn-increment {border: 0; display: block; width: 32px; background: #099516; color: #fff; border-radius: 50%; min-width: auto !important; opacity: 1;}
 					.basketContent .itemBasket .actions .right input {display: block; border: 0; padding: 10px 5px; background: transparent; color: #666;}
 
 			.basketContent .complementos {margin-top:15px;}
@@ -563,7 +563,29 @@ section.banner-tarja .box a:hover {background:#28475d;}
 .avisoCupom {line-height:14px; color:red; display:block;}
 #coupon-code { max-width: 300px; text-transform: uppercase; }
 
+/* Basket */
+#shopping-basket-unpaired-marker {right: 20px;}
+		#shopping-basket-unpaired-marker span {font-size: 8px;}
 
+		.basket .box {height:90%; width: 50%; padding: 10px; top: 5%; right: 25%;}
+		.basket .box button.closeBasket {left:0; top:0; width:100%; z-index:99; background:#c32c31; border-radius:0px; color:#fff; font-size: 15px; text-transform: uppercase; font-weight: bold;}
+		.basket .box button.closeBasket i {transform: rotate(90deg);}
+		.basket .box button.closeBasket:after {content:'Fechar'; margin-left:10px;}
+		.basketContent {padding: 10px 0 0;}
+		.basket .basketContent {padding:50px 20px 80px;}
+		.basket .basketContent .basket-body {max-height: 70%;}
+		.basketContent .itemBasket .title p {font-size:13px; line-height:15px;}
+		.basketContent .itemBasket .description {font-size:12px;}
+		.basketContent .itemBasket .row > div {padding-left: 10px; padding-right: 10px;}
+
+		.basketContent .summary .row > div {font-size:13px;}
+
+
+	section.lista-produtos .boxin {margin-top:70px;}
+
+	section.lista-produtos strong {font-size:14px;}
+
+	#shareModal a.btn {margin-bottom:10px; width:100%;}
 /* Responsivo */
 @media all and (max-width:1200px) {
 	section.barraDados .boxin.social {width:100%; border-top:1px #dedede solid; border-right:0; padding:10px 0;}
@@ -572,6 +594,7 @@ section.banner-tarja .box a:hover {background:#28475d;}
 }
 
 @media all and (max-width:998px) {
+	.basket .box {height:100%; width: 100%; padding: 10px; top: 0; right: 0;}
 	header h1 {font-size:24px;}
 
 	section.barraDados .boxin.entrega {border-right:0;}
@@ -583,7 +606,9 @@ section.banner-tarja .box a:hover {background:#28475d;}
 	
 	#cupomDesconto label {text-align:center; margin-bottom:10px;}
 }
-@media all and (max-width:768px) {
+@media all and (max-width:768px) {	
+	
+
 	.box-horarios li span {font-size: 0.8rem;}
 
 	section.barraDados .boxin.pagamento:before {display:none;}
@@ -684,35 +709,10 @@ section.banner-tarja .box a:hover {background:#28475d;}
 	.modalComplexo .box {height: 100%; top: 0; width: 100%;  border-radius: 0;}
 
 	.botoes .botao.pedir button {padding:10px;}
-
-
-	/* Basket */
 	.botoes .botao.openBasket .title {padding-left:10px; background-size:25px; background-position:10px center;}
 	.botoes .botao.openBasket .title span.valor {font-size:14px;}
 	.botoes .botao.openBasket .title span:not(.valor) {display:none;}
 	.botoes .botao.openBasket .floating span {width: 16px; height: 16px; font-size: 10px; line-height: 16px;}
-	#shopping-basket-unpaired-marker {right: 20px;}
-		#shopping-basket-unpaired-marker span {font-size: 8px;}
-
-	.basket .box {width: 100%; padding: 10px; top: 100%; right: 0;}
-		.basket .box button.closeBasket {left:0; top:0; width:100%; z-index:99; background:#c32c31; border-radius:0px; color:#fff; font-size: 15px; text-transform: uppercase; font-weight: bold;}
-		.basket .box button.closeBasket i {transform: rotate(90deg);}
-		.basket .box button.closeBasket:after {content:'Fechar'; margin-left:10px;}
-		.basketContent {padding: 10px 0 0;}
-		.basket .basketContent {padding:50px 20px 80px;}
-		.basket .basketContent .basket-body {max-height: 78%;}
-		.basketContent .itemBasket .title p {font-size:13px; line-height:15px;}
-		.basketContent .itemBasket .description {font-size:12px;}
-		.basketContent .itemBasket .row > div {padding-left: 10px; padding-right: 10px;}
-
-		.basketContent .summary .row > div {font-size:13px;}
-
-
-	section.lista-produtos .boxin {margin-top:70px;}
-
-	section.lista-produtos strong {font-size:14px;}
-
-	#shareModal a.btn {margin-bottom:10px; width:100%;}
 }
 
 
@@ -757,5 +757,4 @@ section.banner-tarja .box a:hover {background:#28475d;}
 
 	section.barraDados .horario-atendimento .box-horarios, section.barraDados .boxin.pagamento .listaFormas {width:280px;}
 }
-
 </style>

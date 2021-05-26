@@ -192,7 +192,7 @@ input[type=number] {
          adicionais: <?php echo $adicionais ?>,
          total:1, 
          valor:0,
-         pedido:{total:0,complementos:[], adicionais:[]}
+         pedido:{qtd:1,nome: '<?php echo $db[0]['nome'] ?>',total:0,complementos:[], adicionais:[]}
     },    
     methods: {
         algo: function(){
@@ -263,14 +263,19 @@ input[type=number] {
         concluir: function(){
             window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza()')
             window.location=""
+            vue.pedido.qtd = vue.total
             if(sessionStorage.getItem('delivery_valor') == null){
                 sessionStorage.setItem('delivery_valor',parseFloat(vue.pedido.total)) 
                 sessionStorage.setItem('delivery_total',vue.total) 
+                sessionStorage.setItem('delivery_pedido',JSON.stringify([vue.pedido])) 
             }else{
                let valor = parseFloat(sessionStorage.getItem('delivery_valor'))+parseFloat(vue.pedido.total)
                let total = parseFloat(sessionStorage.getItem('delivery_total'))+vue.total
                sessionStorage.setItem('delivery_valor',valor) 
-               sessionStorage.setItem('delivery_total',total) 
+               sessionStorage.setItem('delivery_total',total)
+               let p = JSON.parse(sessionStorage.getItem('delivery_pedido'))
+               p.push(vue.pedido)               
+              sessionStorage.setItem('delivery_pedido',JSON.stringify(p))
             }
         },
         sel: function(a, b){  
@@ -288,7 +293,7 @@ input[type=number] {
                 if(this.adicionais){
                     this.adicionais.filter((b)=>{
                         if(b.nome == a.nome && b.status=='Ativo'){                        
-                            this.pedido.adicionais.push({nome:this.produtos[0].adicionais[i].nome,qtd:0}) 
+                            this.pedido.adicionais.push({nome:this.produtos[0].adicionais[i].nome,qtd:0,vl:b.valor}) 
                         }
                     })
                 }
@@ -310,7 +315,7 @@ input[type=number] {
             }
             for(let ii = 0 ; ii< vue.produtos[0].complementos[i].opcao.length; ii++){                
                 if(b.tipo == 0){
-                    vue.pedido.complementos[i].push({nome:vue.produtos[0].complementos[i].opcao[ii].nome, qtd:0}) 
+                    vue.pedido.complementos[i].push({nome:vue.produtos[0].complementos[i].opcao[ii].nome, qtd:0,vl:vue.produtos[0].complementos[i].opcao[ii].valor}) 
                 }else{
                     
                 }

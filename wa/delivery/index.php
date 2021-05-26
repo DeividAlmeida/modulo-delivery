@@ -61,6 +61,7 @@
 
 </header>
 <body>
+    
     <div id="controller" class="container-fluid" style="background:<?php echo $conf['lis_descricao'] ?>; padding:0px">
         <section class="barraDados" style="display:grid;width:auto">
             <div class="container">
@@ -216,6 +217,103 @@
                 </div>            
             </div>
         </section>
+        <div class="basket hidden" >
+            <div class="box">
+                <button class="closeBasket" onclick="document.getElementsByClassName('basket')[0].setAttribute('class','basket hidden')" >
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="basketContent">
+                    <h3>Seu Pedido</h3>
+                    <div class="basket-body" id="basket">
+                        <div class="itemBasket" v-for="list,id of pedido">
+                            <div class="name opened">
+                                <i class="fas fa-chevron-right seta"></i>
+                                <span>{{list.nome}}</span>
+                                <button type="button" class="close remover" aria-label="Remover"  data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="content">
+                                <div class="complementos">
+                                    <h3>Complementos selecionados:</h3>
+                                    <div class="options" v-if="list.adicionais.length>0">
+                                        <strong>Adicionais</strong>
+                                        <div class="complemento" v-for="adicional, aid of pedido[id].adicionais">
+                                            <div class="left">
+                                                {{adicional.nome}}
+                                            </div>
+                                            <div class="right">
+                                            {{adicional.qtd}} x <span>{{adicional.vl}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="options" v-if="list.complementos.length>0">
+                                        <strong>Complementos</strong>
+                                        <div class="complemento" v-for="complemento, cid of pedido[id].complementos">
+                                            <div class="left" v-if="complemento.length == 2 && complemento[1] != 0" >
+                                                {{complemento[0]}}
+                                            </div>
+                                            <div class="right" v-if="complemento.length == 2 && complemento[1] != 0">
+                                            1 x <span>R$ {{complemento[1].replace('.',',')}}</span>
+                                            </div>
+                                            <div class="left" v-if="complemento.length > 2 && complemento[cid+2].qtd > 0" >
+                                                {{complemento[cid+2].nome}}
+                                            </div>
+                                            <div class="right" v-if="complemento.length > 2 && complemento[cid+2].qtd > 0 && complemento[cid+2].vl != 'R$ 0,00'">
+                                            {{complemento[cid+2].qtd}} x <span>{{complemento[cid+2].vl}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <div class="left">
+                                    <span data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b"  class="price">R$ {{list.total.replace('.',',')}}</span>
+                                </div>
+                                <div class="right">
+                                    <input class="basket-update-qtt"  data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b"  type="number" value="4" style="display: none;">
+                                    <div class="input-group" style=" display: grid; grid-template-columns: auto auto auto;">
+                                        <div class="input-group-prepend">
+                                            <button style="min-width: 2.5rem" class="btn btn-decrement btn-outline-secondary" type="button">
+                                                <strong>-</strong>
+                                            </button>
+                                        </div>
+                                            <input type="text"  inputmode="decimal" style="text-align: center"  v-model="list.qtd"  class="form-control basket-update-qtt" placeholder="">
+                                        <div class="input-group-append">
+                                            <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary"   type="button">
+                                                <strong>+</strong>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summary">
+                            <div class="row">
+                                <div class="col-3 text-left">Total:</div>
+                                <div class="col-9 text-right total">
+                                    <span class="green">R$ 44,00</span>
+                                    <span class="red">+</span> Taxa de Entrega
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="basket-footer">
+                        <p>
+                            <small>
+                                <span class="left">
+                                    Taxa de Entrega será calculada ao final da compra.
+                                    <br>
+                                    Cupom de desconto poderá ser aplicado na tela de conclusão do pedido.
+                                </span>
+
+                            </small>
+                        </p>
+                        <button type="button" class="pedir" id="confirmar-pedido">Continuar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="dashboard row" id="no-fixed" style="margin:0px">
             <div id="dashboard" class="col-lg-5">
                 <div class="input-group mb-3 input_sty1">
@@ -314,7 +412,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-6">
-                        <div class="botao openBasket">
+                        <div class="botao openBasket" onclick="document.getElementsByClassName('basket')[0].setAttribute('class', 'basket')">
                             <div class="title">
                                 <span>Itens do <strong>Seu pedido</strong></span>
                                 <span id="shopping-basket-total-price" class="valor">R$ {{valor.replace('.',',')}}</span>
