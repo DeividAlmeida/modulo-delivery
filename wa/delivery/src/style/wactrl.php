@@ -487,4 +487,8 @@ color:<?php echo $conf['mob_titulo']?>;
     color: #6c757d;
     border-color: #6c757d;
 }
+.swal2-container{
+    z-index: 1000000 !important;
+}
+
 </style>

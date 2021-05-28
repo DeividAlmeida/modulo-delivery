@@ -9,10 +9,11 @@
     $produtos = json_encode($db);
     $conf = DBRead('delivery_config','*')[0];
     $config = json_encode($conf);
-?>  <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
+?>      
+    <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
     <link rel="stylesheet" href="<?php echo ConfigPainel('base_url') ?>wa/delivery/src/style/bootstrap.min.css">
-        <?php require_once('../../wa/delivery/src/style/cardapex.php') ?>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <?php require_once('../../wa/delivery/src/style/cardapex.php') ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 <style>
 
     
@@ -116,8 +117,8 @@ input[type=number] {
                                     </div>
                                 </div>
                                 <div v-else class="checkbox">                             
-                                    <input type="radio" :name="complemento.nome" @change="sel(idc, opcao.valor.replace(/[^0-9,-]+/g,''))" v-model="pedido.complementos[idc].escolha" class="option-qtt" :value="opcao.nome" :id="opcao.nome" data-name="Mini" data-price="15.00">
-                                    <label :for="opcao.nome"></label>                              
+                                    <input type="radio" :name="complemento.nome" @change="sel(idc, opcao.valor.replace(/[^0-9,-]+/g,''), opcao.nome)" v-model="pedido.complementos[idc].escolha" class="option-qtt" :value="opcao.nome" :id="opcao.nome" data-name="Mini" data-price="15.00">
+                                    <label :for="opcao.nome"></label>                               
                                 </div>                         
                                 <p class="price">{{opcao.valor == 'R$ 0,00'?'Grátis':'+ '+opcao.valor}}</p>
                             </div>
@@ -237,7 +238,7 @@ input[type=number] {
              
             }
             this.$forceUpdate()
-        },
+        },        
         remove: function(a,b,c,d){
             let valor = parseFloat(d.replace(',','.')) 
             if(c == 'c'){
@@ -261,28 +262,35 @@ input[type=number] {
             this.$forceUpdate()
         }, 
         concluir: function(){
-            window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza()')
-            window.location=""
-            vue.pedido.qtd = vue.total
-            if(sessionStorage.getItem('delivery_valor') == null){
-                sessionStorage.setItem('delivery_valor',parseFloat(vue.pedido.total)) 
-                sessionStorage.setItem('delivery_total',vue.total) 
-                sessionStorage.setItem('delivery_pedido',JSON.stringify([vue.pedido])) 
+            let c = false      
+            vue.pedido.complementos.filter(a=>{if(a[1] === 0){c= '1'}})
+            if(c != false){             
+                window.parent.location.assign("javascript:     Swal.fire({ title: 'Erro',  text: 'Você precisa selecionar ao menos 1 item nos complementos', icon: 'error', confirmButtonColor: '#d33'})")
             }else{
-               let valor = parseFloat(sessionStorage.getItem('delivery_valor'))+parseFloat(vue.pedido.total)
-               let total = parseFloat(sessionStorage.getItem('delivery_total'))+vue.total
-               sessionStorage.setItem('delivery_valor',valor) 
-               sessionStorage.setItem('delivery_total',total)
-               let p = JSON.parse(sessionStorage.getItem('delivery_pedido'))
-               p.push(vue.pedido)               
-              sessionStorage.setItem('delivery_pedido',JSON.stringify(p))
+                window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza()')
+                window.location=""
+                vue.pedido.qtd = vue.total
+                if(sessionStorage.getItem('delivery_valor') == null){
+                    sessionStorage.setItem('delivery_valor',parseFloat(vue.pedido.total)) 
+                    sessionStorage.setItem('delivery_total',vue.total) 
+                    sessionStorage.setItem('delivery_pedido',JSON.stringify([vue.pedido])) 
+                }else{
+                   let valor = parseFloat(sessionStorage.getItem('delivery_valor'))+parseFloat(vue.pedido.total)
+                   let total = parseFloat(sessionStorage.getItem('delivery_total'))+vue.total
+                   sessionStorage.setItem('delivery_valor',valor) 
+                   sessionStorage.setItem('delivery_total',total)
+                   let p = JSON.parse(sessionStorage.getItem('delivery_pedido'))
+                   p.push(vue.pedido)               
+                  sessionStorage.setItem('delivery_pedido',JSON.stringify(p))
+                }
             }
         },
-        sel: function(a, b){  
+        sel: function(a, b, c){  
             let valor = parseFloat(b.replace(',','.'))           
             vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor-vue.pedido.complementos[a][1]).toFixed(2)
             vue.valor = parseFloat(vue.valor+valor-vue.pedido.complementos[a][1])           
             vue.pedido.complementos[a][1] =  valor.toFixed(2)
+            vue.pedido.complementos[a][0] =  c
             document.getElementById('sel'+a).innerText = '1'
             this.$forceUpdate()
         }   

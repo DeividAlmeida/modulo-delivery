@@ -26,6 +26,7 @@
             $dia = "Domingo";
             break;
     }
+    #$dia= "Segunda-feira";
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
 	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$categoria}' AND status = 'Ativo'");
@@ -50,6 +51,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js'></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4@5.0.0/bootstrap-4.min.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="<?php echo ConfigPainel('base_url') ?>epack/css/elements/animate.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" >
@@ -229,38 +232,40 @@
                             <div class="name opened">
                                 <i class="fas fa-chevron-right seta"></i>
                                 <span>{{list.nome}}</span>
-                                <button type="button" class="close remover" aria-label="Remover"  data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b">
+                                <button type="button" class="close remover" aria-label="Remover" @click="remove(id, list.qtd, list.total)" data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
                             <div class="content">
-                                <div class="complementos">
+                                <div class="complementos" >
                                     <h3>Complementos selecionados:</h3>
-                                    <div class="options" v-if="list.adicionais.length>0">
-                                        <strong>Adicionais</strong>
-                                        <div class="complemento" v-for="adicional, aid of pedido[id].adicionais">
+                                    <div class="options"  v-if="list.resultado == '10' || list.resultado == '11'">
+                                        <strong >Complementos</strong>
+                                        <div class="complemento" v-for="complemento, cid of pedido[id].complementos">
+                                            <div class="left" v-if="complemento.length == 2 && complemento[1] !== 0" >                                                
+                                                {{complemento[0]}}
+                                            </div>
+                                            <div class="right" v-if="complemento.length == 2 && complemento[1] !== 0">
+                                            {{list.qtd}} <span> {{complemento[1] === '0.00'?'':'x R$ '+complemento[1].replace('.',',')}}</span>
+                                            </div>
+                                            <div class="complemento" v-if="complemento.length > 2" v-for="opc, key of pedido[id].complementos[cid]">
+                                                <div class="left" v-if="opc.qtd>0">
+                                                    {{opc.nome}}
+                                                </div>
+                                                <div class="right"  v-if="opc.qtd>0">
+                                                {{opc.qtd*list.qtd}} <span>{{opc.vl === 'R$ 0,00'?'':' x '+opc.vl}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="options" v-if="list.resultado == '01' || list.resultado == '11'">
+                                        <strong >Adicionais</strong>
+                                        <div class="complemento"v-if="adicional.qtd>0" v-for="adicional, aid of pedido[id].adicionais">
                                             <div class="left">
                                                 {{adicional.nome}}
                                             </div>
                                             <div class="right">
-                                            {{adicional.qtd}} x <span>{{adicional.vl}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="options" v-if="list.complementos.length>0">
-                                        <strong>Complementos</strong>
-                                        <div class="complemento" v-for="complemento, cid of pedido[id].complementos">
-                                            <div class="left" v-if="complemento.length == 2 && complemento[1] != 0" >
-                                                {{complemento[0]}}
-                                            </div>
-                                            <div class="right" v-if="complemento.length == 2 && complemento[1] != 0">
-                                            1 x <span>R$ {{complemento[1].replace('.',',')}}</span>
-                                            </div>
-                                            <div class="left" v-if="complemento.length > 2 && complemento[cid+2].qtd > 0" >
-                                                {{complemento[cid+2].nome}}
-                                            </div>
-                                            <div class="right" v-if="complemento.length > 2 && complemento[cid+2].qtd > 0 && complemento[cid+2].vl != 'R$ 0,00'">
-                                            {{complemento[cid+2].qtd}} x <span>{{complemento[cid+2].vl}}</span>
+                                                {{adicional.qtd*list.qtd}} x <span>{{adicional.vl}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -274,13 +279,13 @@
                                     <input class="basket-update-qtt"  data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b"  type="number" value="4" style="display: none;">
                                     <div class="input-group" style=" display: grid; grid-template-columns: auto auto auto;">
                                         <div class="input-group-prepend">
-                                            <button style="min-width: 2.5rem" class="btn btn-decrement btn-outline-secondary" type="button">
+                                            <button @click="less(id)" style="min-width: 2.5rem" class="btn btn-decrement btn-outline-secondary" type="button">
                                                 <strong>-</strong>
                                             </button>
                                         </div>
-                                            <input type="text"  inputmode="decimal" style="text-align: center"  v-model="list.qtd"  class="form-control basket-update-qtt" placeholder="">
+                                            <input @input="muda(Math.abs($event.target.value), id)" type="text" :id="id" inputmode="decimal" style="text-align: center"  :value="list.qtd"  class="form-control basket-update-qtt" placeholder="">
                                         <div class="input-group-append">
-                                            <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary"   type="button">
+                                            <button @click="add(id)" style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary"   type="button">
                                                 <strong>+</strong>
                                             </button>
                                         </div>
@@ -292,7 +297,7 @@
                             <div class="row">
                                 <div class="col-3 text-left">Total:</div>
                                 <div class="col-9 text-right total">
-                                    <span class="green">R$ 44,00</span>
+                                    <span class="green">R$ {{valor.replace('.',',')}}</span>
                                     <span class="red">+</span> Taxa de Entrega
                                 </div>
                             </div>

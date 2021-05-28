@@ -91,6 +91,70 @@ methods: {
     close: function(){
         this.idx=null;
     },
+    muda: function(a,b){
+        if(a>=1){
+            let base = parseFloat(vue.pedido[b].total)/vue.pedido[b].qtd
+            let tira = base*vue.pedido[b].qtd
+            let coloca = base*a
+            vue.total = (vue.total + a)- vue.pedido[b].qtd 
+            vue.valor = parseFloat((parseFloat(vue.valor)-tira)+coloca).toFixed(2)
+            vue.pedido[b].qtd = a
+            vue.pedido[b].total=parseFloat(base*vue.pedido[b].qtd).toFixed(2)
+            sessionStorage.setItem('delivery_pedido',JSON.stringify(vue.pedido))
+            sessionStorage.setItem('delivery_total',JSON.stringify(vue.total))
+            sessionStorage.setItem('delivery_valor',vue.valor)  
+        }
+        this.$forceUpdate()
+    },
+    add: function(b){
+            let a = Math.abs(document.getElementById(b).value)+1
+            let base = parseFloat(vue.pedido[b].total)/vue.pedido[b].qtd
+            vue.pedido[b].qtd = a
+            vue.total = vue.total+1
+            vue.pedido[b].total=parseFloat(base*vue.pedido[b].qtd).toFixed(2)
+            vue.valor = parseFloat(parseFloat(vue.valor)+base).toFixed(2)
+            sessionStorage.setItem('delivery_pedido',JSON.stringify(vue.pedido))
+            sessionStorage.setItem('delivery_total',JSON.stringify(vue.total))
+            sessionStorage.setItem('delivery_valor',vue.valor)
+    },
+    less: function(b){
+            let a = Math.abs(document.getElementById(b).value)-1
+        if(a>=1){
+            vue.total = vue.total-1
+            let base = parseFloat(vue.pedido[b].total)/vue.pedido[b].qtd
+            vue.pedido[b].qtd = a
+            vue.pedido[b].total=parseFloat(base*vue.pedido[b].qtd).toFixed(2)
+            vue.valor = parseFloat(parseFloat(vue.valor)-base).toFixed(2)
+            sessionStorage.setItem('delivery_pedido',JSON.stringify(vue.pedido))
+            sessionStorage.setItem('delivery_total',JSON.stringify(vue.total))
+            sessionStorage.setItem('delivery_valor',vue.valor)
+        }
+    },
+    remove: function(a,b,c){
+        Swal.fire({
+            title: 'Tem certeza?!',
+            text: "Deseja realmente removê-lo do seu pedido?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                vue.pedido.splice(a,1)
+                vue.total = parseFloat(vue.total-b)
+                vue.valor = parseFloat(vue.valor-c).toFixed(2)
+                sessionStorage.setItem('delivery_pedido',JSON.stringify(vue.pedido))
+                sessionStorage.setItem('delivery_total',JSON.stringify(vue.total))
+                sessionStorage.setItem('delivery_valor',vue.valor)
+                Swal.fire(
+                'Removido!',
+                'Removido com sucesso.',
+                'success'
+                )
+            }
+        })
+    },
     categor: function(i){
         if(i.target.value != "all"){
             $('#delivery').load("<?php echo ConfigPainel('base_url') ?>wa/delivery/?categoria="+i.target.value)
@@ -188,10 +252,20 @@ for (key in vue.config.horario) {
 }
 new atualiza()
 function atualiza(){
-    if(sessionStorage.getItem('delivery_valor') != null){
+    if(sessionStorage.getItem('delivery_valor') != null ){
         vue.total = parseFloat(sessionStorage.getItem('delivery_total'))
         vue.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
         vue.pedido=JSON.parse(sessionStorage.getItem('delivery_pedido'))
+        for(let i = 0; i<vue.pedido.length;i++){
+            let c = '0'
+            let a = '0'
+            let resultado = null
+            vue.pedido[i].complementos.filter(a=>{if(a[1] !== 0){c= '1'}})
+            vue.pedido[i].adicionais.filter(b=>{if(b.qtd !== 0){a = '1'}})
+            resultado = c+a
+            Object.assign(vue.pedido[i], {resultado:resultado})
+        }
     }
-}
+} 
+
 </script>
