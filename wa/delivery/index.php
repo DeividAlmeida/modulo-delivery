@@ -229,15 +229,15 @@
                     <h3>Seu Pedido</h3>
                     <div class="basket-body" id="basket">
                         <div class="itemBasket" v-for="list,id of pedido">
-                            <div class="name opened">
+                            <div @click="openhide(id)" :id="'p'+id" class="name opened">
                                 <i class="fas fa-chevron-right seta"></i>
                                 <span>{{list.nome}}</span>
                                 <button type="button" class="close remover" aria-label="Remover" @click="remove(id, list.qtd, list.total)" data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
-                            <div class="content">
-                                <div class="complementos" >
+                            <div :id="'c'+id" class="content">
+                                <div :id="'m'+id" class="complementos" >
                                     <h3>Complementos selecionados:</h3>
                                     <div class="options"  v-if="list.resultado == '10' || list.resultado == '11'">
                                         <strong >Complementos</strong>

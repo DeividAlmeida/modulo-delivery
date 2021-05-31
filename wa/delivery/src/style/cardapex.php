@@ -311,8 +311,9 @@ section.lista-produtos .grupo-variacao ul li.meia-porcao.ok {border:1px #22a200 
 			.basketContent .itemBasket .name.opened .seta {transform:translateY(-50%) rotate(90deg);}
 			.basketContent .itemBasket .name.closed .seta {transform:translateY(-50%) rotate(0);}
 
-			.basketContent .itemBasket .content {padding:10px; border-bottom:1px #dedede solid;}
-
+			.basketContent .itemBasket .content {padding:10px; border-bottom:1px #dedede solid; transition: all 100ms linear}
+			.hi{opacity:0; height:0px; padding:0px !important}
+			.m0{margin-top:0px !important}
 			.basketContent .itemBasket .itemBasketContent {border-top: 1px solid #dedede; padding: 5px 10px; font-size: 13px;}
 			.basketContent .itemBasket .collapse {padding-bottom: 10px;}
 			.basketContent .itemBasket .description {color:#606060; margin:0 0 10px; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box;    -webkit-line-clamp: 2; font-size:13px; margin-bottom:0;}

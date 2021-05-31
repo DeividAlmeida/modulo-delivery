@@ -130,6 +130,18 @@ methods: {
             sessionStorage.setItem('delivery_valor',vue.valor)
         }
     },
+    openhide: function(a){
+      let teste = document.getElementById('p'+a).getAttribute('class').search('open')
+      if(teste <0){
+        document.getElementById('p'+a).setAttribute('class', 'name opened')
+        document.getElementById('c'+a).setAttribute('class', 'content')
+        document.getElementById('m'+a).setAttribute('class', 'complementos')
+      }else{
+        document.getElementById('p'+a).setAttribute('class', 'name')
+        document.getElementById('c'+a).setAttribute('class', 'content hi')
+        document.getElementById('m'+a).setAttribute('class', 'complementos m0')
+      }
+    },
     remove: function(a,b,c){
         Swal.fire({
             title: 'Tem certeza?!',
