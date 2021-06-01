@@ -1,15 +1,5 @@
 <script>
-
-window.onscroll = function(){
-  let x = parseInt(document.body.getBoundingClientRect().height - document.body.getBoundingClientRect().bottom)
-  let y = parseInt(document.getElementById('delivery').getBoundingClientRect().height - document.getElementById('delivery').getBoundingClientRect().bottom)
-  let z = parseInt(x-y)
-  if(window.scrollY > z){
-    document.getElementsByClassName('filtro-fixo')[0].style="display: inline"
-  }else{
-    document.getElementsByClassName('filtro-fixo')[0].style="display: none"
-  }
-}
+new barra()
 var myMixin = {
   methods: {
     GetPager: function (totalItems, currentPage, pageSize) {
@@ -81,8 +71,8 @@ data: {
     pagamento:''
 },
 methods: {
-    select: function(a){      
-      document.querySelectorAll('iframe#carrinho')[0].src=vue.origin+"wa/delivery/modal.php?id="+a
+    select: function(a,b){      
+      document.querySelectorAll('iframe#carrinho')[0].src=vue.origin+"wa/delivery/modal.php?id="+a+"&horario="+b
         setTimeout( function(){
           window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "open")')
         }, 300)
@@ -243,6 +233,24 @@ mounted: function () {
   },
 });
 
+new atualiza()
+function barra(){
+  document.getElementsByClassName('barraDados')[0].style.width= window.innerWidth+"px"
+        document.getElementsByClassName('barraDados')[0].style.left = -15-document.getElementById('delivery').getBoundingClientRect().left+'px'
+}
+window.onresize = function(){
+  new barra()
+}
+window.onscroll = function(){
+  let x = parseInt(document.body.getBoundingClientRect().height - document.body.getBoundingClientRect().bottom)
+  let y = parseInt(document.getElementById('delivery').getBoundingClientRect().height - document.getElementById('delivery').getBoundingClientRect().bottom)
+  let z = parseInt(x-y)
+  if(window.scrollY > z){
+    document.getElementsByClassName('filtro-fixo')[0].style="display: inline"
+  }else{
+    document.getElementsByClassName('filtro-fixo')[0].style="display: none"
+  }
+}
 vue.config.horario = JSON.parse(vue.config.horario)
 let tag = 0
 let hoje = new Date()
@@ -262,7 +270,6 @@ for (key in vue.config.horario) {
     }
     tag++
 }
-new atualiza()
 function atualiza(){
     if(sessionStorage.getItem('delivery_valor') != null ){
         vue.total = parseFloat(sessionStorage.getItem('delivery_total'))

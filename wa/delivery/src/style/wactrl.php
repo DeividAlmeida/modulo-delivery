@@ -300,12 +300,10 @@ height:350px;
         font-size:120%;
     }
     .sim {
-    color:<?php echo $conf['mob_preco'] ?> !important;
     font-weight: bolder;
     white-space: nowrap;
     margin: 0;
     position: relative;
-    color: #f51c1c;
     left: 2%;
     top:1px;
     font-size:120%;
@@ -332,7 +330,7 @@ height:350px;
      border-radius: 20px;
      border:0;
   }
-  .column {
+  #diferir {
     float: left;
     grid-template-columns:auto auto auto;
     grid-template-rows:45px;
@@ -342,6 +340,7 @@ height:350px;
     background:<?php echo $conf['mob_fundo']?>;
     border:0px;
     overflow:hidden;
+    width:95% !important;
     }
     .um img {
     width: auto;
@@ -382,7 +381,7 @@ color:<?php echo $conf['mob_titulo']?>;
 
 .etiqueta2{
     background: <?php echo $conf['bg_btn_pedido']?>  !important;
-    color: <?php echo $conf['cor_btn_pedido']?>  !important;;
+    color: <?php echo $conf['cor_btn_pedido']?>  !important;
     padding: 8px;
     border-radius: 20px;
     margin: 0% !important;
@@ -451,7 +450,7 @@ color:<?php echo $conf['mob_titulo']?>;
     padding: 9px 0px 10px 0px;
     }
     .dashboard{
-        padding-top:10px;
+        padding-top:50px;
         
     }
 .etiqueta{

@@ -174,7 +174,8 @@ input[type=number] {
                                 </div>
                             </div>
                             <div class="col-7 confirmar">
-                                <button type="button" @click="concluir()" class="adicionar">Adicionar<br>R$ {{pedido.total}}</button>
+                                <button v-if="aviso != 'Estamos fechados'" type="button" @click="concluir()" class="adicionar">Adicionar<br>R$ {{pedido.total}}</button>
+                                <button v-else type="button" class="adicionar" style="background:#dc3545!important; border: 1px #dc3545 solid;    border-bottom: 3px #dc3545 solid;">ESTAMOS FECHADOS<br> NO MOMENTO</button>
                             </div>
                         </div>
                     </div>
@@ -191,7 +192,8 @@ input[type=number] {
          produtos: <?php echo $produtos ?>,
          complementos: <?php echo $complementos ?>, 
          adicionais: <?php echo $adicionais ?>,
-         total:1, 
+         total:1,
+         aviso:'<?php echo $_GET['horario'] ?>',
          valor:0,
          pedido:{qtd:1,nome: '<?php echo $db[0]['nome'] ?>',total:0,complementos:[], adicionais:[]}
     },    
@@ -267,7 +269,7 @@ input[type=number] {
             if(c != false){             
                 window.parent.location.assign("javascript:     Swal.fire({ title: 'Erro',  text: 'Você precisa selecionar ao menos 1 item nos complementos', icon: 'error', confirmButtonColor: '#d33'})")
             }else{
-                window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza()')
+                window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza(); Swal.fire({    title: "Adicionado",    text: "Item adicionado com sucesso!",    icon: "success",    showCancelButton: true,    confirmButtonColor: "#3085d6",    cancelButtonColor: "#22a200",    confirmButtonText: "Finalizar Pedido",    cancelButtonText: "Escolher mais itens"  }).then((result) => {    if (result.isConfirmed) {          }  })')
                 window.location=""
                 vue.pedido.qtd = vue.total
                 if(sessionStorage.getItem('delivery_valor') == null){

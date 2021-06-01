@@ -64,10 +64,9 @@
 
 </header>
 <body>
-    
-    <div id="controller" class="container-fluid" style="background:<?php echo $conf['lis_descricao'] ?>; padding:0px">
-        <section class="barraDados" style="display:grid;width:auto">
-            <div class="container">
+    <div id="controller" class="container-fluid" style="background:<?php echo $conf['lis_descricao'] ?>; padding:0px; overflow-x: visible !important;">
+        <section class="barraDados" style="display:grid;width:auto;position:relative">
+            <div class="container" style="overflow-x: visible !important;">
                 <div class="boxin horario ">
                     <div class="horario-atendimento">
                         
@@ -75,7 +74,7 @@
                         
                             <i class="far fa-clock"></i> <strong :class="aviso == 'Estamos abertos'?'text-success':'text-danger'">{{aviso}}</strong>
                             
-                            <span v-if="aviso == 'Estamos abertos'">{{ate}}</span>
+                            <span v-if="">{{aviso == 'Estamos abertos'?ate:'Volte em breve'}}</span>
                             <i class="fas fa-angle-down"></i>
                             
                         </p>
@@ -232,8 +231,8 @@
                             <div @click="openhide(id)" :id="'p'+id" class="name opened">
                                 <i class="fas fa-chevron-right seta"></i>
                                 <span>{{list.nome}}</span>
-                                <button type="button" class="close remover" aria-label="Remover" @click="remove(id, list.qtd, list.total)" data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b">
-                                    <i class="fas fa-times"></i>
+                                <button style="background: #dc3545; opacity: 1; text-shadow: none; color: white;border-radius: 25px;" type="button" class="close remover" aria-label="Remover" @click="remove(id, list.qtd, list.total)" data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b">
+                                    <span>Remover item</span>
                                 </button>
                             </div>
                             <div :id="'c'+id" class="content">
@@ -308,8 +307,6 @@
                             <small>
                                 <span class="left">
                                     Taxa de Entrega será calculada ao final da compra.
-                                    <br>
-                                    Cupom de desconto poderá ser aplicado na tela de conclusão do pedido.
                                 </span>
 
                             </small>
@@ -382,7 +379,7 @@
         
         
         <div class="col-sm-3" v-for="(item, index) in tokens">
-            <div :class="item.promocao == 'S'?'promocao column post-grid-content':'column post-grid-content'"  @click="select(item.id)">
+            <div id="diferir" :class="item.promocao == 'S'?'promocao column post-grid-content':'column post-grid-content'"  @click="select(item.id, aviso)">
                 <div class="um">
                     <img :src="origin+'wa/delivery/uploads/'+item.imagem">
                 </div>
@@ -414,7 +411,7 @@
             </li>
         </ul>
         <div class="botoes">
-            <div class="container">
+            <div class="container" style="overflow:visible !important">
                 <div class="row">
                     <div class="col-6">
                         <div class="botao openBasket" onclick="document.getElementsByClassName('basket')[0].setAttribute('class', 'basket')">
@@ -440,6 +437,5 @@
         </div>
     </div>
 <?php require_once('../../wa/delivery/src/script/wactrl.php') ?>   
-
 </body>
 

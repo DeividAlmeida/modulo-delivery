@@ -1,14 +1,17 @@
 <?php
+error_reporting(0);
     $banco = json_encode(DBRead('delivery_entrega','*')[0]);
     if(isset($_GET['editaEntr'])){
-    $id = 1;
-    $route ='&Entr';
-    $db = 'delivery_entrega';
+        $id = 1;
+        $route ='&Entr';
+        $db = 'delivery_entrega';
         foreach($_POST as $nome => $value){
-         $data[$nome]=$value;
-     }
-     $query =  DBUpdate($db, $data, "id = '{$id}'");
-        
+            $data[$nome]=$value;
+        }
+        $data['delivery'] = $_POST['delivery'];
+        $data['balcao'] = $_POST['balcao'];
+        $data['mesa'] = $_POST['mesa'];
+        $query =  DBUpdate($db, $data, "id = '{$id}'");     
     }
 if(isset($query)){
     if ($query != 0)  {
@@ -73,7 +76,7 @@ if(isset($query)){
                     
                     <div class="form-group">
                         <label>Tipo de Entrega:</label>
-                        <select v-model="idx.tipo" @change="idx.entrega = []" name="tipo" class="form-control custom-select" required>
+                        <select v-model="idx.tipo" name="tipo" class="form-control custom-select" required>
                             <option value="cep" >Por Cep</option>
                             <option value="bairro" >Por Bairro</option>
                         </select>
@@ -182,7 +185,7 @@ if(isset($query)){
                     </div>
                     <div class="form-group">
                         <input v-model="idx.mesa" type="checkbox" name="mesa" id="mesa">
-                        <label  for="mesa">Permitir pedido na mesa</label>
+                        <label  for="mesa">Permitir pedido na mesa </label>
                     </div>
                 </div>
                 <div class="col-md-6">
