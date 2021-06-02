@@ -99,6 +99,19 @@ INSERT INTO `delivery_entrega` (
 )
  VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 
+ 
+-- PAGAMENTO
+CREATE TABLE IF NOT EXISTS `delivery_pagamento` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `mostrar` varchar(255) DEFAULT NULL,
+    `meio` varchar(255) DEFAULT NULL,
+    `opicao` text DEFAULT NULL,
+    `pagar` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `delivery_pagamento` (`id`, `mostrar`, `opicao`, `pagar`, `meio`)
+VALUES (1, NULL, NULL, NULL, NULL);
+
+
 -- CONFIGURACAO
 CREATE TABLE IF NOT EXISTS `delivery_config` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,

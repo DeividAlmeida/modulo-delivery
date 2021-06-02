@@ -56,6 +56,7 @@ data: {
     categorias: <?php echo $categorias ?>,
     config:<?php echo $config ?>,
     entrega:<?php echo $entrega ?>,
+    gpagamento:<?php echo $pagamento ?>,
     idx:null,
     tokenDumms: [],
     pager: {},
@@ -286,5 +287,7 @@ function atualiza(){
         }
     }
 } 
-
+!Array.isArray(vue.gpagamento.opicao) && typeof(vue.gpagamento.opicao) != "string"?
+        void(0):
+        vue.gpagamento.opicao = JSON.parse(vue.gpagamento.opicao)
 </script>

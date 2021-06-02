@@ -55,6 +55,7 @@
     				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
     					<a class="dropdown-item" href="?Config">Configurações Gerais</a>
     					<a class="dropdown-item " href="?Entr">Configurações de Entrega</a>
+    					<a class="dropdown-item " href="?Paga">Configurações de Pagamento</a>
     				</div>
     			</span>	
     		</div>
@@ -62,7 +63,9 @@
             if (isset($_GET['Config']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'configuracao', 'acessar')) :
                 require_once('delivery/configuracao/index.php');
 			elseif (isset($_GET['Entr']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'configuracao', 'acessar')) :
-				require_once('delivery/configuracao/entrega.php');              
+				require_once('delivery/configuracao/entrega.php'); 
+			elseif (isset($_GET['Paga']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'configuracao', 'acessar')) :
+				require_once('delivery/configuracao/pagamento.php');              
 			elseif (isset($_GET['Comp']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :
 				require_once('delivery/complemento/index.php'); 
 			elseif (isset($_GET['Adic']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :

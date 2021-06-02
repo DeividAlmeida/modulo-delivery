@@ -42,6 +42,7 @@
 	    $categorias = json_encode(DBRead('delivery_categoria','*'));
 	    $conf = DBRead('delivery_config','*')[0];
 	    $entrega = json_encode(DBRead('delivery_entrega','*')[0]);
+	    $pagamento = json_encode(DBRead('delivery_pagamento','*')[0]);
 	    $config = json_encode($conf);
 	    $db = json_encode($fetch);
 ?>
@@ -94,117 +95,40 @@
                 </div>
 
                 <!-- pagamento -->
-                <div :class="'btn boxin pagamento '+pagamento" @click="pagamento == 'ativo'? pagamento = '':pagamento = 'ativo'">
+                <div v-if="gpagamento.mostrar == 'S'" :class="'btn boxin pagamento '+pagamento" @click="pagamento == 'ativo'? pagamento = '':pagamento = 'ativo'">
                     <div class="formasPagamento">
                         <strong>Formas <br>de Pagamento</strong>
                         <i class="fas fa-angle-down"></i>
                     </div>
                     <div class="listaFormas" :style="pagamento != 'ativo'?'display: none':void(0)">
-                        <div class="">
+                        <div v-if="gpagamento.opicao.credito.length >0" class="">
                             <h4>Cartões de Crédito</h4>
-                            <ul>
-                            
-                                <li>American Express</li>
-                            
-                                <li>Banricompras</li>
-                            
-                                <li>Credishop</li>
-                            
-                                <li>Diners</li>
-                            
-                                <li>Elo</li>
-                            
-                                <li>Goodcard</li>
-                            
-                                <li>Hipercard</li>
-                            
-                                <li>Mastercard</li>
-                            
-                                <li>Sorocred</li>
-                            
-                                <li>Verdecard</li>
-                            
-                                <li>Visa</li>
-                            
+                            <ul>                            
+                                <li v-for="opc, i of gpagamento.opicao.credito">{{opc.nome}}</li>        
                             </ul>
                         </div>
                         
                         
-                        <div class="">
+                        <div v-if="gpagamento.opicao.debito.length >0" class="">
                             <h4>Cartões de Débito</h4>
-                            <ul>
-                            
-                                <li>Banricompras</li>
-                            
-                                <li>Elo</li>
-                            
-                                <li>Mastercard</li>
-                            
-                                <li>Visa</li>
-                            
+                            <ul>                            
+                                <li v-for="opd, i of gpagamento.opicao.debito">{{opd.nome}}</li>        
                             </ul>
                         </div>
                         
                         
-                        <div class="">
+                        <div v-if="gpagamento.opicao.vale.length >0" class="">
                             <h4>Vales</h4>
-                            <ul>
-                            
-                                <li>Alelo Alimentação</li>
-                            
-                                <li>Alelo Refeição</li>
-                            
-                                <li>Cooper Card</li>
-                            
-                                <li>Credi Refeição</li>
-                            
-                                <li>Green Card</li>
-                            
-                                <li>Planvale</li>
-                            
-                                <li>Refeisul</li>
-                            
-                                <li>Sodexo</li>
-                            
-                                <li>Sodexo Alimentação</li>
-                            
-                                <li>Ticket Restaurante</li>
-                            
-                                <li>Up Brasil</li>
-                            
-                                <li>Vale Card</li>
-                            
-                                <li>Verocard</li>
-                            
-                                <li>Verocheque</li>
-                            
-                                <li>Vr Smart</li>
-                            
+                            <ul>                            
+                                <li v-for="opv, i of gpagamento.opicao.vale">{{opv.nome}}</li>        
                             </ul>
                         </div>
                         
                         
-                        <div class="">
+                        <div v-if="gpagamento.opicao.outro.length >0" class="">
                             <h4>Outras Formas</h4>
-                            <ul>
-                            
-                                <li>PicPay</li>
-                            
-                                <li>Apple Pay</li>
-                            
-                                <li>MercadoPago</li>
-                            
-                                <li>PagSeguro</li>
-                            
-                                <li>PayPal</li>
-                            
-                            
-                                <li>Dinheiro</li>
-                            
-                                <li>Pix</li>
-                            
-                                <li>Transferência/Depósito</li>
-                            
+                            <ul>                            
+                                <li v-for="opo, i of gpagamento.opicao.outro">{{opo.nome}}</li>        
                             </ul>
                         </div>
                         
