@@ -396,9 +396,9 @@ button:focus { outline: none; }
 .headerConfirmacao .box-logo a {display: block; position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width:90%;}
 .headerConfirmacao {display:table; width:100%; position:relative; padding:20px 0px;}
 .headerConfirmacao:before {content:''; width:100%; height:300px; background:#f5f5f5; display:table; position:absolute; top:0px; left:0px; border-bottom:1px #dedede solid;}
-.headerConfirmacao a.voltar {position:absolute; height: 38px; bottom:0px; top:0px; right:15px; margin:auto; padding:10px 25px; background:#fff; border:1px #dedede solid; background:#fff; text-decoration:none; color:#868686; font-weight:bold; font-size:11px; text-transform:uppercase; border-radius:50px; cursor: pointer;}
-.headerConfirmacao a.voltar i {margin-right:5px;}
-.headerConfirmacao a.voltar:hover {color:#000;}
+a.voltar {z-index:1;position:absolute; height: 38px; bottom:0px; top:0px; right:15px; margin:auto; padding:10px 25px; background:#fff; border:1px #dedede solid; background:#fff; text-decoration:none; color:#868686; font-weight:bold; font-size:11px; text-transform:uppercase; border-radius:50px; cursor: pointer;}
+a.voltar i {margin-right:5px;}
+a.voltar:hover {color:#000;}
 
 #confirmacao-pedido .container.p-0 > .row {margin: 0;}
 #confirmacao-pedido .container.p-0 > .row > div {padding: 0;}
@@ -443,7 +443,7 @@ button:focus { outline: none; }
 .pagamentoConfirmacao h3.title {margin-top:-25px !important; margin-bottom:10px !important; position: relative; z-index: 10;}
 .pagamentoConfirmacao .box {width:47%; float:left; display:table; background:#f5f5f5; border:1px #dedede solid; position:relative; border-radius:10px;}
 .pagamentoConfirmacao .box.full {width:100%;}
-.pagamentoConfirmacao input[type="radio"] {position:absolute; left:0px; top:10px; bottom:0px; margin-left:10px; float: left;width: 20px; height: 20px; cursor:pointer;}
+.pagamentoConfirmacao input[type="radio"] {position:absolute; left:0px; top:5px; bottom:0px; margin-left:10px; float: left;width: 20px; height: 20px; cursor:pointer;}
 .pagamentoConfirmacao label { padding:10px; padding-left:40px; width:100%; display:table; font-size:13px; margin-bottom:0px; font-weight:bold; color:#666; cursor:pointer;}
 .pagamentoConfirmacao .box .troco {display:table; width:100%;}
 .pagamentoConfirmacao .box .secundario {border-top:1px #dedede solid; padding-top:5px; margin-top:5px; padding:10px;}

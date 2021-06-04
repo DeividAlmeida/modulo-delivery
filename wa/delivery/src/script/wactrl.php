@@ -287,6 +287,10 @@ function atualiza(){
         }
     }
 } 
+continuar =() =>{
+  $("#delivery").load(WACroot+"checkout.php")
+}
+
 !Array.isArray(vue.gpagamento.opicao) && typeof(vue.gpagamento.opicao) != "string"?
         void(0):
         vue.gpagamento.opicao = JSON.parse(vue.gpagamento.opicao)

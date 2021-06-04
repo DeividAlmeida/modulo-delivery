@@ -235,7 +235,7 @@
 
                             </small>
                         </p>
-                        <button type="button" class="pedir" id="confirmar-pedido">Continuar</button>
+                        <button onclick="continuar()" type="button" class="pedir" id="confirmar-pedido">Continuar</button>
                     </div>
                 </div>
             </div>
@@ -350,7 +350,7 @@
                     <div class="col-6">
                         
                         <div class="botao pedir">
-                            <button type="button" id="confirmar-pedido">
+                            <button type="button" onclick="continuar()" id="confirmar-pedido">
                                 Continuar
                             </button>
                         </div>

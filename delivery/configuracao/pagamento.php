@@ -222,7 +222,7 @@ if(isset($query)){
                     <div class="form-group">
                         <label>Escolha o Meio de Pagamento:</label>
                         <select name="meio" class="form-control custom-select" required>
-                            <option value="mercadopago" >Mercado Pago</option>
+                            <option value="pagseguro" >PagSeguro</option>
                         </select>
                     </div>
                 </div>
@@ -237,6 +237,20 @@ if(isset($query)){
                             </button>
                         </div>
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>E-mail:</label>                        
+                                        <input v-model="idx.email" type="email" placeholder="E-mail" class="form-control" name="email" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Token:</label>                        
+                                        <input v-model="idx.token" placeholder="Token" class="form-control" name="token" required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
