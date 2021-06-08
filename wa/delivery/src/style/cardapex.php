@@ -406,7 +406,7 @@ a.voltar:hover {color:#000;}
 .boxConfirmacao .center {display:table; width:100%; padding:20px; padding-bottom:40px; background:#fff; box-shadow: 0px 0px 40px #0000001f;}
 .boxConfirmacao *::placeholder {color:#828282;}
 .boxConfirmacao .lista-itens > h3.title {margin-top:-40px !important; margin-bottom:25px !important; position: relative; z-index: 10;}
-.boxConfirmacao input {width:100%; display:block; border:1px #ccc solid; border-radius:50px; padding:10px 20px; font-size:13px; color:#000; background:#fff; outline:0px !important;}
+.boxConfirmacao input, .boxConfirmacao select {width:100%; display:block; border:1px #ccc solid; border-radius:50px; padding:10px 20px; font-size:13px; color:#000; background:#fff; outline:0px !important;}
 
 .obsConfirmacao {display:table; width:100%;}
 .obsConfirmacao label {display:block; font-size:13px; color:#666;}
@@ -449,7 +449,7 @@ a.voltar:hover {color:#000;}
 .pagamentoConfirmacao .box .secundario {border-top:1px #dedede solid; padding-top:5px; margin-top:5px; padding:10px;}
 .pagamentoConfirmacao .box .secundario p { font-size:13px; margin-bottom:5px; font-weight:bold; }
 .pagamentoConfirmacao .box .secundario i {color:#000; margin-left:3px; margin-right:5px;}
-.pagamentoConfirmacao .box .troco input {border-radius: 0px 4px 4px 0px; width:1%;}
+.pagamentoConfirmacao .box .troco input {border-radius: 0px 4px 4px 0px; width:50%;}
 .pagamentoConfirmacao .box .troco select {font-size:13px;}
 
 .pagamentoConfirmacao .box-sem-troco {position:relative;}

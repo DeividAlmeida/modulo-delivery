@@ -27,6 +27,8 @@
     require_once('../../wa/delivery/src/style/cardapex.php');
     $entrega = json_encode(DBRead('delivery_entrega','*')[0]);
     $config = json_encode(DBRead('delivery_config','*')[0]);
+    $pagamento = json_encode(DBRead('delivery_pagamento','*')[0]);
+
 
 ?>
     
@@ -188,7 +190,7 @@
                                         </div>
                                         <div id="pedido_taxa_entrega" class="col-4 col-sm-3 " >
                                             <span>Taxa de Entrega</span>
-                                            <strong id="pedido_taxa_entrega_valor">A calcular</strong>
+                                            <strong id="pedido_taxa_entrega_valor">{{frete}}</strong>
                                         </div>
                                         
                                         
@@ -221,18 +223,20 @@
                             <div id="pagamentoConfirmacao" class="pagamentoConfirmacao">
                                 <h3 class="title">Formas de Pagamento</h3>
                                 <div class="box">
-                                    <input onclick="document.getElementById('cartao').style.display='block'; document.getElementById('troco').style.display='none'" type="radio" name="pagamento" id="maquininha">
+                                    <input onclick="document.getElementById('cartao').style.display='block'; document.getElementById('troco').style.display='none'" type="radio" name="pagamento" id="maquininha" v-model="tipo" value="Cartão">
                                     <label for="maquininha">Cartões (Crédito, Débito, etc)</label>
                                     <div class="secundario bandeiras animated sladeInDown faster" id="cartao" style="display:none">
-                                        <select id="selecaoBandeira" class="form-control" style="padding:0 10px;">
+                                        <select v-model="cartao" id="selecaoBandeira" class="form-control" style="padding:0 10px;">
                                             <option value="">Selecione</option>
-                                            <option value="fc8d8b90-ac2e-43d9-a04d-c10d03d7d168">Crédito - American Express </option>
-                                            <option value="60210829-e89c-4114-bad6-b8d9bbfde8bf">Crédito - Banricompras  </option>
+                                            <option :value="'Crédito - '+credito.nome" v-for="credito of pagamento.opicao.credito">Crédito - {{credito.nome}}</option>
+                                            <option :value="'Débito - '+debito.nome " v-for="debito of pagamento.opicao.debito">Débito - {{debito.nome}}</option>
+                                            <option value="'Vale - '+ vale.nome" v-for="vale of pagamento.opicao.vale">Vale - {{vale.nome}}</option>
+                                            <option value="'Outros - '+ outro.nome" v-for="outro of pagamento.opicao.outro">Outros - {{outro.nome}}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="box">
-                                    <input onclick="document.getElementById('cartao').style.display='none'; document.getElementById('troco').style.display='block'" type="radio" name="pagamento" id="dinheiro"    data-uuid="8b1ffbcf-8317-4fcf-b3ef-e9ce1195feaa">
+                                    <input onclick="document.getElementById('cartao').style.display='none'; document.getElementById('troco').style.display='block';" v-model="tipo" value="Dinheiro" type="radio" name="pagamento" id="dinheiro"    data-uuid="8b1ffbcf-8317-4fcf-b3ef-e9ce1195feaa">
                                     <label for="dinheiro">Dinheiro</label>
                                     <div class="secundario troco slideInDown faster" id="troco" style="display:none">
                                         <p><i class="fas fa-money-bill-alt"></i> Troco para:</p>
@@ -240,13 +244,14 @@
                                             <input v-money="money" id="change" name="change"   class="form-control price">
                                         </div>
                                         <div class="input-group box-sem-troco">
-                                            <input type="checkbox" name="no-change" id="no-change" onclick="this.checked?document.getElementById('change').setAttribute('disabled', 'disabled'):document.getElementById('change').removeAttribute('disabled')">
+                                            <input type="checkbox"  name="no-change" id="no-change" onclick="troco(this.checked)">
                                             <label for="no-change">Sem troco</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- /center -->
+                        </div>
+                        <!-- /center -->
                     </div>
                 </div>
     
@@ -300,12 +305,19 @@ const vue2 = new Vue({
                 prefix: 'R$ ',
                 precision: 2,
                 masked: false 
-            },     
+            },
+        troco:false,     
+        frete: 'A calcular',
         api_entrega:null,
         config:<?php echo $config ?>,
         entrega:<?php echo $entrega ?>,
+        pagamento:<?php echo $pagamento ?>,
+        tipo:'',
+        cartao:'',
+        dinheiro:'',
         pedido:[],
         total:0,
+        obter: 'entrega',
         valor:'0.00'
     },
     methods:{
@@ -331,7 +343,7 @@ const vue2 = new Vue({
                     document.getElementById('pedido_total').style.display='none'
                     document.getElementById('pedido_subtotal').style.display='block'
                     document.getElementById('pedido_taxa_entrega').style.display='block'
-
+                    vue2.obter ='entrega'
                 break;
                 case 'retirada':
                     document.getElementById(a).setAttribute('class', 'ativo')
@@ -341,6 +353,7 @@ const vue2 = new Vue({
                     document.getElementById('pedido_total').style.display='block'
                     document.getElementById('pedido_subtotal').style.display='none'
                     document.getElementById('pedido_taxa_entrega').style.display='none'
+                    vue2.obter = 'retirada'
                 break;
             }           
         },
@@ -351,12 +364,12 @@ const vue2 = new Vue({
             let onoff= 0
             this.api_entrega.filter(b=>{
                 if(parseInt(a) >= parseInt(b.inicio) && parseInt(a) <= parseInt(b.fim)){
-                    document.getElementById('pedido_taxa_entrega_valor').innerHTML = b.valor
+                    vue2.frete = b.valor
                     onoff = 1
                 }
             })
                 if(onoff != 1){
-                    document.getElementById('pedido_taxa_entrega_valor').innerHTML = 'A calcular'
+                    vue2.frete = 'A calcular'
                     Swal.fire(
                     'Erro',
                     'Infelizmente não entregamos nesse endereço ',
@@ -365,6 +378,10 @@ const vue2 = new Vue({
                 }
         },
         pedir: function(){
+            let pedido =[]
+            let pedidos =""
+            let adicional = []
+            let complementos = []
             let celular = document.getElementById('phone').value
             let nome = document.getElementById('name').value
             let cep = document.getElementById('zip_code').value
@@ -373,37 +390,85 @@ const vue2 = new Vue({
             let bairro = document.getElementById('bairro').value
             let complemento = document.getElementById('complemento').value
             let ponto = document.getElementById('ponto').value
-            let entrega ="*ENTREGA*%0A*Endereço%20para%20entrega%3A*%0A*Rua%20GFDGF*%0A*Número%3A%20"+numero+"*%0A*Complemento%3A%20"+complemento+"*%0A*Bairro%3A%20"+bairro+"*%0A*Ponto%20de%20Ref.%3A%20"+ponto+"*%0A*CEP%3A%20"+cep+"*"
-            if( document.getElementById('pedido_taxa_entrega').style.display =='none'){entrega = null}
-            window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text=Demo%20de%20Cardápio%20Online%20p%2F%20Marmitaria%0A%0A07%2F06%2F2021%2C%2016%3A35%3A27%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A%0ACategoria%3A%20Promoções%0ACod%3A%200013%0A*Marmita%20%2B%20Refrigerante*%0AQuantidade%3A%20*2*%0APreço%3A%20*R%24%2030%2C00*%0A-%20Complementos%3A%0A-%20*Tamanho%20da%20marmita*%3A%0A-%20*2x%20Mini*%20(R%24%2015%2C00)%0A%0A-%20*Refrigerante*%3A%0A-%20*2x%20Coca-Cola*%20%0A%0ACategoria%3A%20Marmitas%0ACod%3A%20005%0A*Estrogonofe%20de%20Frango*%0AQuantidade%3A%20*1*%0APreço%3A%20*R%24%2015%2C00*%0A-%20Complementos%3A%0A-%20*Tamanho*%3A%0A-%20*1x%20Mini*%20(R%24%2015%2C00)%0A%0A*Subtotal.%3A%20R%24%2045%2C00*%0A*Entrega..%3A%20Consulte%20o%20frete*%0A*Total.......%3A%20R%24%2045%2C00%20%2B%20Frete*%0A%0A*Observações%20do%20cliente%3A*%0A*aqui%20fica%20os%20detalhes*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20Dinheiro%0A%20-%20Troco%20p%2F%3A%2056%2C45%0A%0A'+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
+            let obs = document.getElementById('obsConfirmacao').value
+            let troco = document.getElementById('change').value
+            let entrega ="%0A%0A*ENTREGA*%0A*Endereço%20para%20entrega%3A*%0A*Rua%20GFDGF*%0A*Número%3A%20"+numero+"*%0A*Complemento%3A%20"+complemento+"*%0A*Bairro%3A%20"+bairro+"*%0A*Ponto%20de%20Ref.%3A%20"+ponto+"*%0A*CEP%3A%20"+cep+"*"
+            if( document.getElementById('pedido_taxa_entrega').style.display =='none'){entrega = ''; vue2.frete = 'R$ 0,00'}
+            let f = vue2.frete.replace('R$','')
+            let frete = parseFloat(f.replace('.',','))
+            let forma =''
+            if(vue2.tipo == 'Cartão'){
+                forma = '%0A%20-%20'+vue2.cartao
+            }else if(vue2.troco === false){
+                forma = '%0A%20-%20Troco p/ '+troco
+            }
+            for(let i = 0; i < vue2.pedido.length; i++){
+                let p = ""
+                let p2 =""
+                for(let a =0; a< vue2.pedido[i].adicionais.length; a++){
+                   if(vue2.pedido[i].adicionais[a].qtd >0){
+                        p += "%0A-%20"+vue2.pedido[i].adicionais[a].nome+"%3A%20*"+vue2.pedido[i].adicionais[a].qtd*vue2.pedido[i].qtd+"%20(R%24%20"+vue2.pedido[i].adicionais[a].vl+")*"
+                   } 
+                }
+                for(let c =0; c< vue2.pedido[i].complementos.length; c++){
+                    if(vue2.pedido[i].complementos[c].length>2){
+                        for(let opc =0; opc< vue2.pedido[i].complementos[c].length; opc++){
+                            if(vue2.pedido[i].complementos[c][opc].qtd>0){                    
+                                p2 += "%0A-%20"+vue2.pedido[i].complementos[c][0]+"%3A%20*"+vue2.pedido[i].complementos[c][opc].nome+"*%20-%20*"+vue2.pedido[i].complementos[c][opc].qtd*vue2.pedido[i].qtd+"x%20("+vue2.pedido[i].complementos[c][opc].vl+")*"
+                            }
+                        }
+                    }else{                 
+                        p2 += "%0A-%20"+vue2.pedido[i].complementos[c][0]+"%3A%20*"+vue2.pedido[i].qtd+"x%20(R%24%20"+vue2.pedido[i].complementos[c][1].replace('.',',')+")*"
+                    }
+                }
+                adicional.push(p)
+                complementos.push(p2)
+                pedido.push("%0A%0A*"+vue2.pedido[i].nome+"*%0AQuantidade%3A%20*"+vue2.pedido[i].qtd+"*%0APreço%3A%20*R%24%20"+vue2.pedido[i].total.replace('.',',')+"*%0A-%20Complementos%3A")
+                pedidos += pedido[i]+adicional[i]+complementos[i]
+            }          
+           window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text=Demo%20de%20Cardápio%20Online%20p%2F%20Marmitaria%0A%0A07%2F06%2F2021%2C%2016%3A35%3A27%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
             
         }
     }
 })
-function atualiza(){
-    if(sessionStorage.getItem('delivery_valor') != null ){
-        vue2.total = parseFloat(sessionStorage.getItem('delivery_total'))
-        vue2.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
-        vue2.pedido=JSON.parse(sessionStorage.getItem('delivery_pedido'))
-        for(let i = 0; i<vue2.pedido.length;i++){
-            let c = '0'
-            let a = '0'
-            let resultado = null
-            vue2.pedido[i].complementos.filter(a=>{if(a[1] !== 0){c= '1'}})
-            vue2.pedido[i].adicionais.filter(b=>{if(b.qtd !== 0){a = '1'}})
-            resultado = c+a
-            Object.assign(vue2.pedido[i], {resultado:resultado})
-        }
+
+if(sessionStorage.getItem('delivery_valor') != null ){
+    vue2.total = parseFloat(sessionStorage.getItem('delivery_total'))
+    vue2.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
+    vue2.pedido=JSON.parse(sessionStorage.getItem('delivery_pedido'))
+    for(let i = 0; i<vue2.pedido.length;i++){
+        let c = '0'
+        let a = '0'
+        let resultado = null
+        vue2.pedido[i].complementos.filter(a=>{if(a[1] !== 0){c= '1'}})
+        vue2.pedido[i].adicionais.filter(b=>{if(b.qtd !== 0){a = '1'}})
+        resultado = c+a
+        Object.assign(vue2.pedido[i], {resultado:resultado})
     }
-} 
-new atualiza()
+}
+
 voltar = () =>{
   $("#delivery").load(WACroot)
 }
-
+new atualiza()
+function atualiza(){
+    if(sessionStorage.getItem('delivery_valor') != null){
+        vue2.total = parseFloat(sessionStorage.getItem('delivery_total'))
+        vue2.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
+    }
+}
+function troco(a){
+    vue2.troco = a
+    if(a){
+        document.getElementById('change').setAttribute('disabled', 'disabled')
+    }else{
+        document.getElementById('change').removeAttribute('disabled')
+    }
+}
 !Array.isArray(vue2.entrega.entrega) && typeof(vue2.entrega.entrega) != "string"?
     void(0):
     vue2.api_entrega = JSON.parse(vue2.entrega.entrega)
+vue2.pagamento.opicao = JSON.parse(vue2.pagamento.opicao)
 </script>
 </body>
 
