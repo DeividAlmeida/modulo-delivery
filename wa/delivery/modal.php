@@ -174,7 +174,7 @@ input[type=number] {
                                 </div>
                             </div>
                             <div class="col-7 confirmar">
-                                <button v-if="aviso != 'Estamos fechados'" type="button" @click="concluir()" class="adicionar">Adicionar<br>R$ {{pedido.total}}</button>
+                                <button v-if="aviso != 'Estamos fechados'" type="button" @click="concluir()" class="adicionar">Adicionar<br>R$ {{pedido.total.replace('.',',')}}</button>
                                 <button v-else type="button" class="adicionar" style="background:#dc3545!important; border: 1px #dc3545 solid;    border-bottom: 3px #dc3545 solid;">ESTAMOS FECHADOS<br> NO MOMENTO</button>
                             </div>
                         </div>
@@ -298,8 +298,8 @@ input[type=number] {
             let valor = parseFloat(b.replace(',','.'))           
             vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor-vue.pedido.complementos[a][1]).toFixed(2)
             vue.valor = parseFloat(vue.valor+valor-vue.pedido.complementos[a][1])           
-            vue.pedido.complementos[a][1] =  valor.toFixed(2)
-            vue.pedido.complementos[a][0] =  c
+            vue.pedido.complementos[a][1] = valor.toFixed(2)
+            vue.pedido.complementos[a][0] = c
             document.getElementById('sel'+a).innerText = '1'
             this.$forceUpdate()
         }   

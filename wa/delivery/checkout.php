@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src='https://unpkg.com/vue/dist/vue.js'></script>
     <script src='https://rawgit.com/vuejs-tips/v-money/master/dist/v-money.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/v-money@0.8.1/dist/v-money.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js'></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4@5.0.0/bootstrap-4.min.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -34,10 +35,7 @@
     
 </head>
 <body class="home blog">
-    <div id="controller">
-
-            <span class="barraDados hidden"></span>
-            <input type="hidden" value="14981337597" id="whatsapp-phone">
+    <div id="controller" style="background:white">        
         <section id="confirmacao-pedido " class="boxConfirmacao">
             <div class="container-fluid p-0">
                 <div class="row" style="padding-top:20px">                        
@@ -107,7 +105,7 @@
                             </div>
                                 <div class="obsConfirmacao">
                                     <label class="text-center">Observações</label>
-                                    <input type="text" id="obsConfirmacao" name="obsConfirmacao"  placeholder="Detalhes do Pedido">
+                                    <input type="text" id="obsConfirmacao" name="obsConfirmacao" class="form-control" placeholder="Detalhes do Pedido">
                                 </div>
                             </div>
                             <div class="infoEntregaConfirmacao">
@@ -115,10 +113,10 @@
                                 <div class="dados-usuario">
                                     <div class="row">
                                         <div class="col-md-5 col-6 campo">
-                                            <input type="text" id="phone" name="phone" placeholder="Celular" class="mobile"   maxlength="15">
+                                            <input type="text" id="phone" name="phone" placeholder="Celular" class="mobile form-control"   maxlength="15">
                                         </div>
                                         <div class="col-md-7 col-6 campo">
-                                            <input type="text" id="name" name="name" placeholder="Nome" maxlength="50">
+                                            <input type="text" id="name" name="name" placeholder="Nome" class="form-control" maxlength="50">
                                         </div>
                                     </div>
                                 </div>
@@ -135,36 +133,34 @@
                                     </div>
                                 </div>
                                 <!-- Dados Entrega -->
-                                <div id="entrega" class="formEntrega">
+                                <div id="entrega" class="formEntrega" v-if="obter=='entrega'">
                                     <div class="row">
-                                        <div class="col-md-12 endereco campo" style="padding-right:15px !important">
-                                            <select @change='bairro($event.target.value)' v-if="entrega.tipo == 'bairro'" name="" id="bairro" style="margin-bottom: 15px; color:#828282 !important">
+                                        <div class="col-md-12 endereco campo" style="padding-left:15px; padding-right:15px !important">
+                                            <select @change='bairro($event.target.value)' v-if="entrega.tipo == 'bairro'" name="" id="bairro" class="form-control"  style=" padding: 0px 20px !important; margin-bottom: 15px !important; color:#828282 !important"   >
                                                 <option selected value="" disabled>Bairros Atendidos</option>
-                                                <option :value="bairro.valor" v-for="bairro of api_entrega">{{bairro.bairro}}</option>                                                
+                                                <option :value="bairro.bairro" v-for="bairro of api_entrega">{{bairro.bairro}}</option>                                                
                                             </select>
-                                            <input type="number" @change="cep($event.target.value)" v-else type="text" id="zip_code" name="zip_code" placeholder="CEP" class="cep"  autocomplete="off" maxlength="9">
+                                            <input type="number" @change="cep($event.target.value)" v-else type="text" id="zip_code" name="zip_code" placeholder="CEP" class="cep form-control"  autocomplete="off" maxlength="9">
                                         </div>
-                                        <div class="col-md-10 col-6 endereco campo">
-                                            <input type="text" id="address" name="address" placeholder="Endereço"  maxlength="100" autocomplete="off">
+                                        <div class="col-md-10 col-6 endereco campo" style="padding-left:15px">
+                                            <input type="text" id="address" name="address" class="form-control" placeholder="Endereço"  maxlength="100" autocomplete="off">
                                         </div>
                                         <div class="col-md-2 col-6 numero campo">
-                                            <input type="text" id="numero" name="number" placeholder="Nº" maxlength="10"  autocomplete="off">
+                                            <input type="text" id="numero" name="number" class="form-control"  placeholder="Nº" maxlength="10"  autocomplete="off">
                                         </div>
-                                        <input type="hidden" id="city" name="city" maxlength="50" autocomplete="off" value="">
-                                        <input type="hidden" id="state" name="state" autocomplete="off" value="">
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-5 endereco campo">
-                                            <input type="text" id="complemento" name="additional1"  placeholder="Complemento (Ex: Bloco/Apto)" maxlength="100">
+                                        <div class="col-md-5 endereco campo" style="padding-left:15px">
+                                            <input type="text" id="complemento" name="additional1" class="form-control"   placeholder="Complemento (Ex: Bloco/Apto)" maxlength="100">
                                         </div>
                                         <div v-if="entrega.tipo != 'bairro'" class="col-md-4 col-6 bairro campo">
-                                            <input type="text" id="bairro" name="additional2" placeholder="Bairro"  maxlength="100">
+                                            <input type="text" id="bairro" name="additional2" placeholder="Bairro" class="form-control"   maxlength="100">
                                         </div>
-                                        <div class="col-md-3  ref campo" style="padding-right:5px">
-                                            <input type="text" id="ponto" name="additional3"  placeholder="Ponto de Ref." maxlength="100">
+                                        <div class="col-md-3  ref campo" style="padding-right:15px">
+                                            <input type="text" id="ponto" name="additional3" class="form-control"  placeholder="Ponto de Ref." maxlength="100">
                                         </div>
                                         <div class="col-md-4 ref campo" v-if="entrega.tipo == 'bairro'" style="padding-left:5px !important">
-                                            <input type="text" id="zip_code" name="zip_code" placeholder="CEP" class="cep"  autocomplete="off" maxlength="9">
+                                            <input type="text" id="zip_code" name="zip_code" placeholder="CEP" class="cep form-control"  autocomplete="off" maxlength="9">
                                         </div>
                                     </div>
                                     <div class="alert alert-warning" style="display:none;">
@@ -205,7 +201,7 @@
                                     </div>
                                 </div>
                                 <!-- Retirada -->
-                                <div id="retirada" class="formEntrega" style="display:none">
+                                <div id="retirada" class="formEntrega" v-if="obter=='retirada'">
                                     <div class="card login retirada">
                                         <div class="card-body text-center">
                                             <h5 class="card-title" style="color:#c32c31">Endereço para Retirada</h5>
@@ -226,12 +222,11 @@
                                     <input onclick="document.getElementById('cartao').style.display='block'; document.getElementById('troco').style.display='none'" type="radio" name="pagamento" id="maquininha" v-model="tipo" value="Cartão">
                                     <label for="maquininha">Cartões (Crédito, Débito, etc)</label>
                                     <div class="secundario bandeiras animated sladeInDown faster" id="cartao" style="display:none">
-                                        <select v-model="cartao" id="selecaoBandeira" class="form-control" style="padding:0 10px;">
-                                            <option value="">Selecione</option>
-                                            <option :value="'Crédito - '+credito.nome" v-for="credito of pagamento.opicao.credito">Crédito - {{credito.nome}}</option>
-                                            <option :value="'Débito - '+debito.nome " v-for="debito of pagamento.opicao.debito">Débito - {{debito.nome}}</option>
-                                            <option value="'Vale - '+ vale.nome" v-for="vale of pagamento.opicao.vale">Vale - {{vale.nome}}</option>
-                                            <option value="'Outros - '+ outro.nome" v-for="outro of pagamento.opicao.outro">Outros - {{outro.nome}}</option>
+                                        <select v-if="tipo == 'Cartão'" v-model="cartao" id="selecaoBandeira" class="form-control" style="padding:0 10px;">
+                                            <option value="" selected disabled>Selecione</option>
+                                            <option value="Crédito">Crédito </option>
+                                            <option value="Débito">Débito </option>
+                                            <option value="Vale">Vale </option>
                                         </select>
                                     </div>
                                 </div>
@@ -241,7 +236,7 @@
                                     <div class="secundario troco slideInDown faster" id="troco" style="display:none">
                                         <p><i class="fas fa-money-bill-alt"></i> Troco para:</p>
                                         <div class="input-group">                                                
-                                            <input v-money="money" id="change" name="change"   class="form-control price">
+                                            <input v-money="money" id="change" name="change"   class="price">
                                         </div>
                                         <div class="input-group box-sem-troco">
                                             <input type="checkbox"  name="no-change" id="no-change" onclick="troco(this.checked)">
@@ -338,18 +333,15 @@ const vue2 = new Vue({
                 case 'entrega':
                     document.getElementById(a).setAttribute('class', 'ativo')
                     document.getElementById('retirada').setAttribute('class', '')
-                    document.getElementsByClassName('formEntrega')[0].style.display='block'
-                    document.getElementsByClassName('formEntrega')[1].style.display='none' 
                     document.getElementById('pedido_total').style.display='none'
                     document.getElementById('pedido_subtotal').style.display='block'
                     document.getElementById('pedido_taxa_entrega').style.display='block'
                     vue2.obter ='entrega'
+                    vue2.frete = 'A calcular'
                 break;
                 case 'retirada':
                     document.getElementById(a).setAttribute('class', 'ativo')
-                    document.getElementById('entrega').setAttribute('class', '')
-                    document.getElementsByClassName('formEntrega')[1].style.display='block'
-                    document.getElementsByClassName('formEntrega')[0].style.display='none'
+                    document.getElementById('entrega').setAttribute('class', '')                    
                     document.getElementById('pedido_total').style.display='block'
                     document.getElementById('pedido_subtotal').style.display='none'
                     document.getElementById('pedido_taxa_entrega').style.display='none'
@@ -358,7 +350,11 @@ const vue2 = new Vue({
             }           
         },
         bairro: function(a){
-            document.getElementById('pedido_taxa_entrega_valor').innerHTML = a
+            this.api_entrega.filter(b=>{
+                if(a == b.bairro){
+                    vue2.frete = b.valor
+                }
+            })
         },
         cep: function(a){
             let onoff= 0
@@ -378,56 +374,92 @@ const vue2 = new Vue({
                 }
         },
         pedir: function(){
-            let pedido =[]
-            let pedidos =""
-            let adicional = []
-            let complementos = []
+            let obs = document.getElementById('obsConfirmacao').value
             let celular = document.getElementById('phone').value
             let nome = document.getElementById('name').value
-            let cep = document.getElementById('zip_code').value
-            let endereco = document.getElementById('address').value
-            let numero = document.getElementById('numero').value
-            let bairro = document.getElementById('bairro').value
-            let complemento = document.getElementById('complemento').value
-            let ponto = document.getElementById('ponto').value
-            let obs = document.getElementById('obsConfirmacao').value
-            let troco = document.getElementById('change').value
-            let entrega ="%0A%0A*ENTREGA*%0A*Endereço%20para%20entrega%3A*%0A*Rua%20GFDGF*%0A*Número%3A%20"+numero+"*%0A*Complemento%3A%20"+complemento+"*%0A*Bairro%3A%20"+bairro+"*%0A*Ponto%20de%20Ref.%3A%20"+ponto+"*%0A*CEP%3A%20"+cep+"*"
-            if( document.getElementById('pedido_taxa_entrega').style.display =='none'){entrega = ''; vue2.frete = 'R$ 0,00'}
-            let f = vue2.frete.replace('R$','')
-            let frete = parseFloat(f.replace('.',','))
-            let forma =''
-            if(vue2.tipo == 'Cartão'){
-                forma = '%0A%20-%20'+vue2.cartao
-            }else if(vue2.troco === false){
-                forma = '%0A%20-%20Troco p/ '+troco
+            let  entrega = '' 
+            let ipt_text = true
+            for(let i = 1; i<document.querySelectorAll('input[type="text"]').length;i++){
+                if(document.querySelectorAll('input[type="text"]')[i].value.length<1){ ipt_text = false}
             }
-            for(let i = 0; i < vue2.pedido.length; i++){
-                let p = ""
-                let p2 =""
-                for(let a =0; a< vue2.pedido[i].adicionais.length; a++){
-                   if(vue2.pedido[i].adicionais[a].qtd >0){
-                        p += "%0A-%20"+vue2.pedido[i].adicionais[a].nome+"%3A%20*"+vue2.pedido[i].adicionais[a].qtd*vue2.pedido[i].qtd+"%20(R%24%20"+vue2.pedido[i].adicionais[a].vl+")*"
-                   } 
+            for(let i = 0; i<document.querySelectorAll('select').length;i++){
+                if(document.querySelectorAll('select')[i].value.length<1){ ipt_text = false}
+            }
+            if(vue2.frete == 'A calcular' && vue2.obter ==  'entrega' ||vue2.tipo==''|| !ipt_text){               
+                Swal.fire('Erro','Por favor preencha todos os campos obrigatórios','error')
+            }else{
+                let hoje = new Date()
+                let agora = (hoje.getDate()<10?'0':'') + hoje.getDate()+"/"+(hoje.getMonth()<10?'0':'')+(hoje.getMonth()+1)+"/"+(hoje.getFullYear()<10?'0':'')+hoje.getFullYear()+" "+(hoje.getHours()<10?'0':'')+hoje.getHours()+":"+(hoje.getMinutes()<10?'0':'')+hoje.getMinutes()+":"+(hoje.getSeconds()<10?'0':'')+hoje.getSeconds()
+                let pedido =[]
+                let pedidos =""
+                let adicional = []
+                let complementos = []
+                if(vue2.obter ==  'entrega'){
+                    let cep = document.getElementById('zip_code').value
+                    let endereco = document.getElementById('address').value
+                    let numero = document.getElementById('numero').value
+                    let bairro = document.getElementById('bairro').value
+                    let complemento = document.getElementById('complemento').value
+                    let ponto = document.getElementById('ponto').value
+                    entrega ="%0A%0A*ENTREGA*%0A*Endereço%20para%20entrega%3A*%0A*Rua%3A%20GFDGF*%0A*Número%3A%20"+numero+"*%0A*Complemento%3A%20"+complemento+"*%0A*Bairro%3A%20"+bairro+"*%0A*Ponto%20de%20Ref.%3A%20"+ponto+"*%0A*CEP%3A%20"+cep+"*"
+                }else{                   
+                    vue2.frete = 'R$ 0,00'
                 }
-                for(let c =0; c< vue2.pedido[i].complementos.length; c++){
-                    if(vue2.pedido[i].complementos[c].length>2){
-                        for(let opc =0; opc< vue2.pedido[i].complementos[c].length; opc++){
-                            if(vue2.pedido[i].complementos[c][opc].qtd>0){                    
-                                p2 += "%0A-%20"+vue2.pedido[i].complementos[c][0]+"%3A%20*"+vue2.pedido[i].complementos[c][opc].nome+"*%20-%20*"+vue2.pedido[i].complementos[c][opc].qtd*vue2.pedido[i].qtd+"x%20("+vue2.pedido[i].complementos[c][opc].vl+")*"
-                            }
-                        }
-                    }else{                 
-                        p2 += "%0A-%20"+vue2.pedido[i].complementos[c][0]+"%3A%20*"+vue2.pedido[i].qtd+"x%20(R%24%20"+vue2.pedido[i].complementos[c][1].replace('.',',')+")*"
+                let f = vue2.frete.replace('R$','')
+                let frete = parseFloat(f.replace('.',','))
+                let forma =''
+                if(vue2.tipo == 'Cartão'){
+                    forma = ''
+                }else if(vue2.troco === false){
+                    forma = '%0A%20-%20Troco p/ '+document.getElementById('change').value
+                }
+                for(let i = 0; i < vue2.pedido.length; i++){
+                    let p = ""
+                    let p2 =""
+                    for(let a =0; a< vue2.pedido[i].adicionais.length; a++){
+                    if(vue2.pedido[i].adicionais[a].qtd >0){
+                            p += "%0A-%20"+vue2.pedido[i].adicionais[a].nome+"%3A%20*"+vue2.pedido[i].adicionais[a].qtd*vue2.pedido[i].qtd+"%20(R%24%20"+vue2.pedido[i].adicionais[a].vl+")*"
+                    } 
                     }
-                }
-                adicional.push(p)
-                complementos.push(p2)
-                pedido.push("%0A%0A*"+vue2.pedido[i].nome+"*%0AQuantidade%3A%20*"+vue2.pedido[i].qtd+"*%0APreço%3A%20*R%24%20"+vue2.pedido[i].total.replace('.',',')+"*%0A-%20Complementos%3A")
-                pedidos += pedido[i]+adicional[i]+complementos[i]
-            }          
-           window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text=Demo%20de%20Cardápio%20Online%20p%2F%20Marmitaria%0A%0A07%2F06%2F2021%2C%2016%3A35%3A27%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
-            
+                    for(let c =0; c< vue2.pedido[i].complementos.length; c++){
+                        if(vue2.pedido[i].complementos[c].length>2){
+                            for(let opc =0; opc< vue2.pedido[i].complementos[c].length; opc++){
+                                if(vue2.pedido[i].complementos[c][opc].qtd>0){                    
+                                    p2 += "%0A-%20"+vue2.pedido[i].complementos[c][0]+"%3A%20*"+vue2.pedido[i].complementos[c][opc].nome+"*%20-%20*"+vue2.pedido[i].complementos[c][opc].qtd*vue2.pedido[i].qtd+"x%20("+vue2.pedido[i].complementos[c][opc].vl+")*"
+                                }
+                            }
+                        }else{                 
+                            p2 += "%0A-%20"+vue2.pedido[i].complementos[c][0]+"%3A%20*"+vue2.pedido[i].qtd+"x%20(R%24%20"+vue2.pedido[i].complementos[c][1].replace('.',',')+")*"
+                        }
+                    }
+                    adicional.push(p)
+                    complementos.push(p2)
+                    pedido.push("%0A%0A*"+vue2.pedido[i].nome+"*%0AQuantidade%3A%20*"+vue2.pedido[i].qtd+"*%0APreço%3A%20*R%24%20"+vue2.pedido[i].total.replace('.',',')+"*%0A-%20Complementos%3A")
+                    pedidos += pedido[i]+adicional[i]+complementos[i]
+                }  
+                Swal.fire({
+                    title: 'Informação !',
+                    text: "Podemos armazenas essas informações para automatizar esse processo em futuras compras?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Não',
+                    confirmButtonText: 'Sim'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let info = [] 
+                        for(let i = 0; i<document.getElementsByClassName('form-control').length;i++){
+                            info.push(document.getElementsByClassName('form-control')[i].value)
+                        }
+                        localStorage.setItem('delivery_info',JSON.stringify(info))
+                        window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
+                    }else{
+                        window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
+                    }
+                })        
+                
+            }
         }
     }
 })
@@ -469,6 +501,39 @@ function troco(a){
     void(0):
     vue2.api_entrega = JSON.parse(vue2.entrega.entrega)
 vue2.pagamento.opicao = JSON.parse(vue2.pagamento.opicao)
+
+let infor = JSON.parse(localStorage.getItem('delivery_info'))
+if(Array.isArray(infor)){
+    Swal.fire({
+        title: 'Informação !',
+        text: "Você é "+infor[2]+" do telefone "+infor[1]+" ?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Não',
+        confirmButtonText: 'Sim'
+    }).then((result) => {
+        if(result.isConfirmed) {
+            for(let i = 0; i<document.getElementsByClassName('form-control').length;i++){
+                document.getElementsByClassName('form-control')[i].value = infor[i]
+            }
+            if(vue2.entrega.tipo == 'bairro'){
+                vue2.api_entrega.filter(b=>{
+                    if(infor[3] == b.bairro){
+                        vue2.frete = b.valor
+                    }   
+                })
+            }else{
+                vue2.api_entrega.filter(b=>{
+                    if(parseInt(infor[3]) >= parseInt(b.inicio) && parseInt(infor[3]) <= parseInt(b.fim)){
+                        vue2.frete = b.valor                        
+                    }
+                })
+            }
+        }
+    })
+}
 </script>
 </body>
 

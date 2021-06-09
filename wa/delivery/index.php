@@ -50,7 +50,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
+    <script src='https://unpkg.com/vue/dist/vue.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js'></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4@5.0.0/bootstrap-4.min.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -60,6 +60,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" ></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="<?php echo ConfigPainel('base_url'); ?>wa/delivery/src/style/main.css">
+    <script src='https://rawgit.com/vuejs-tips/v-money/master/dist/v-money.js'></script>
+
 <?php require_once('../../wa/delivery/src/style/wactrl.php') ?>
 <?php require_once('../../wa/delivery/src/style/cardapex.php') ?>
 
