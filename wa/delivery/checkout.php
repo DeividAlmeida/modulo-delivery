@@ -35,7 +35,26 @@
     
 </head>
 <body class="home blog">
-    <div id="controller" style="background:white">        
+    <div id="controller" style="background:white;margin-top:30px"> 
+        <section id="pedido-concluido" class="boxConfirmacao" style="display: none;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="center" style="box-shadow:none">
+                            <div class="avisoEnviado text-center">
+                                <h3 style="color:#c32c31;font-weight: bold;">Seu pedido foi enviado =D</h3>
+                                <p>Seu pedido foi enviado para o nosso Whatsapp, se houver  algum problema você pode clicar no botão abaixo e reenviar o pedido</p>
+                                <div class="abrirWhats mb-4">
+                                    <a onclick="repetir()" class="btn" >
+                                        Reenviar meu pedido
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>       
         <section id="confirmacao-pedido " class="boxConfirmacao">
             <div class="container-fluid p-0">
                 <div class="row" style="padding-top:20px">                        
@@ -45,12 +64,12 @@
                         </a>
                     </div>
                 </div>
-                <div class="row" style="margin-top:50px;border-top: 1px #dedede solid;">
+                <div class="row" id="top" style="margin-top:50px;border-top: 1px #dedede solid;">
                     <div class=" col-md-12">
                         <div class="center" style="box-shadow:none">
                             <!-- lista-itens -->
                             <div class="lista-itens">
-                                <h3 class="title">Confirmação de Pedido</h3>
+                                <h3 class="title" id="titulo">Confirmação de Pedido</h3>
                                 <div class="basketContent">
                                     <h3>Seu Pedido</h3>
                                     <div class="basket-body" id="basket">
@@ -108,9 +127,9 @@
                                     <input type="text" id="obsConfirmacao" name="obsConfirmacao" class="form-control" placeholder="Detalhes do Pedido">
                                 </div>
                             </div>
-                            <div class="infoEntregaConfirmacao">
-                                <h3 class="title" >Informações para Entrega</h3>
-                                <div class="dados-usuario">
+                            <div class="center infoEntregaConfirmacao" style="box-shadow:none">
+                                <h3 class="title" style="bottom: 12px;">Informações para Entrega</h3>
+                                <div class="dados-usuario "  >
                                     <div class="row">
                                         <div class="col-md-5 col-6 campo">
                                             <input type="text" id="phone" name="phone" placeholder="Celular" class="mobile form-control"   maxlength="15">
@@ -133,33 +152,33 @@
                                     </div>
                                 </div>
                                 <!-- Dados Entrega -->
-                                <div id="entrega" class="formEntrega" v-if="obter=='entrega'">
-                                    <div class="row">
-                                        <div class="col-md-12 endereco campo" style="padding-left:15px; padding-right:15px !important">
+                                <div id="entrega" class="formEntrega center" v-if="obter=='entrega'" style="box-shadow:none">
+                                    <div class="row" style="margin: 0 -20px !important;">
+                                        <div class="col-md-12 " style="padding:0 !important">
                                             <select @change='bairro($event.target.value)' v-if="entrega.tipo == 'bairro'" name="" id="bairro" class="form-control"  style=" padding: 0px 20px !important; margin-bottom: 15px !important; color:#828282 !important"   >
                                                 <option selected value="" disabled>Bairros Atendidos</option>
                                                 <option :value="bairro.bairro" v-for="bairro of api_entrega">{{bairro.bairro}}</option>                                                
                                             </select>
                                             <input type="number" @change="cep($event.target.value)" v-else type="text" id="zip_code" name="zip_code" placeholder="CEP" class="cep form-control"  autocomplete="off" maxlength="9">
                                         </div>
-                                        <div class="col-md-10 col-6 endereco campo" style="padding-left:15px">
+                                        <div class="col-md-10 col-6 endereco campo" style="padding-left:0px">
                                             <input type="text" id="address" name="address" class="form-control" placeholder="Endereço"  maxlength="100" autocomplete="off">
                                         </div>
-                                        <div class="col-md-2 col-6 numero campo">
+                                        <div class="col-md-2 col-6 numero campo" style="padding-right:0px">
                                             <input type="text" id="numero" name="number" class="form-control"  placeholder="Nº" maxlength="10"  autocomplete="off">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-5 endereco campo" style="padding-left:15px">
+                                    <div class="row" style="margin: 0 -20px !important;">
+                                        <div class="col-md-5 endereco campo" style="padding-left:0px">
                                             <input type="text" id="complemento" name="additional1" class="form-control"   placeholder="Complemento (Ex: Bloco/Apto)" maxlength="100">
                                         </div>
                                         <div v-if="entrega.tipo != 'bairro'" class="col-md-4 col-6 bairro campo">
                                             <input type="text" id="bairro" name="additional2" placeholder="Bairro" class="form-control"   maxlength="100">
                                         </div>
-                                        <div class="col-md-3  ref campo" style="padding-right:15px">
+                                        <div class="col-md-3  ref campo" style="padding-right:0px">
                                             <input type="text" id="ponto" name="additional3" class="form-control"  placeholder="Ponto de Ref." maxlength="100">
                                         </div>
-                                        <div class="col-md-4 ref campo" v-if="entrega.tipo == 'bairro'" style="padding-left:5px !important">
+                                        <div class="col-md-4 ref campo" v-if="entrega.tipo == 'bairro'" style="padding-left:5px !important; padding-right:0px !important">
                                             <input type="text" id="zip_code" name="zip_code" placeholder="CEP" class="cep form-control"  autocomplete="off" maxlength="9">
                                         </div>
                                     </div>
@@ -178,23 +197,17 @@
                                 <div class="valoresConfirmacao">
                                     <div class="row text-right m-0 justify-content-end">
                                         <div id="cupom_desconto" class="col-3 col-lg-2">
-                                        </div>
-                                      
-                                        <div id="pedido_subtotal" class="col-3 col-lg-2 " >
                                             <span>Subtotal</span>
                                             <strong id="pedido_subtotal_valor">R$ {{valor.replace('.',',')}}</strong>
                                         </div>
-                                        <div id="pedido_taxa_entrega" class="col-4 col-sm-3 " >
+                                        <div id="pedido_subtotal" class="col-3 col-lg-2 " >
                                             <span>Taxa de Entrega</span>
                                             <strong id="pedido_taxa_entrega_valor">{{frete}}</strong>
-                                        </div>
-                                        
-                                        
+                                        </div>                                     
                                         <div id="pedido_total" class="col-3 col-lg-2 total " style="display: none;">
                                             <span>Total</span>
                                             <strong id="pedido_total_valor">R$  {{valor.replace('.',',')}}</strong>
-                                        </div>
-                                      
+                                        </div>           
                                         <div id="fora_de_area" class="col-12" style="display: none;">
                                             <strong id="fora_de_area_valor" class="red">Fora da área de atendimento</strong>
                                         </div>
@@ -216,8 +229,8 @@
                                     </div>
                                 </div>
                             </div>                        
-                            <div id="pagamentoConfirmacao" class="pagamentoConfirmacao">
-                                <h3 class="title">Formas de Pagamento</h3>
+                            <div id="pagamentoConfirmacao" class="center pagamentoConfirmacao" style="box-shadow:none">
+                                <h3 class="title" style="bottom: 12px;">Formas de Pagamento</h3>
                                 <div class="box">
                                     <input onclick="document.getElementById('cartao').style.display='block'; document.getElementById('troco').style.display='none'" type="radio" name="pagamento" id="maquininha" v-model="tipo" value="Cartão">
                                     <label for="maquininha">Cartões (Crédito, Débito, etc)</label>
@@ -249,12 +262,58 @@
                         <!-- /center -->
                     </div>
                 </div>
-    
-                <div class="row mt-4">
+                <div class="informacoesEntrega center" style="display:none;box-shadow:none">
+                    <div class="valoresConfirmacao">
+                        <div class="row text-left">
+                            <p style="display:flex">
+                                <strong>Obs.:</strong>
+                                <span id="obs"></span>
+                            </p>
+                        </div>
+                        <div class="row text-right m-0 justify-content-end">
+                            <div id="cupom_desconto" class="col-3 col-lg-2">
+                                <span>Subtotal</span>
+                                <strong id="pedido_subtotal_valor">R$ {{valor.replace('.',',')}}</strong>
+                            </div>
+                            <div id="pedido_subtotal" class="col-3 col-lg-2 " >
+                                <span>Taxa de Entrega</span>
+                                <strong id="pedido_taxa_entrega_valor">{{frete}}</strong>
+                            </div>                                     
+                            <div id="pedido_total" class="col-3 col-lg-2 total " style="display: none;">
+                                <span>Total</span>
+                                <strong id="pedido_total_valor">R$  {{valor.replace('.',',')}}</strong>
+                            </div>           
+                            <div id="fora_de_area" class="col-12" style="display: none;">
+                                <strong id="fora_de_area_valor" class="red">Fora da área de atendimento</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">                            
+                                    <p>
+                                        <strong>
+                                            <i class="fas fa-map-marker-alt"></i> Endereço de Entrega
+                                        </strong>                                
+                                        <span id="endref"></span>                                
+                                    </p>                      
+                                </div>
+                                <div class="col-md-5">                            
+                                    <p>
+                                        <strong><i class="fas fa-money-bill-wave"></i> Forma de Pagamento</strong>
+                                        <span>{{tipo}}</span>
+                                    </p>                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="row mt-4" id="enviar">
                     <div class="col-md-12">
                         <div class="center" style="box-shadow:none">
                             <div class="avisoEnviado text-center">
-                                <h3 style="color:#c32c31;font-weight: bold;">Quase lá...</h3>
+                                <h3 style="color:#c32c31;font-weight: bold;" >Quase lá...</h3>
                                 <p>Seu pedido ainda não foi enviado, clique no botão abaixo para enviar no WhatsApp!</p>
                                 <div class="abrirWhats">
                                     <a id="enviar-pedido" @click="pedir()" class="btn"
@@ -265,28 +324,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-        <!-- Box Confirmação -->
-        <section id="pedido-concluido" class="boxConfirmacao" style="display: none;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        <div class="center">
-                            <div class="avisoEnviado text-center">
-                                <h3>Pedido concluído!</h3>
-                                <p>Enviou o pedido via WhatsApp? Caso não tenha certeza, envie novamente! Clique no botão
-                                    abaixo para enviar no WhatsApp!</p>
-                                <div class="abrirWhats mb-4">
-                                    <a @click="pedir()" class="btn" >
-                                        Envie seu pedido via WhatsApp
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div>                
             </div>
         </section>
     </div>
@@ -312,6 +350,7 @@ const vue2 = new Vue({
         dinheiro:'',
         pedido:[],
         total:0,
+        repetir: '',
         obter: 'entrega',
         valor:'0.00'
     },
@@ -335,7 +374,7 @@ const vue2 = new Vue({
                     document.getElementById('retirada').setAttribute('class', '')
                     document.getElementById('pedido_total').style.display='none'
                     document.getElementById('pedido_subtotal').style.display='block'
-                    document.getElementById('pedido_taxa_entrega').style.display='block'
+                    document.getElementById('cupom_desconto').style.display='block'
                     vue2.obter ='entrega'
                     vue2.frete = 'A calcular'
                 break;
@@ -344,7 +383,7 @@ const vue2 = new Vue({
                     document.getElementById('entrega').setAttribute('class', '')                    
                     document.getElementById('pedido_total').style.display='block'
                     document.getElementById('pedido_subtotal').style.display='none'
-                    document.getElementById('pedido_taxa_entrega').style.display='none'
+                    document.getElementById('cupom_desconto').style.display='none'
                     vue2.obter = 'retirada'
                 break;
             }           
@@ -401,6 +440,9 @@ const vue2 = new Vue({
                     let bairro = document.getElementById('bairro').value
                     let complemento = document.getElementById('complemento').value
                     let ponto = document.getElementById('ponto').value
+                    let endre = "Rua "+endereco+" - "+numero+" - "+bairro
+                    document.getElementById('endref').innerText=endre
+                    document.getElementById('obs').innerText=" "+obs
                     entrega ="%0A%0A*ENTREGA*%0A*Endereço%20para%20entrega%3A*%0A*Rua%3A%20GFDGF*%0A*Número%3A%20"+numero+"*%0A*Complemento%3A%20"+complemento+"*%0A*Bairro%3A%20"+bairro+"*%0A*Ponto%20de%20Ref.%3A%20"+ponto+"*%0A*CEP%3A%20"+cep+"*"
                 }else{                   
                     vue2.frete = 'R$ 0,00'
@@ -447,6 +489,15 @@ const vue2 = new Vue({
                     cancelButtonText: 'Não',
                     confirmButtonText: 'Sim'
                 }).then((result) => {
+                    document.getElementsByClassName('obsConfirmacao')[0].style.display = 'none'
+                    document.getElementsByClassName('infoEntregaConfirmacao ')[0].style.display = 'none'
+                    document.getElementsByClassName('pagamentoConfirmacao ')[0].style.display = 'none'
+                    document.getElementById('pedido-concluido').style.display = 'block'
+                    document.getElementById('enviar').style.display = 'none'
+                    document.getElementById('titulo').style.display = 'none'
+                    document.getElementById('top').style.border = '0px'
+                    document.getElementsByClassName('informacoesEntrega')[0].style.display = 'block'
+                    vue2.repetir = 'https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*'
                     if (result.isConfirmed) {
                         let info = [] 
                         for(let i = 0; i<document.getElementsByClassName('form-control').length;i++){
@@ -533,6 +584,9 @@ if(Array.isArray(infor)){
             }
         }
     })
+}
+function repetir(){
+    window.open(vue2.repetir)
 }
 </script>
 </body>
