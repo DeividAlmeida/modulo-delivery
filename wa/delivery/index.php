@@ -26,7 +26,7 @@
             $dia = "Domingo";
             break;
     }
-    #$dia= "Segunda-feira";
+    $dia= "Segunda-feira";
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
 	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$categoria}' AND status = 'Ativo'");

@@ -30,6 +30,9 @@
     				</div>
     			</span>	
 				<span class="dropdown">
+					<a class="btn btn-sm btn-primary" href="?Pedi" >Pedidos</a>
+				</span>
+				<span class="dropdown">
     			    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Complementos</a>
     				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
     					<a class="dropdown-item" href="?Comp=0">Cadastrar Complementos</a>
@@ -72,6 +75,8 @@
 				require_once('delivery/adicional/index.php'); 
 			elseif (isset($_GET['Prod']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :
 				require_once('delivery/produto/index.php'); 
+			elseif (isset($_GET['Pedi']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :
+				require_once('delivery/pedidos/index.php'); 
             else:
                 if(checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'categoria', 'adicionar')){
             		require_once('delivery/categoria/index.php'); 
@@ -95,4 +100,11 @@ if(isset($_GET['Deletar'])){
 		}
 	}
 }
+if (isset($_GET['deletarPedidos'])) {
+	$id = $_POST;
+	foreach($_POST['id'] as $no => $post){
+		DBDelete('delivery_pedidos',"id = '{$post}'");
+  	}
+}
+
 require_once('includes/footer.php'); ?>

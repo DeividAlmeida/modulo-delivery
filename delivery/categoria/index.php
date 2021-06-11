@@ -13,7 +13,7 @@ $cod="<script src='https://cdn.jsdelivr.net/npm/vue@2'></script>
     <div id="control" v-if="!status">        
         <div class="card-body p-0" v-if="ctrls != false">
             <div>
-                <div>
+                <div>              
                     <table id="DataTable" class="table m-0 table-striped">
                         <tr>
                             <th>ID</th>
@@ -91,6 +91,13 @@ $cod="<script src='https://cdn.jsdelivr.net/npm/vue@2'></script>
             vue:'src="https://cdn.jsdelivr.net/npm/vue@2"',
             underscore:'src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"',
             div:'id="delivery"',
+            money: {
+                decimal: ',',
+                thousands: '.',
+                prefix: 'R$ ',
+                precision: 2,
+                masked: false 
+            },  
             codigo:[]
         },
         methods:{

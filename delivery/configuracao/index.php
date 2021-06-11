@@ -406,6 +406,13 @@ td input{
                         <small>Lembre-se de inserir seu número completo com Código do País, DDD e Número de Telefone completo Ex. 5511912345678 </small>
                     </div>
                 </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Número de atendimento ao cliente:</label>                        
+                        <input v-model="idx.atendimento" class="form-control" name="atendimento" required type="number">
+                        <small>Lembre-se de inserir seu número completo com Código do País, DDD e Número de Telefone completo Ex. 5511912345678 </small>
+                    </div>
+                </div>
             </div>
 
             <input type="hidden" name="horario" id="horario" > 

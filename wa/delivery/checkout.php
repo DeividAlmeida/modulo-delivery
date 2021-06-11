@@ -124,7 +124,7 @@
                             </div>
                                 <div class="obsConfirmacao">
                                     <label class="text-center">Observações</label>
-                                    <input type="text" id="obsConfirmacao" name="obsConfirmacao" class="form-control" placeholder="Detalhes do Pedido">
+                                    <input type="text" id="obsConfirmacao" name="observa" class="form-control" placeholder="Detalhes do Pedido">
                                 </div>
                             </div>
                             <div class="center infoEntregaConfirmacao" style="box-shadow:none">
@@ -132,10 +132,10 @@
                                 <div class="dados-usuario "  >
                                     <div class="row">
                                         <div class="col-md-5 col-6 campo">
-                                            <input type="text" id="phone" name="phone" placeholder="Celular" class="mobile form-control"   maxlength="15">
+                                            <input type="text" id="phone" name="fone" placeholder="Celular" class="mobile form-control"   maxlength="15">
                                         </div>
                                         <div class="col-md-7 col-6 campo">
-                                            <input type="text" id="name" name="name" placeholder="Nome" class="form-control" maxlength="50">
+                                            <input type="text" id="name" name="nome" placeholder="Nome" class="form-control" maxlength="50">
                                         </div>
                                     </div>
                                 </div>
@@ -155,31 +155,31 @@
                                 <div id="entrega" class="formEntrega center" v-if="obter=='entrega'" style="box-shadow:none">
                                     <div class="row" style="margin: 0 -20px !important;">
                                         <div class="col-md-12 " style="padding:0 !important">
-                                            <select @change='bairro($event.target.value)' v-if="entrega.tipo == 'bairro'" name="" id="bairro" class="form-control"  style=" padding: 0px 20px !important; margin-bottom: 15px !important; color:#828282 !important"   >
+                                            <select @change='bairro($event.target.value)' v-if="entrega.tipo == 'bairro'" name="bairro" id="bairro" class="form-control"  style=" padding: 0px 20px !important; margin-bottom: 15px !important; color:#828282 !important"   >
                                                 <option selected value="" disabled>Bairros Atendidos</option>
                                                 <option :value="bairro.bairro" v-for="bairro of api_entrega">{{bairro.bairro}}</option>                                                
                                             </select>
-                                            <input type="number" @change="cep($event.target.value)" v-else type="text" id="zip_code" name="zip_code" placeholder="CEP" class="cep form-control"  autocomplete="off" maxlength="9">
+                                            <input type="number" @change="cep($event.target.value)" v-else type="text" id="zip_code" name="cep" placeholder="CEP" class="cep form-control"  autocomplete="off" maxlength="9">
                                         </div>
                                         <div class="col-md-10 col-6 endereco campo" style="padding-left:0px">
-                                            <input type="text" id="address" name="address" class="form-control" placeholder="Endereço"  maxlength="100" autocomplete="off">
+                                            <input type="text" id="address" name="endereco" class="form-control" placeholder="Endereço"  maxlength="100" autocomplete="off">
                                         </div>
                                         <div class="col-md-2 col-6 numero campo" style="padding-right:0px">
-                                            <input type="text" id="numero" name="number" class="form-control"  placeholder="Nº" maxlength="10"  autocomplete="off">
+                                            <input type="text" id="numero" name="numero" class="form-control"  placeholder="Nº" maxlength="10"  autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="row" style="margin: 0 -20px !important;">
                                         <div class="col-md-5 endereco campo" style="padding-left:0px">
-                                            <input type="text" id="complemento" name="additional1" class="form-control"   placeholder="Complemento (Ex: Bloco/Apto)" maxlength="100">
+                                            <input type="text" id="complemento" name="complemento" class="form-control"   placeholder="Complemento (Ex: Bloco/Apto)" maxlength="100">
                                         </div>
                                         <div v-if="entrega.tipo != 'bairro'" class="col-md-4 col-6 bairro campo">
-                                            <input type="text" id="bairro" name="additional2" placeholder="Bairro" class="form-control"   maxlength="100">
+                                            <input type="text" id="bairro" name="bairro" placeholder="Bairro" class="form-control"   maxlength="100">
                                         </div>
                                         <div class="col-md-3  ref campo" style="padding-right:0px">
-                                            <input type="text" id="ponto" name="additional3" class="form-control"  placeholder="Ponto de Ref." maxlength="100">
+                                            <input type="text" id="ponto" name="referencia" class="form-control"  placeholder="Ponto de Ref." maxlength="100">
                                         </div>
                                         <div class="col-md-4 ref campo" v-if="entrega.tipo == 'bairro'" style="padding-left:5px !important; padding-right:0px !important">
-                                            <input type="text" id="zip_code" name="zip_code" placeholder="CEP" class="cep form-control"  autocomplete="off" maxlength="9">
+                                            <input type="text" id="zip_code" name="cep" placeholder="CEP" class="cep form-control"  autocomplete="off" maxlength="9">
                                         </div>
                                     </div>
                                     <div class="alert alert-warning" style="display:none;">
@@ -413,6 +413,7 @@ const vue2 = new Vue({
                 }
         },
         pedir: function(){
+            let form = new FormData()
             let obs = document.getElementById('obsConfirmacao').value
             let celular = document.getElementById('phone').value
             let nome = document.getElementById('name').value
@@ -459,9 +460,9 @@ const vue2 = new Vue({
                     let p = ""
                     let p2 =""
                     for(let a =0; a< vue2.pedido[i].adicionais.length; a++){
-                    if(vue2.pedido[i].adicionais[a].qtd >0){
-                            p += "%0A-%20"+vue2.pedido[i].adicionais[a].nome+"%3A%20*"+vue2.pedido[i].adicionais[a].qtd*vue2.pedido[i].qtd+"%20(R%24%20"+vue2.pedido[i].adicionais[a].vl+")*"
-                    } 
+                        if(vue2.pedido[i].adicionais[a].qtd >0){
+                                p += "%0A-%20"+vue2.pedido[i].adicionais[a].nome+"%3A%20*"+vue2.pedido[i].adicionais[a].qtd*vue2.pedido[i].qtd+"%20(R%24%20"+vue2.pedido[i].adicionais[a].vl+")*"
+                        } 
                     }
                     for(let c =0; c< vue2.pedido[i].complementos.length; c++){
                         if(vue2.pedido[i].complementos[c].length>2){
@@ -478,7 +479,20 @@ const vue2 = new Vue({
                     complementos.push(p2)
                     pedido.push("%0A%0A*"+vue2.pedido[i].nome+"*%0AQuantidade%3A%20*"+vue2.pedido[i].qtd+"*%0APreço%3A%20*R%24%20"+vue2.pedido[i].total.replace('.',',')+"*%0A-%20Complementos%3A")
                     pedidos += pedido[i]+adicional[i]+complementos[i]
-                }  
+                }
+                let info = [] 
+                let id = ''
+                for(let i = 0; i<document.getElementsByClassName('form-control').length;i++){
+                    info.push(document.getElementsByClassName('form-control')[i].value)
+                    form.append(document.getElementsByClassName('form-control')[i].name, document.getElementsByClassName('form-control')[i].value)
+                    form.append('total',vue2.total)
+                    form.append('valor',"R$ "+vue2.valor.replace('.',','))
+                    form.append('pedido', JSON.stringify(vue2.pedido))
+                    form.append('data', agora)
+                } 
+                fetch(WACroot+'api/pedidos.php',{method: "POST", body: form}).then(a =>a.text()).then(
+                    data =>{id = data}
+                )
                 Swal.fire({
                     title: 'Informação !',
                     text: "Podemos armazenas essas informações para automatizar esse processo em futuras compras?",
@@ -498,15 +512,11 @@ const vue2 = new Vue({
                     document.getElementById('top').style.border = '0px'
                     document.getElementsByClassName('informacoesEntrega')[0].style.display = 'block'
                     vue2.repetir = 'https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*'
-                    if (result.isConfirmed) {
-                        let info = [] 
-                        for(let i = 0; i<document.getElementsByClassName('form-control').length;i++){
-                            info.push(document.getElementsByClassName('form-control')[i].value)
-                        }
+                    if (result.isConfirmed) {                        
                         localStorage.setItem('delivery_info',JSON.stringify(info))
-                        window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
+                        window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%23'+id+'.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
                     }else{
-                        window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
+                        window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%23'+id+'.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
                     }
                 })        
                 

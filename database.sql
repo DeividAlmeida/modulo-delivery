@@ -33,6 +33,24 @@ CREATE TABLE IF NOT EXISTS `delivery_complemento` (
     `descricao` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- PEDIDOS
+CREATE TABLE IF NOT EXISTS `delivery_pedidos` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `fone` text DEFAULT NULL,
+    `nome` text DEFAULT NULL,
+    `endereco` text DEFAULT NULL,
+    `numero` text DEFAULT NULL,
+    `complemento` text DEFAULT NULL,
+    `bairro` text DEFAULT NULL,
+    `referencia` text DEFAULT NULL,
+    `cep` text DEFAULT NULL,
+    `total` text DEFAULT NULL,
+    `pedido` text DEFAULT NULL,
+    `valor` text DEFAULT NULL,
+    `data` text DEFAULT NULL,
+    `observa` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- ADICIONAL
 CREATE TABLE IF NOT EXISTS `delivery_adicional` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -158,6 +176,7 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
     `mob_preco_pro` varchar(255) DEFAULT NULL,
     `checkout` varchar(255) DEFAULT NULL,
     `whatsapp` varchar(255) DEFAULT NULL,
+    `atendimento` varchar(255) DEFAULT NULL,
         #Horario
     `horario` text DEFAULT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -205,8 +224,9 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
         `mob_preco_pro`,
         `checkout`,
         `whatsapp`,
+        `atendimento`,
 
             #Horario
         `horario`
         ) 
-   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+   VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
