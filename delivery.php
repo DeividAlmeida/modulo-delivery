@@ -22,16 +22,23 @@
     <body>
     	<div class="container-fluid animatedParent animateOnce my-3" >
             <div class="pb-3">
-    			<span class="dropdown">
-    			        <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Categorias</a>
-    				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
-    					<a class="dropdown-item " href="?">Categorias</a>
-    						<a class="dropdown-item" href="?Cat=0">Cadastrar Categoria</a>
-    				</div>
-    			</span>	
 				<span class="dropdown">
 					<a class="btn btn-sm btn-primary" href="?Pedi" >Pedidos</a>
 				</span>
+    			<span class="dropdown">
+    			        <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Categorias</a>
+    				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
+    					<a class="dropdown-item " href="?Cat">Categorias</a>
+    					<a class="dropdown-item" href="?Cat=0">Cadastrar Categoria</a>
+    				</div>
+    			</span>	
+				<span class="dropdown">
+    			    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Produtos</a>
+    				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
+    					<a class="dropdown-item" href="?Prod=0">Cadastrar Produtos</a>
+    					<a class="dropdown-item " href="?Prod">Produtos Cadastrados</a>
+    				</div>
+    			</span>
 				<span class="dropdown">
     			    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Complementos</a>
     				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
@@ -44,13 +51,6 @@
     				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
     					<a class="dropdown-item" href="?Adic=0">Cadastrar Adicionais</a>
     					<a class="dropdown-item " href="?Adic">Adicionais Cadastrados</a>
-    				</div>
-    			</span>
-				<span class="dropdown">
-    			    <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Produtos</a>
-    				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
-    					<a class="dropdown-item" href="?Prod=0">Cadastrar Produtos</a>
-    					<a class="dropdown-item " href="?Prod">Produtos Cadastrados</a>
     				</div>
     			</span>
     			<span class="dropdown">
@@ -75,11 +75,11 @@
 				require_once('delivery/adicional/index.php'); 
 			elseif (isset($_GET['Prod']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :
 				require_once('delivery/produto/index.php'); 
-			elseif (isset($_GET['Pedi']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :
-				require_once('delivery/pedidos/index.php'); 
+			elseif (isset($_GET['Cat']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'item', 'adicionar')) :
+				require_once('delivery/categoria/index.php'); 
             else:
                 if(checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'categoria', 'adicionar')){
-            		require_once('delivery/categoria/index.php'); 
+            		require_once('delivery/pedidos/index.php'); 
                 }
             endif;
             ?>

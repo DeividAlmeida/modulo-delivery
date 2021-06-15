@@ -1,4 +1,18 @@
 <?php 
+$url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+if(!strpos($url, "www.")){
+    $url = "https://www.$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+}
+$c = strrpos($url, "/");
+$cod = '<iframe id="carrinho" class="hidden" style="border: 0; width: 100%; position: fixed;	left: 0; height: 100%; top: 0;	z-index: 100000;" src=""  frameborder="0"></iframe>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js"></script>
+<div id="delivery"></div>
+<script>
+let WACroot= "'.substr($url,0, $c).'/wa/delivery/"; 
+$("#delivery").load(WACroot) 
+</script>';
+
     $a =DBRead('delivery_config','*')[0];
     if(empty($a['horario'])){
         $a['horario'] = [
@@ -54,6 +68,10 @@ td input{
     </div>
     <div class="card-body">
         <form method="post" action="?Config&editaConfig" enctype="multipart/form-data">
+        <button id="btnCopiarCodSite1" class="btn btn-primary btn-xs m-1" onclick="CopiadoCodSite(1)" data-clipboard-text='<?php echo $cod; ?>' type="button">
+                <i class="icon icon-code"></i> Copiar Código de Implementação
+            </button>
+            <hr/>
             <h4>Configuração de Listagem</h4>
             <div class="row">
                 <div class="col-md-4">
