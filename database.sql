@@ -48,6 +48,8 @@ CREATE TABLE IF NOT EXISTS `delivery_pedidos` (
     `pedido` text DEFAULT NULL,
     `valor` text DEFAULT NULL,
     `data` text DEFAULT NULL,
+    `pagamento` text DEFAULT NULL,    
+    `entrega` text DEFAULT NULL,
     `observa` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
