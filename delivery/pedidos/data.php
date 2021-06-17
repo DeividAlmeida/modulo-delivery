@@ -4,16 +4,95 @@ require_once('../../includes/funcoes.php');
 require_once('../../database/config.database.php');
 require_once('../../database/config.php');
 $data = DBRead('delivery_pedidos', '*', 'ORDER BY id DESC');
+$entrega = DBRead('delivery_entrega', '*')[0];
 $pedido = [];
 $table = [];
 $item = '';
-$add = '';
+$item_cozinha = '';
+
 if(is_array($data)){
     foreach($data as $chave => $valor){
+        $a = floatval(floatval(str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['entrega'])))));
+        $b = floatval(floatval(str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['valor'])))));
+        $total = number_format($a+$b,2,'.', '');
         $pedido[$chave] = json_decode($data[$chave]['pedido'], true); 
         if(is_array($pedido[$chave])){                            
             foreach($pedido[$chave] as $key => $value){
-               
+                if(is_array($pedido[$chave][$key]['complementos'])){
+                    $add = '';
+                    $add_cozinha = '';
+                    foreach($pedido[$chave][$key]['complementos'] as $c => $v){                        
+                        if(count($v) >2){
+                            foreach($v as $pass => $vl){
+                                if($v[$pass+2]['qtd']>0){                                    
+                                    $add .=
+                                    '<p style="margin-left:10px;" align="left">
+                                        <span class="tx-12">
+                                           - '.$v[$pass+2]['qtd']*$value['qtd'].' x R$: '.str_replace(",",".",str_replace("R$","",$v[$pass+2]['vl'])).' | '.$v[0].' - '.$v[$pass+2]['nome'].' <br>
+                                        </span>
+                                    </p>';
+                                    $add_cozinha .='
+                                    <p style="margin-left:10px;" align="left">
+                                        <span class="tx-12">                                                                                      		
+                                            - + '.$v[$pass+2]['qtd']*$value['qtd'].' '.$v[0].' - '.$v[$pass+2]['nome'].'<br>		
+                                        </span>
+                                    </p>
+                                    ';
+                                };
+                            };
+                        }else{                       
+                           $add .=
+                           '<p style="margin-left:10px;" align="left">
+                                <span class="tx-12">
+                                    - '.$value['qtd'].' x R$: '.$v[1].' | '.$v[0].' <br>
+                               </span>
+                            </p>';
+                            $add_cozinha .='
+                                <p style="margin-left:10px;" align="left">
+                                    <span class="tx-12">                                                                                      		
+                                        - + '.$value['qtd'].' '.$v[0].'<br>		
+                                    </span>
+                                </p>
+                                ';
+                       }
+                    };
+                };               
+                if(is_array($pedido[$chave][$key]['adicionais'])){
+                    foreach($pedido[$chave][$key]['adicionais'] as $a => $v){ 
+                        if($v['qtd']>0){
+                            $add .=
+                           '<p style="margin-left:10px;" align="left">
+                                <span class="tx-12">
+                                    - '.$value['qtd']*$v['qtd'].' x R$: '.str_replace(",",".",str_replace(".","",$v["vl"])).' | '.$v["nome"].' <br>
+                                </span>
+                            </p>';
+                            $add_cozinha  .='
+                                <p style="margin-left:10px;" align="left">
+                                    <span class="tx-12">                                                                                      		
+                                        - + '.$value['qtd']*$v['qtd'].' '.$v["nome"].'<br>		
+                                    </span>
+                                </p>
+                                ';
+                        }
+                    }
+                }
+                $item_cozinha .='                    		
+                    <p style="margin-left:10px;" align="left">
+                        <span class="tx-12">
+                            <b>** Item:</b> '.$value['nome'].'
+                        </span>
+                    </p>
+                    <p style="margin-left:10px;" align="left">
+                        <span class="tx-12">
+                            <b>- Qnt:</b> '.$value['qtd'].'
+                        </span>
+                    </p>                    
+                    <p style="margin-left:10px;" align="left">
+                        <span class="tx-12">
+                            <b>* Adicionais/Ingredientes:</b>
+                        </span>
+                    </p>'.$add_cozinha.'<br><br>
+                ';
                $item.= '
                 <p style="margin-left:10px;" align="left">
                     <span class="tx-12">
@@ -25,57 +104,31 @@ if(is_array($data)){
                     </p>	
                     <p style="margin-left:10px;" align="left">
                     <span class="tx-12">
-                        <b>- V. Unitário:</b> R$: '.$value['total'].'
+                        <b>- Sub-valor:</b> R$: '.$value['total'].'
                     </span>
-                </p>	
-                <p style="margin-left:10px;" align="left">
-                    <span class="tx-12">
-                        <b>- Obs:</b> Sem picles 
-                    </span>
-                </p>
+                </p>                
                 <p style="margin-left:10px;" align="left">
                     <span class="tx-12">
                         <b>* Adicionais/Ingredientes:</b>
                     </span>
-                </p>'.$add		
+                </p>'.$add.'<br><br>'		
                 ;
-                if(is_array($pedido[$chave]['complementos'])){
-                    var_dump($pedido[$chave]['complementos']);
-                    foreach($pedido[$chave]['complementos'] as $c => $v){                        
-                        if(count($v) >2){
-                            
-                        }else{                       
-                           $add .=
-                           '<p style="margin-left:10px;" align="left">
-                               <span class="tx-12">
-                               -  R$: '.$v[1].' | '.$v[0].' <br>
-                               </span>
-                           </p>';
-                       }
-                   };
-               };               
             };
         };             
-        $table[$chave]['print'] =  '<span id="visul_usuario" class="row justify-content-around">		
-        <div class="card card-people-list pd-15 mg-b-10 col-md-5" style="background-color:#fdfbe3; padding:0px;height: 100%;">
+        $table[$chave]['<span class="hidden">'] =  '</span><span id="visul_usuario" class="row justify-content-around">		
+        <div class="card card-people-list pd-15 mg-b-10 col-md-3" style="background-color:#fdfbe3; padding:0px;height: 100%;">
         <center>
         <a href="#" class="btn btn-primary btn-block invoice-print" name="btnprint" onclick="PrintMe('.$chave.')">
         <i class="fa fa-print" aria-hidden="true"></i> - Balcão
                 </a>
                 </center>
                 <div id="'.$chave.'" style="font-family: Arial;">
-                    <center>                        
+                    
+                    <center>
+                        <p class="tx-12">'.$entrega['rua'].', Bairro '.$entrega['bairro'].'</p>
                     </center>
                     <center>
-                        <p class="tx-15">
-                            <strong>DEMO CARDÁPIO MOBILE</strong>
-                        </p>
-                    </center>
-                    <center>
-                        <p class="tx-12">Av. Miguel de Castro 123, Bairro Pirituba</p>
-                    </center>
-                    <center>
-                        <p class="tx-12">São Paulo - SP / 11984187415</p>
+                        <p class="tx-12">'.$entrega['cidade'].' - '.$entrega['estado'].' / '.$entrega['numero'].'</p>
                     </center>
                     <center>
                         <p class="tx-12">CUPOM NÃO FISCAL</p>
@@ -87,13 +140,19 @@ if(is_array($data)){
                         </p>
                     </center>
                     <center>
-                        <p class="tx-12">02-06-2021 às 12:30:01</p>
+                        <p class="tx-12">'.$valor['data'].'</p>
                     </center>
                     <center>
                         <p class="tx-12">Nº '.$valor['id'].'</p>
                     </center>
                     <hr>'.
-                $item.'<center>=========================</center>	
+                $item.'
+                    <p style="margin-left:10px;" align="left">
+                        <span class="tx-12">
+                            <b>- Obs:</b> '.$valor['observa'].' 
+                        </span>
+                    </p>
+                    <center>=========================</center>	
                     <br>
                     <center>
                         <strong>DADOS DO CLIENTE</strong>
@@ -133,43 +192,29 @@ if(is_array($data)){
                     <center><strong>PAGAMENTO</strong></center>
                     <hr>
                     <p style="margin-left:10px;" align="left">
-                        <span class="tx-12">Pagamento (<b>DEBITO</b>)</span>
+                        <span class="tx-12">Pagamento (<b>'.$valor['pagamento'].'</b>)</span>
                     </p>
                     <p style="margin-left:10px;" align="left">
                         <span class="tx-12">
-                            <b>Subtotal: R$: </b>20,00
+                            <b>Subtotal: R$: </b>'.str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['valor']))).'
                         </span>
-                    </p>
-                    <p style="margin-left:10px;" align="left">
-                        <span class="tx-12"><b>Adicionais: R$: </b>18,00
-                        </span>
-                    </p>
+                    </p>                    
                     <p style="margin-left:10px;" align="left">
                         <span class="tx-12">
-                            <b>Desconto de </b>5%
+                            <b>Entrega: R$: </b>'.str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['entrega']))).'
                         </span>
                     </p>
                     <p style="margin-left:10px;" align="left">
                         <span class="tx-12">
-                            <b>Entrega: R$: </b>4,00
+                            <b>Total Geral: </b> '.$total.'
                         </span>
                     </p>
-                    <p style="margin-left:10px;" align="left">
-                        <span class="tx-12">
-                            <b>Total Geral: </b> '.$valor['valor'].'
-                        </span>
-                    </p>
-                    <br>
-                    <p style="margin-left:10px;" align="right">
-                        <span class="tx-11">
-                            <b>15-06-2021 11:42:42</b>
-                        </span>
-                    </p>                      			  
+                    <br>                                         			  
                 </div>
             </div>
 
                     
-            <div class="card card-people-list pd-15 mg-b-10 col-md-5" style="background-color:#fdfbe3; padding:0px;height: 100%;">
+            <div class="card card-people-list pd-15 mg-b-10 col-md-3" style="background-color:#fdfbe3; padding:0px;height: 100%;">
                 <center>
                     <a href="#" class="btn btn-primary btn-block invoice-print" name="btnprint" onclick="PrintMe2('.$chave .')">
                         <i class="fa fa-print" aria-hidden="true"></i> - Cozinha
@@ -182,42 +227,18 @@ if(is_array($data)){
                         </p>
                     </center>
                     <center>
-                        <p class="tx-12">02-06-2021 às 12:30:01</p>
+                        <p class="tx-12">'.$valor['data'].'</p>
                     </center>
                     <center>
                         <p class="tx-12">Nº '.$valor['id'].'</p>
                     </center>
-                    <hr>		
+                    <hr>
+                    '.$item_cozinha.' 
                     <p style="margin-left:10px;" align="left">
                         <span class="tx-12">
-                            <b>** Item:</b> Monte seu lanche
+                            <b>- Obs:</b> '.$valor['observa'].' 
                         </span>
-                    </p>
-                    <p style="margin-left:10px;" align="left">
-                        <span class="tx-12">
-                            <b>- Qnt:</b> '.$valor['total'].'
-                        </span>
-                    </p>	
-                    <p style="margin-left:10px;" align="left">
-                        <span class="tx-12">
-                            <b>- Obs:</b> Sem picles 
-                        </span>
-                    </p>
-                    <p style="margin-left:10px;" align="left">
-                        <span class="tx-12">
-                            <b>* Adicionais/Ingredientes:</b>
-                        </span>
-                    </p>
-                    <p style="margin-left:10px;" align="left">
-                        <span class="tx-12">
-                            - Pão Australiano<br>
-                            - Mal Passado<br>
-                            - Mussarela<br>		
-                            - Tomate<br>		
-                            - Alface<br>		
-                            - + 2 Carnes<br>		
-                        </span>
-                    </p>
+                    </p>                 
                     <center>=========================</center>
                     <br>
                     <center><strong>DADOS DO CLIENTE</strong></center>
@@ -232,12 +253,7 @@ if(is_array($data)){
                             <b>Celular: </b>'.$valor['fone'].'
                         </span>
                     </p>
-                    <br>
-                    <p style="margin-left:10px;" align="right">
-                        <span class="tx-11">
-                            <b>15-06-2021 11:42:42</b>
-                        </span>
-                    </p>
+                    <br>                    
                     </center>
                 </div>			  
             </div>
