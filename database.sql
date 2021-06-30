@@ -18,17 +18,17 @@ INSERT INTO `delivery` (`id`, `modo`) VALUES (
 -- CATEGORIA
 CREATE TABLE IF NOT EXISTS `delivery_categoria` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `nome` varchar(255) DEFAULT NULL,
+    `nome` text DEFAULT NULL,
     `descricao` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- COMPLEMENTO
 CREATE TABLE IF NOT EXISTS `delivery_complemento` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `nome` varchar(255) DEFAULT NULL,
-    `categoria` varchar(255) DEFAULT NULL,
-    `tipo` varchar(255) DEFAULT NULL,
-    `status` varchar(255)  DEFAULT 'Ativo',
+    `nome` text DEFAULT NULL,
+    `categoria` text DEFAULT NULL,
+    `tipo` text DEFAULT NULL,
+    `status` text  DEFAULT 'Ativo',
     `opcoes` text DEFAULT NULL,
     `descricao` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -56,35 +56,35 @@ CREATE TABLE IF NOT EXISTS `delivery_pedidos` (
 -- ADICIONAL
 CREATE TABLE IF NOT EXISTS `delivery_adicional` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `nome` varchar(255) DEFAULT NULL,
-    `categoria` varchar(255) DEFAULT NULL,
-    `valor` varchar(255) DEFAULT NULL,
-    `status` varchar(255)  DEFAULT 'Ativo'
+    `nome` text DEFAULT NULL,
+    `categoria` text DEFAULT NULL,
+    `valor` text DEFAULT NULL,
+    `status` text  DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- PRODUTO
 CREATE TABLE IF NOT EXISTS `delivery_produto` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `nome` varchar(255) DEFAULT NULL,
-    `categoria` varchar(255) DEFAULT NULL,
-    `valor` varchar(255) DEFAULT NULL,
-    `imagem` varchar(255) DEFAULT NULL,
+    `nome` text DEFAULT NULL,
+    `categoria` text DEFAULT NULL,
+    `valor` text DEFAULT NULL,
+    `imagem` text DEFAULT NULL,
     `complementos` text DEFAULT NULL,
     `adicionais` text DEFAULT NULL,
     `descricao` text DEFAULT NULL,
     `dias` text DEFAULT NULL,
     `promocao` text DEFAULT NULL,
     `v_cortado` text DEFAULT NULL,
-    `status` varchar(255)  DEFAULT 'Ativo'
+    `status` text  DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 -- ENTREGA
 CREATE TABLE IF NOT EXISTS `delivery_entrega` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `estado` varchar(255) DEFAULT NULL,
-    `cidade` varchar(255) DEFAULT NULL,
-    `bairro` varchar(255) DEFAULT NULL,
+    `estado` text DEFAULT NULL,
+    `cidade` text DEFAULT NULL,
+    `bairro` text DEFAULT NULL,
     `numero` text DEFAULT NULL,
     `rua` text DEFAULT NULL,
     `cep` text DEFAULT NULL,
@@ -117,18 +117,18 @@ INSERT INTO `delivery_entrega` (
     `min`,
     `entrega`
 )
- VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+ VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
  
 -- PAGAMENTO
 CREATE TABLE IF NOT EXISTS `delivery_pagamento` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `mostrar` varchar(255) DEFAULT NULL,
-    `meio` varchar(255) DEFAULT NULL,
+    `mostrar` text DEFAULT NULL,
+    `meio` text DEFAULT NULL,
     `opicao` text DEFAULT NULL,
     `email` text DEFAULT NULL,
     `token` text DEFAULT NULL,
-    `pagar` varchar(255) DEFAULT NULL
+    `pagar` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 INSERT INTO `delivery_pagamento` (`id`, `mostrar`, `opicao`, `pagar`, `meio`)
 VALUES (1, NULL, NULL, NULL, NULL);
@@ -139,46 +139,46 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
         #ESTILO
-    `estilo` varchar(255) DEFAULT NULL,
-    `colunas` varchar(255) DEFAULT NULL,
-    `lis_fundo` varchar(255) DEFAULT NULL,
-    `lis_fundo_pro` varchar(255) DEFAULT NULL,
-    `lis_hover_fundo` varchar(255) DEFAULT NULL,
-    `lis_titulo` varchar(255) DEFAULT NULL,
-    `lis_descricao` varchar(255) DEFAULT NULL,
-    `lis_preco` varchar(255) DEFAULT NULL,
-    `lis_preco_pro` varchar(255) DEFAULT NULL,
-    `borda` varchar(255) DEFAULT NULL,
-    `paginacao` varchar(255) DEFAULT NULL,
-    `item` varchar(255) DEFAULT NULL,
-    `pag_fundo` varchar(255) DEFAULT NULL,
-    `pag_texto` varchar(255) DEFAULT NULL,
-    `bg_icone` varchar(255) DEFAULT NULL,
-    `cor_icone` varchar(255) DEFAULT NULL,
-    `bg_btn_pedido` varchar(255) DEFAULT NULL,
-    `cor_btn_pedido` varchar(255) DEFAULT NULL,
+    `estilo` text DEFAULT NULL,
+    `colunas` text DEFAULT NULL,
+    `lis_fundo` text DEFAULT NULL,
+    `lis_fundo_pro` text DEFAULT NULL,
+    `lis_hover_fundo` text DEFAULT NULL,
+    `lis_titulo` text DEFAULT NULL,
+    `lis_descricao` text DEFAULT NULL,
+    `lis_preco` text DEFAULT NULL,
+    `lis_preco_pro` text DEFAULT NULL,
+    `borda` text DEFAULT NULL,
+    `paginacao` text DEFAULT NULL,
+    `item` text DEFAULT NULL,
+    `pag_fundo` text DEFAULT NULL,
+    `pag_texto` text DEFAULT NULL,
+    `bg_icone` text DEFAULT NULL,
+    `cor_icone` text DEFAULT NULL,
+    `bg_btn_pedido` text DEFAULT NULL,
+    `cor_btn_pedido` text DEFAULT NULL,
         #POPUP
-    `pop_fundo` varchar(255) DEFAULT NULL,
-    `pop_titulo` varchar(255) DEFAULT NULL,
-    `pop_descricao` varchar(255) DEFAULT NULL,
-    `pop_fechar` varchar(255) DEFAULT NULL,
-    `entrada` varchar(255) DEFAULT NULL,
+    `pop_fundo` text DEFAULT NULL,
+    `pop_titulo` text DEFAULT NULL,
+    `pop_descricao` text DEFAULT NULL,
+    `pop_fechar` text DEFAULT NULL,
+    `entrada` text DEFAULT NULL,
         #MOBILE
-    `mob_img` varchar(255) DEFAULT NULL,
-    `mob_fundo_categoria` varchar(255) DEFAULT NULL,
-    `mob_texto_categoria` varchar(255) DEFAULT NULL,
-    `mob_fundo_pesquisa` varchar(255) DEFAULT NULL,
-    `mob_texto_pesquisa` varchar(255) DEFAULT NULL,
-    `mob_fundo` varchar(255) DEFAULT NULL,
-    `mob_divisor` varchar(255) DEFAULT NULL,
-    `mob_titulo` varchar(255) DEFAULT NULL,
-    `mob_descricao` varchar(255) DEFAULT NULL,
-    `mob_preco` varchar(255) DEFAULT NULL,
-    `mob_preco_pro_1` varchar(255) DEFAULT NULL,
-    `mob_preco_pro` varchar(255) DEFAULT NULL,
-    `checkout` varchar(255) DEFAULT NULL,
-    `whatsapp` varchar(255) DEFAULT NULL,
-    `atendimento` varchar(255) DEFAULT NULL,
+    `mob_img` text DEFAULT NULL,
+    `mob_fundo_categoria` text DEFAULT NULL,
+    `mob_texto_categoria` text DEFAULT NULL,
+    `mob_fundo_pesquisa` text DEFAULT NULL,
+    `mob_texto_pesquisa` text DEFAULT NULL,
+    `mob_fundo` text DEFAULT NULL,
+    `mob_divisor` text DEFAULT NULL,
+    `mob_titulo` text DEFAULT NULL,
+    `mob_descricao` text DEFAULT NULL,
+    `mob_preco` text DEFAULT NULL,
+    `mob_preco_pro_1` text DEFAULT NULL,
+    `mob_preco_pro` text DEFAULT NULL,
+    `checkout` text DEFAULT NULL,
+    `whatsapp` text DEFAULT NULL,
+    `atendimento` text DEFAULT NULL,
         #Horario
     `horario` text DEFAULT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

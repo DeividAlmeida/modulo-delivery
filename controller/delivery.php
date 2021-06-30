@@ -33,12 +33,23 @@ if(isset($_GET['C_id'])):
     }else{
         $query =  DBUpdate($db, $data, "id = '{$id}'");
     };
-
+    if(isset($query)){
+        if ($query != 0){
+            Redireciona('?sucesso&Cat');
+        }else{
+            Redireciona('?erro&Cat');
+        }
+    }
 endif;
-
 #DELETAR CATEGORIA
 if(isset($_GET['DeletarCategoria'])){
     $id     = get('DeletarCategoria');
     $query  = DBDelete('delivery_categoria',"id = '{$id}'");
+    if(isset($query)){
+        if ($query != 0){
+            Redireciona('?sucesso&Cat');
+        }else{
+            Redireciona('?erro&Cat');
+        }
+    }
 }
-

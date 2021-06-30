@@ -276,7 +276,7 @@ input[type=number] {
             if(c != false){             
                 window.parent.location.assign("javascript:     Swal.fire({ title: 'Erro',  text: 'Você precisa selecionar ao menos 1 item nos complementos', icon: 'error', confirmButtonColor: '#d33'})")
             }else{
-                window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza(); Swal.fire({    title: "Adicionado",    text: "Item adicionado com sucesso!",    icon: "success",    showCancelButton: true,    confirmButtonColor: "#3085d6",    cancelButtonColor: "#22a200",    confirmButtonText: "Finalizar Pedido",    cancelButtonText: "Escolher mais itens"  }).then((result) => {    if (result.isConfirmed) {   $("#delivery").load("'+WACroot+'checkout.php")       }  })')
+                window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza(); Swal.fire({    title: "Adicionado",    text: "Item adicionado com sucesso!",    icon: "success",    showCancelButton: true,    confirmButtonColor: "#3085d6",    cancelButtonColor: "#22a200",    confirmButtonText: "Enviar meu pedido",    cancelButtonText: "Escolher mais itens"  }).then((result) => {    if (result.isConfirmed) {   $("#delivery").load("'+WACroot+'checkout.php")       }  })')
                 window.location=""
                 vue.pedido.qtd = vue.total
                 if(sessionStorage.getItem('delivery_valor') == null){

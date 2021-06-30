@@ -35,14 +35,14 @@ $("#delivery").load(WACroot)
      }
      $query =  DBUpdate($db, $data, "id = '{$id}'");
         
-    }
-if(isset($query)){
+
     if ($query != 0)  {
         Redireciona($UrlPage.'?sucesso'.$route);
     } else {
         Redireciona($UrlPage.'?erro'.$route);
     }
-}
+    
+    }
 ?>
 <style>
 .grided{

@@ -26,7 +26,7 @@
             $dia = "Domingo";
             break;
     }
-    $dia= "Segunda-feira";
+
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
 	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$categoria}' AND status = 'Ativo'");
@@ -237,7 +237,7 @@
 
                             </small>
                         </p>
-                        <button onclick="continuar()" type="button" class="pedir" id="confirmar-pedido">Continuar</button>
+                        <button onclick="continuar()" type="button" class="pedir" id="confirmar-pedido">Enviar meu pedido</button>
                     </div>
                 </div>
             </div>
@@ -353,7 +353,7 @@
                         
                         <div class="botao pedir">
                             <button type="button" onclick="continuar()" id="confirmar-pedido">
-                                Continuar
+                            Enviar meu pedido
                             </button>
                         </div>
                         

@@ -12,14 +12,14 @@ error_reporting(0);
         $data['balcao'] = $_POST['balcao'];
         $data['mesa'] = $_POST['mesa'];
         $query =  DBUpdate($db, $data, "id = '{$id}'");     
+        
+        if ($query != 0)  {
+            Redireciona($UrlPage.'?sucesso'.$route);
+        } else {
+            Redireciona($UrlPage.'?erro'.$route);
+        }
+        
     }
-if(isset($query)){
-    if ($query != 0)  {
-        Redireciona($UrlPage.'?sucesso'.$route);
-    } else {
-        Redireciona($UrlPage.'?erro'.$route);
-    }
-}
 ?>
 <div class="card"  >
     <div class="card-header white" >

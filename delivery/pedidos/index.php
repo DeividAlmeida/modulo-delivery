@@ -17,7 +17,7 @@
             </div>
             <div class="card-body">
                 <div>
-                    <table class="table  table-striped BootstrapTable" id="BootstrapTable" data-auto-refresh="true" data-auto-refresh-interval="1000" data-checkbox-header="true"  data-click-to-select="true"   data-id-field="id" data-select-item-name="id[]" data-maintain-meta-data="true"  data-show-refresh="true"  data-show-pagination-switch="true" data-detail-view="true"   data-detail-formatter="detailFormatter"  data-url="delivery/pedidos/data.php" data-toggle="table" data-pagination="true" data-locale="pt-BR" data-cache="false" data-search="true" data-show-export="true" data-export-data-type="all" data-export-types="['csv', 'excel', 'pdf']" data-mobile-responsive="true" data-click-to-select="true" data-toolbar="#toolbar" data-show-columns="true" >     
+                    <table class="table  table-striped BootstrapTable" id="BootstrapTable" data-auto-refresh="true" data-auto-refresh-interval="120" data-checkbox-header="true"  data-click-to-select="true"   data-id-field="id" data-select-item-name="id[]" data-maintain-meta-data="true"  data-show-refresh="true"  data-show-pagination-switch="true" data-detail-view="true"   data-detail-formatter="detailFormatter"  data-url="delivery/pedidos/data.php" data-toggle="table" data-pagination="true" data-locale="pt-BR" data-cache="false" data-search="true" data-show-export="true" data-export-data-type="all" data-export-types="['csv', 'excel', 'pdf']" data-mobile-responsive="true" data-click-to-select="true" data-toolbar="#toolbar" data-show-columns="true" >     
                         <thead >
                             <tr >
                                 <th data-field="check" data-checkbox="true"></th>        

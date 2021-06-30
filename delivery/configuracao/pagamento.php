@@ -18,14 +18,14 @@ if($array['opicao']==null ){
             $data[$nome]=$value;
         }
         $query =  DBUpdate($db, $data, "id = '{$id}'");     
+        
+        if ($query != 0)  {
+            Redireciona($UrlPage.'?sucesso'.$route);
+        } else {
+            Redireciona($UrlPage.'?erro'.$route);
+        }
+      
     }
-if(isset($query)){
-    if ($query != 0)  {
-        Redireciona($UrlPage.'?sucesso'.$route);
-    } else {
-        Redireciona($UrlPage.'?erro'.$route);
-    }
-}
 ?>
 <style>
 .quadro{
