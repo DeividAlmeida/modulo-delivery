@@ -151,16 +151,16 @@
                                 <div  id="entrega" :class="entrega.delivery == 'on' && obter=='entrega'?'formEntrega center':'formEntrega center hidden'" style="box-shadow:none">
                                     <div class="row" style="margin: 0 -20px !important;">
                                         <div class="col-md-12 " style="padding:0 !important">
-                                            <select @change='bairro($event.target.value)' v-if="entrega.tipo == 'bairro'" name="bairro" id="bairro" class="form-control obriga"  style=" padding: 0px 20px !important; margin-bottom: 15px !important; color:#828282 !important"   v-model="bairros">
+                                            <select @change='bairro($event.target.value)' v-if="entrega.tipo == 'bairro'  && obter =='entrega'" name="bairro" id="bairro" class="form-control obriga"  style=" padding: 0px 20px !important; margin-bottom: 15px !important; color:#828282 !important"   v-model="bairros">
                                                 <option selected value="" disabled>Bairros Atendidos</option>
                                                 <option :value="bairro.bairro" v-for="bairro of api_entrega">{{bairro.bairro}}</option>                                                
                                             </select>
-                                            <input type="number" @change="cep($event.target.value)" v-else type="text" id="cep" name="cep" placeholder="CEP" class="cep form-control obriga"  autocomplete="off" maxlength="9" v-model="bairros">
+                                            <input type="number" @change="cep($event.target.value)" v-if="entrega.tipo != 'bairro' && obter =='entrega'" type="text" id="cep" name="cep" placeholder="CEP" class="cep form-control obriga"  autocomplete="off" maxlength="9" v-model="bairros">
                                         </div>
-                                        <div class="col-md-10 col-6 endereco campo" style="padding-left:0px">
+                                        <div v-if="obter =='entrega'" class="col-md-10 col-6 endereco campo" style="padding-left:0px">
                                             <input type="text" id="endereço" name="endereco" class="form-control obriga" placeholder="Endereço"  maxlength="100" autocomplete="off" v-model="endereco">
                                         </div>
-                                        <div class="col-md-2 col-6 numero campo" style="padding-right:0px">
+                                        <div v-if="obter =='entrega'" class="col-md-2 col-6 numero campo" style="padding-right:0px">
                                             <input type="text" id="numero" name="numero" class="form-control obriga"  placeholder="Nº" maxlength="10"  autocomplete="off" v-model="numero">
                                         </div>
                                     </div>
@@ -174,7 +174,7 @@
                                         <div class="col-md-3  ref campo" style="padding-right:0px">
                                             <input type="text" id="referencia" name="referencia" class="form-control"  placeholder="Ponto de Ref." maxlength="100" v-model="referencia">
                                         </div>
-                                        <div class="col-md-4 ref campo" v-if="entrega.tipo == 'bairro'" style="padding-left:5px !important; padding-right:0px !important">
+                                        <div v-if="obter =='entrega'" class="col-md-4 ref campo" v-if="entrega.tipo == 'bairro'" style="padding-left:5px !important; padding-right:0px !important">
                                             <input type="text" id="cep" name="cep" placeholder="CEP" class="cep form-control obriga"  autocomplete="off" maxlength="9" v-model="ceps">
                                         </div>
                                     </div>

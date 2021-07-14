@@ -209,11 +209,12 @@ height:350px;
 .tres{
     width: auto;
     padding: 0px 5px 15px 25px;
-    white-space: nowrap;
+    white-space: pre-wrap;
     text-overflow: ellipsis;
     position: relative;
     overflow: hidden;
     font-size: 15px;
+
 }
 .tres b{
     font-weight: 900;
@@ -304,7 +305,6 @@ height:350px;
     white-space: nowrap;
     margin: 0;
     position: relative;
-    left: 2%;
     top:1px;
     font-size:120%;
     box-sizing: border-box;
@@ -343,26 +343,28 @@ height:350px;
     width:95% !important;
     }
     .um img {
-    width: auto;
+    max-width: none !important;
+    width: 9em;
     height: 123px;
     position: relative;
     }
     .um{
         grid-row:1/3; 
-        padding-right:15px;
+        padding-right:10px;
     }
 .column:hover {
     background:<?php echo $conf['mob_fundo']?>;
     }
 
 .dois {
-    height:100px;
+    height:auto;
     width: auto;
     margin-top: 25px;
     top: 0;
     position: relative;
     padding: 0;
     white-space: normal;
+    max-width:110px;
 }
 
 .dois b{
@@ -382,27 +384,28 @@ color:<?php echo $conf['mob_titulo']?>;
 .etiqueta2{
     background: <?php echo $conf['bg_btn_pedido']?>  !important;
     color: <?php echo $conf['cor_btn_pedido']?>  !important;
-    padding: 8px;
-    border-radius: 20px;
-    margin: 0% !important;
+    padding: 9px;
+    border-radius: 25px;
+    margin: 5% !important;
     position: relative;
     white-space: nowrap;
     bottom: 10px;
-    top: 10px;
+    top: 40px;
+    right:5px;
     height: 35px;
     display:grid !important;
-    width: 115px;
+    width: 35px;
 }
 .etiqueta{
     display:none;
 }
 .tres{
     width: auto;
-    padding: 22px 25px 0px 5px;
+    padding: 5px 20px 0px 0px;
     white-space: nowrap;
     text-overflow: ellipsis;
     position: relative;
-    overflow: hidden;
+    overflow: pre-wrap;
     font-size: 15px;
 }
 

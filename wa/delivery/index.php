@@ -313,10 +313,10 @@
                 <div class="dois">
                     <b>{{item.nome}}</b>                       
                 </div>
+                <span class="etiqueta2"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
                 <div class="tres">                       
-                    <b class="nao" v-if="item.promocao == 'S'" >{{item.v_cortado}}</b> <b class="sim">{{item.valor}}</b>
+                    <b class="nao" v-if="item.promocao == 'S'" >{{item.v_cortado}}</b> <br v-if="item.promocao == 'S'" ><b class="sim">{{item.valor}}</b>
                 </div>
-                <span class="etiqueta2">Realizar Pedido</span>
             </div>                
         </div>                      
         <ul  class="pagination col-12" v-if="config.paginacao == 'S'">

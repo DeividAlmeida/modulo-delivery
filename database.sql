@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `delivery_produto` (
     `dias` text DEFAULT NULL,
     `promocao` text DEFAULT NULL,
     `v_cortado` text DEFAULT NULL,
-    `status` text  DEFAULT 'Ativo'
+    `status` varchar(255)  DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

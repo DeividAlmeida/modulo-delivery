@@ -76,7 +76,7 @@ methods: {
       document.querySelectorAll('iframe#carrinho')[0].src=vue.origin+"wa/delivery/modal.php?id="+a+"&horario="+b
         setTimeout( function(){
           window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "open")')
-        }, 300)
+        }, 1000)
         this.idx=a;        
     },
     close: function(){
