@@ -384,13 +384,13 @@ color:<?php echo $conf['mob_titulo']?>;
 .etiqueta2{
     background: <?php echo $conf['bg_btn_pedido']?>  !important;
     color: <?php echo $conf['cor_btn_pedido']?>  !important;
-    padding: 9px;
+    padding: 10.5px 9px;
     border-radius: 25px;
     margin: 5% !important;
     position: relative;
     white-space: nowrap;
     bottom: 10px;
-    top: 40px;
+    top: 35px;
     right:5px;
     height: 35px;
     display:grid !important;

@@ -127,7 +127,7 @@ input[type=number] {
                 </div>                
                 <div  class="group" data-uuid="f8a507e3-5637-44af-9bc0-8c26dc753119" data-min-qtt="1" data-max-qtt="1" data-name="Tamanho">
                     <div class="title">                        
-                        <h4>ADICIONAIS</h4>                      
+                        <h4 v-if="produtos[id].adicionais.length >0">ADICIONAIS</h4>                      
                     </div>                    
                    <div v-if="pedido.adicionais[ida]" v-for="adicional, ida of produtos[id].adicionais" >
                         <div style="border-bottom: 1px #efefef solid;" class="option" data-uuid="70e720cc-a8c8-4dfd-8429-0a443b2804c2">
@@ -154,6 +154,11 @@ input[type=number] {
                             </div>
                         </div>                    
                    </div> 
+                </div>
+                <div v-if="produtos[id].adicionais.length == 0 && produtos[id].complementos.length == 0 ">
+                    <figure class="figure">
+                        <img :src="origin+'wa/delivery/uploads/'+produtos[id].imagem" class="figure-img img-fluid rounded" :alt="produtos[id].descricao">
+                    </figure>
                 </div>
                 <div class="footer">
                     <div class="right">
@@ -189,6 +194,7 @@ input[type=number] {
  const vue = new Vue({
     el: '#modalComplexo',
     data:{
+         origin:'<?php echo ConfigPainel('base_url') ?>',
          produtos: <?php echo $produtos ?>,
          complementos: <?php echo $complementos ?>, 
          adicionais: <?php echo $adicionais ?>,

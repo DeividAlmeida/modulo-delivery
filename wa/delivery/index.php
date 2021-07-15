@@ -27,20 +27,20 @@
             break;
     }
 
+	$conf = DBRead('delivery_config','*')[0];
 	if(isset($_GET['id'])):
 	    $categoria = $_GET['id'];
-	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$categoria}' AND status = 'Ativo'");
+	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$categoria}' AND status = 'Ativo' ORDER BY {$conf['ordem']} {$conf['ascdesc']}");
 	elseif (isset($_GET['categoria'])):
 	    $cat = $_GET['categoria'];
-	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$cat}' AND status = 'Ativo' AND dias LIKE '%$dia%'");
+	    $fetch = DBRead('delivery_produto','*' ,"WHERE categoria = '{$cat}' AND status = 'Ativo' AND dias LIKE '%$dia%' ORDER BY {$conf['ordem']} {$conf['ascdesc']}");
 	    $categoria = 'null';
 	else:
 	    $categoria = 'null';
-	    $fetch = DBRead('delivery_produto','*',"WHERE status = 'Ativo' AND dias LIKE '%$dia%'");
+	    $fetch = DBRead('delivery_produto','*',"WHERE status = 'Ativo'  AND dias LIKE '%$dia%' ORDER BY {$conf['ordem']} {$conf['ascdesc']}");
 
 	endif;
 	    $categorias = json_encode(DBRead('delivery_categoria','*'));
-	    $conf = DBRead('delivery_config','*')[0];
 	    $entrega = json_encode(DBRead('delivery_entrega','*')[0]);
 	    $pagamento = json_encode(DBRead('delivery_pagamento','*')[0]);
 	    $config = json_encode($conf);
@@ -315,7 +315,7 @@
                 </div>
                 <span class="etiqueta2"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
                 <div class="tres">                       
-                    <b class="nao" v-if="item.promocao == 'S'" >{{item.v_cortado}}</b> <br v-if="item.promocao == 'S'" ><b class="sim">{{item.valor}}</b>
+                    <b class="nao" v-if="item.promocao == 'S'" >{{item.v_cortado}}</b> <br v-if="item.promocao == 'S'" class="etiqueta2" ><b class="sim">{{item.valor}}</b>
                 </div>
             </div>                
         </div>                      

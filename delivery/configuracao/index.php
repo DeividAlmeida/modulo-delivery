@@ -277,6 +277,20 @@ td input{
                         </div>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <label>Ordenar por:</label>
+                    <select v-model="idx.ordem" name="ordem" class="form-control custom-select" required>
+                        <option value="id">ID (Ordem de Criação)</option>
+                        <option value="nome"> Nome</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Ordem de Exibição:</label>
+                    <select class="form-control custom-select" name="ascdesc" v-model="idx.ascdesc">
+                        <option value="ASC" selected>Crescente (Menor > Maior)</option>
+                        <option value="DESC">Decrescente (Maior > Menor)</option>
+                    </select>
+                </div>
             </div>
             <hr>
             <h4>Configuração Popup</h4>
