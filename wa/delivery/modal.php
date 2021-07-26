@@ -117,7 +117,7 @@ input[type=number] {
                                     </div>
                                 </div>
                                 <div v-else class="checkbox">                             
-                                    <input type="radio" :name="complemento.nome" @change="sel(idc, opcao.valor.replace(/[^0-9,-]+/g,''), opcao.nome)" v-model="pedido.complementos[idc].escolha" class="option-qtt" :value="opcao.nome" :id="opcao.nome" data-name="Mini" data-price="15.00">
+                                    <input type="radio" :name="complemento.nome" @change="sel(idc, opcao.valor.replace(/[^0-9,-]+/g,''), opcao.nome,id)" v-model="pedido.complementos[idc].escolha" class="option-qtt" :value="opcao.nome" :id="opcao.nome" data-name="Mini" data-price="15.00">
                                     <label :for="opcao.nome"></label>                               
                                 </div>                         
                                 <p class="price">{{opcao.valor == 'R$ 0,00'?'Grátis':'+ '+opcao.valor}}</p>
@@ -234,7 +234,10 @@ input[type=number] {
         },
         add: function(a,b,c,d,e){
             let valor = parseFloat(e.replace(',','.')) 
-            if(c == 'c' && vue.pedido.complementos[a][1] < d){
+            if(c == 'c' ){
+                if(vue.pedido.complementos[a][1] < d){
+                    valor = 0
+                }
                 vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd+1
                 vue.pedido.complementos[a][1] = vue.pedido.complementos[a][1]+1
                 vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor).toFixed(2)
@@ -300,8 +303,14 @@ input[type=number] {
                 }
             }
         },
-        sel: function(a, b, c){  
-            let valor = parseFloat(b.replace(',','.'))           
+        sel: function(a, b, c, d){  
+            let valor
+            if(1 > parseInt(this.produtos[d].complementos[a].max) && this.produtos[d].complementos[a].tipo==1){
+                valor = parseFloat(b.replace(',','.')) 
+            }else{
+                valor = 0.00
+            }
+            
             vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor-vue.pedido.complementos[a][1]).toFixed(2)
             vue.valor = parseFloat(vue.valor+valor-vue.pedido.complementos[a][1])           
             vue.pedido.complementos[a][1] = valor.toFixed(2)

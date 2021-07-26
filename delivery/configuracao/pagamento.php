@@ -241,13 +241,13 @@ if($array['opicao']==null ){
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>E-mail:</label>                        
-                                        <input v-model="idx.email" type="email" placeholder="E-mail" class="form-control" name="email" required>
+                                        <input v-model="idx.email" type="email" placeholder="E-mail" class="form-control" name="email" >
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Token:</label>                        
-                                        <input v-model="idx.token" placeholder="Token" class="form-control" name="token" required>
+                                        <input v-model="idx.token" placeholder="Token" class="form-control" name="token" >
                                     </div>
                                 </div>
                             </div>
