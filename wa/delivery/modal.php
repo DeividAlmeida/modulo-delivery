@@ -81,9 +81,8 @@ input[type=number] {
                         <div class="col-12"> 
                             Você deve selecionar ao menos 
                             <span class="green">1</span>
-                            e no máximo 
-                            <span class="green">{{complemento.max}}</span>
-                            opções.
+                            
+                            opção.
                             <br>
                             Você selecionou 
                             <span class="qtt green">{{pedido.complementos[idc][1]}}</span>.
@@ -105,11 +104,11 @@ input[type=number] {
                             <div class="col-5 align-self-center text-right">                                
                                 <div class="input-group " v-if="complemento.tipo == 0">
                                     <div class="input-group-prepend">
-                                        <button style="min-width: 2.5rem"  class="btn btn-decrement btn-outline-secondary" type="button" @click="remove(idc, idp+2, 'c', opcao.valor.replace(/[^0-9,-]+/g,''))">
+                                        <button style="min-width: 2.5rem"  class="btn btn-decrement btn-outline-secondary" type="button" @click="remove(idc, idp+2, 'c', opcao.valor.replace(/[^0-9,-]+/g,''), complemento.max)">
                                             <strong>-</strong>
                                         </button>
                                     </div>
-                                    <input type="number" min="0" inputmode="decimal" @change="edit(idc,idp+2,'c',$event.target.value, complemento.max, opcao.valor.replace(/[^0-9,-]+/g,'') )" :value="pedido.complementos[idc][idp+2].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
+                                    <input type="number" min="0" inputmode="decimal" @change="edit(idc,idp+2,'c',$event.target.value, complemento.max, opcao.valor.replace(/[^0-9,-]+/g,''),id )" :value="pedido.complementos[idc][idp+2].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
                                     <div class="input-group-append">
                                         <button style="min-width: 2.5rem" @click="add(idc, idp+2, 'c', complemento.max, opcao.valor.replace(/[^0-9,-]+/g,''))" class="btn btn-increment btn-outline-secondary" type="button">
                                             <strong>+</strong>
@@ -191,14 +190,16 @@ input[type=number] {
 </body>
 <script>
 
+ 
  const vue = new Vue({
     el: '#modalComplexo',
     data:{
-         origin:'<?php echo ConfigPainel('base_url') ?>',
          produtos: <?php echo $produtos ?>,
          complementos: <?php echo $complementos ?>, 
          adicionais: <?php echo $adicionais ?>,
          total:1,
+         c_valido:[],
+         c_valor:[],
          aviso:'<?php echo $_GET['horario'] ?>',
          valor:0,
          pedido:{qtd:1,nome: '<?php echo $db[0]['nome'] ?>',total:0,complementos:[], adicionais:[]}
@@ -208,22 +209,54 @@ input[type=number] {
             window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden")')
             window.location=""
         },
-        edit: function(a,b,c,d,e,f){
+        edit: function(a,b,c,d,e,f,g){
             let valor = parseFloat(f.replace(',','.'))
-            let count = parseInt(Math.abs(d))               
+            let count = parseInt(Math.abs(d))
+            let contar = 0
+            let v
+            let z =0
+            let desconto = parseInt(e)
+            let fator
+            let pass_vl =  vue.c_valor[a][0]
+            let pass = this.pedido.complementos[a][b].qtd
+            let compara = parseFloat((count*valor)-(pass*valor))
             if(c == 'c'){
+                let agvl = 0
+                let real = 0
+                this.pedido.complementos[a][b].qtd = parseInt(Math.abs(d))
                 for(let i =2; i<vue.pedido.complementos[a].length; i++){
                     if(vue.pedido.complementos[a][i].nome != vue.pedido.complementos[a][b].nome){
                        count += vue.pedido.complementos[a][i].qtd 
                     }
+                    if(vue.pedido.complementos[a][i].vl != "R$ 0,00"){
+                        contar += vue.pedido.complementos[a][i].qtd
+                        v = vue.pedido.complementos[a][i].vl.replace(/[^0-9,-]+/g,'')
+                        fator =Math.abs(vue.pedido.complementos[a][i].qtd-desconto)
+                        if(vue.pedido.complementos[a][i].qtd >0){
+                            agvl += parseFloat(v.replace(',','.'))* fator
+                            if(contar>parseInt(e)){
+                                vue.c_valor[a][0] =  agvl
+                                vue.c_valido[a][0] = contar
+                                desconto = 0
+                                 real = parseFloat(agvl-pass_vl)
+                            
+                            }
+                        }
+                    }
                 }
-                if(count <= e){
-                    let real = parseFloat((count*valor)-(this.pedido.complementos[a][b].qtd*valor))
-                    this.pedido.complementos[a][b].qtd = parseInt(Math.abs(d))
-                    vue.pedido.complementos[a][1] = count                    
-                    vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+real).toFixed(2)
-                    vue.valor = parseFloat(vue.valor+real)
+                if(contar<=parseInt(e)){
+                    vue.c_valor[a][0] =  0
+                    vue.c_valido[a][0] = contar
+                    if(pass_vl>0){
+                        real = parseFloat(vue.c_valor[a][0]-pass_vl)
+                    }
                 }
+                
+                this.pedido.complementos[a][b].qtd = parseInt(Math.abs(d))
+                vue.pedido.complementos[a][1] = count                    
+                vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+real).toFixed(2)
+                vue.valor = parseFloat(vue.valor+real)
+                
             }else{
                 let real = parseFloat((count*valor)-(this.pedido.adicionais[a].qtd*valor))
                 vue.pedido.adicionais[a].qtd = parseInt(Math.abs(d))
@@ -238,6 +271,12 @@ input[type=number] {
                 if(vue.pedido.complementos[a][1] < d){
                     valor = 0
                 }
+                if(parseFloat(e)>0){
+                        vue.c_valido[a][0] = vue.c_valido[a][0]+1
+                        if(vue.c_valido[a][0] >= d){
+                            vue.c_valor[a][0] = vue.c_valor[a][0]+parseFloat(valor)
+                        }
+                }
                 vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd+1
                 vue.pedido.complementos[a][1] = vue.pedido.complementos[a][1]+1
                 vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor).toFixed(2)
@@ -250,12 +289,26 @@ input[type=number] {
             }
             this.$forceUpdate()
         },        
-        remove: function(a,b,c,d){
+        remove: function(a,b,c,d,e){
             let valor = parseFloat(d.replace(',','.')) 
             if(c == 'c'){
                 if(vue.pedido.complementos[a][b].qtd <= 0){
                     vue.pedido.complementos[a][b].qtd=0
                 }else{
+                    
+                     if(vue.c_valido[a][0] == 0){
+                        valor = 0
+                    }
+                    if(parseFloat(d)>0 &&  vue.c_valido[a][0] > 0){
+                        vue.c_valido[a][0] = vue.c_valido[a][0]-1
+                        if(vue.c_valor[a][0]-parseFloat(valor)<0){
+                            valor = vue.c_valor[a][0]
+                            vue.c_valor[a][0] = 0
+                        }else{
+                            vue.c_valor[a][0] = vue.c_valor[a][0]-parseFloat(valor)
+                             valor = parseFloat(valor)
+                        }
+                    }
                     vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd-1
                     vue.pedido.complementos[a][1] = vue.pedido.complementos[a][1]-1
                     vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))-valor).toFixed(2)
@@ -271,7 +324,7 @@ input[type=number] {
                 }
             }
             this.$forceUpdate()
-        }, 
+        },
         concluir: function(){
             let WACroot = window.location.href.split("?")[0].replace('modal.php','')
 
@@ -303,14 +356,8 @@ input[type=number] {
                 }
             }
         },
-        sel: function(a, b, c, d){  
-            let valor
-            if(1 > parseInt(this.produtos[d].complementos[a].max) && this.produtos[d].complementos[a].tipo==1){
-                valor = parseFloat(b.replace(',','.')) 
-            }else{
-                valor = 0.00
-            }
-            
+        sel: function(a, b, c){  
+            let valor = parseFloat(b.replace(',','.'))           
             vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor-vue.pedido.complementos[a][1]).toFixed(2)
             vue.valor = parseFloat(vue.valor+valor-vue.pedido.complementos[a][1])           
             vue.pedido.complementos[a][1] = valor.toFixed(2)
@@ -356,6 +403,10 @@ input[type=number] {
         }    
     })
  })
+ for(let l=0;l<vue.produtos[0].complementos.length;l++){
+    vue.c_valido.push({0:0})
+    vue.c_valor.push({0:0})
+ }
 let result = vue.produtos[0].valor.replace(/[^0-9,-]+/g,"")
 vue.pedido.total= parseFloat(result.replace(',','.')).toFixed(2)
 vue.valor = parseFloat(vue.pedido.total)
