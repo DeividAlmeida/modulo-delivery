@@ -11,7 +11,7 @@
     $config = json_encode($conf);
 ?>      
     <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
-    <link rel="stylesheet" href="<?php echo ConfigPainel('base_url') ?>wa/delivery/src/style/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
     <?php require_once('../../wa/delivery/src/style/cardapex.php') ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 <style>
@@ -231,15 +231,13 @@ input[type=number] {
                     if(vue.pedido.complementos[a][i].vl != "R$ 0,00"){
                         contar += vue.pedido.complementos[a][i].qtd
                         v = vue.pedido.complementos[a][i].vl.replace(/[^0-9,-]+/g,'')
-                        fator =Math.abs(vue.pedido.complementos[a][i].qtd-desconto)
+                        fator =Math.abs(contar-desconto)
                         if(vue.pedido.complementos[a][i].qtd >0){
-                            agvl += parseFloat(v.replace(',','.'))* fator
                             if(contar>parseInt(e)){
+                                agvl += parseFloat(v.replace(',','.'))* fator
                                 vue.c_valor[a][0] =  agvl
                                 vue.c_valido[a][0] = contar
-                                desconto = 0
-                                 real = parseFloat(agvl-pass_vl)
-                            
+                                real = parseFloat(agvl-pass_vl)
                             }
                         }
                     }
