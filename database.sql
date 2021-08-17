@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `delivery_adicional` (
     `nome` text DEFAULT NULL,
     `categoria` text DEFAULT NULL,
     `valor` text DEFAULT NULL,
-    `status` text  DEFAULT 'Ativo'
+    `status` varchar(255)  DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- PRODUTO
