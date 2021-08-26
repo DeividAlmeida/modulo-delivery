@@ -11,7 +11,7 @@
     $config = json_encode($conf);
 ?>      
     <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo ConfigPainel('base_url'); ?>wa/delivery/src/style/bootstrap.min.css">
     <?php require_once('../../wa/delivery/src/style/cardapex.php') ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 <style>
@@ -27,7 +27,9 @@
         border-radius: 25px;
         cursor:pointer;
     }
-
+    .text-right{
+        text-align: right!important;
+    }
     body{
         background:transparent !important;
     }
@@ -156,7 +158,7 @@ input[type=number] {
                 </div>
                 <div v-if="produtos[id].adicionais.length == 0 && produtos[id].complementos.length == 0 ">
                     <figure class="figure">
-                        <img :src="origin+'wa/delivery/uploads/'+produtos[id].imagem" class="figure-img img-fluid rounded" :alt="produtos[id].descricao">
+                        <img :src="'uploads/'+produtos[id].imagem" class="figure-img img-fluid rounded" :alt="produtos[id].descricao">
                     </figure>
                 </div>
                 <div class="footer">

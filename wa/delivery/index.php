@@ -77,7 +77,7 @@
                             <i class="far fa-clock"></i> <strong :class="aviso == 'Estamos abertos'?'text-success':'text-danger'">{{aviso}}</strong>
                             
                             <span v-if="">{{aviso == 'Estamos abertos'?ate:'Volte em breve'}}</span>
-                            <i class="fas fa-angle-down"></i>
+                            <i class="fa fa-angle-down"></i>
                             
                         </p>
                         
@@ -99,7 +99,7 @@
                 <div v-if="gpagamento.mostrar == 'S'" :class="'btn boxin pagamento '+pagamento" @click="pagamento == 'ativo'? pagamento = '':pagamento = 'ativo'">
                     <div class="formasPagamento">
                         <strong>Formas <br>de Pagamento</strong>
-                        <i class="fas fa-angle-down"></i>
+                        <i class="fa fa-angle-down"></i>
                     </div>
                     <div class="listaFormas" :style="pagamento != 'ativo'?'display: none':void(0)">
                         <div v-if="gpagamento.opicao.credito.length >0" class="">
@@ -147,14 +147,14 @@
         <div class="basket hidden" >
             <div class="box">
                 <button class="closeBasket" onclick="document.getElementsByClassName('basket')[0].setAttribute('class','basket hidden')" >
-                    <i class="fas fa-chevron-right"></i>
+                    <i class="fa fa-chevron-right"></i>
                 </button>
                 <div class="basketContent">
                     <h3>Seu Pedido</h3>
                     <div class="basket-body" id="basket">
                         <div class="itemBasket" v-for="list,id of pedido">
                             <div @click="openhide(id)" :id="'p'+id" class="name opened">
-                                <i class="fas fa-chevron-right seta"></i>
+                                <i class="fa fa-chevron-right seta"></i>
                                 <span>{{list.nome}}</span>
                                 <button style="background: #dc3545; opacity: 1; text-shadow: none; color: white;border-radius: 25px;" type="button" class="close remover" aria-label="Remover" @click="remove(id, list.qtd, list.total)" data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b">
                                     <span>Remover item</span>
@@ -246,7 +246,7 @@
                 <div class="input-group mb-3 input_sty1">
                     <div class="input-group-prepend picon">
                         <a class=" fa btn"  type="button">
-                            <i style="font-size:20px" class="fas fa-list"></i>
+                            <i style="font-size:20px" class="fa fa-list"></i>
                         </a>
                     </div>
                     <select  @change="categor($event)"  v-if="!categoria" class="search custom-select" >
@@ -262,7 +262,7 @@
                     <input class="search" @input='here=>searchQuery=here.target.value' placeholder=" Faça uma busca  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
                     <div class="input-group-prepend picon">
                         <a class=" fa btn"  type="button">
-                            <i style="font-size:20px" class="fas fa-search"></i>
+                            <i style="font-size:20px" class="fa fa-search"></i>
                         </a>
                     </div>
                 </div>
@@ -276,7 +276,7 @@
                             <div class="input-group mb-3 input_sty1">
                                 <div class="input-group-prepend picon">
                                     <a class=" fa btn"  type="button">
-                                        <i style="font-size:20px" class="fas fa-list"></i>
+                                        <i style="font-size:20px" class="fa fa-list"></i>
                                     </a>
                                 </div>
                                 <select  @change="categor($event)"  v-if="!categoria" class="search custom-select" >
@@ -292,7 +292,7 @@
                                 <input class="search" @input='here=>searchQuery=here.target.value' placeholder=" Faça uma busca  " icon="&#xF002;" style="font-family:Arial, FontAwesome" @keyup="resultQuery()" />
                                 <div class="input-group-prepend picon">
                                     <a class=" fa btn"  type="button">
-                                        <i style="font-size:20px" class="fas fa-search"></i>
+                                        <i style="font-size:20px" class="fa fa-search"></i>
                                     </a>
                                 </div>
                             </div>
@@ -302,21 +302,22 @@
             </div>
         </section>        
         
-        
-        <div class="col-sm-3" v-for="(item, index) in tokens">
-            <div id="diferir" :class="item.promocao == 'S'?'promocao column post-grid-content':'column post-grid-content'"  @click="select(item.id, aviso)">
-                <div class="um">
-                    <img :src="origin+'wa/delivery/uploads/'+item.imagem">
-                </div>
-                <span class="etiqueta">Realizar Pedido</span>
-                <div class="dois">
-                    <b>{{item.nome}}</b>                       
-                </div>
-                <span class="etiqueta2"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
-                <div class="tres">                       
-                    <b class="nao" v-if="item.promocao == 'S'" >{{item.v_cortado}}</b> <br v-if="item.promocao == 'S'" class="etiqueta2" ><b class="sim">{{item.valor}}</b>
-                </div>
-            </div>                
+        <div class="row">            
+            <div class="col-sm-3" v-for="(item, index) in tokens">
+                <div id="diferir" :class="item.promocao == 'S'?'promocao column post-grid-content':'column post-grid-content'"  @click="select(item.id, aviso)">
+                    <div class="um">
+                        <img :src="origin+'wa/delivery/uploads/'+item.imagem">
+                    </div>
+                    <span class="etiqueta">Realizar Pedido</span>
+                    <div class="dois">
+                        <b>{{item.nome}}</b>                       
+                    </div>
+                    <span class="etiqueta2"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                    <div class="tres">                       
+                        <b class="nao" v-if="item.promocao == 'S'" >{{item.v_cortado}}</b> <br v-if="item.promocao == 'S'" class="etiqueta2" ><b class="sim">{{item.valor}}</b>
+                    </div>
+                </div>                
+            </div>
         </div>
         <?php if(is_array($fetch)){ ?>
         <ul  class="pagination col-12" v-if="config.paginacao == 'S'">
@@ -346,7 +347,7 @@
                                 <span>Itens do <strong>Seu pedido</strong></span>
                                 <span id="shopping-basket-total-price" class="valor">R$ {{valor.replace('.',',')}}</span>
                             </div>
-                            <div id="shopping-basket-unpaired-marker" class="floating" style="display: none;"><span class="fas fa-exclamation"></span></div>
+                            <div id="shopping-basket-unpaired-marker" class="floating" style="display: none;"><span class="fa fa-exclamation"></span></div>
                             <div class="floating"><span id="shopping-basket-items-count">{{total}}</span></div>
                         </div>
                     </div>
