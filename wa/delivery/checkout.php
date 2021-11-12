@@ -458,7 +458,7 @@ const vue2 = new Vue({
                         let endre = "Rua "+endereco+" - "+numero+" - "+bairro
                         document.getElementById('endref').innerText=endre
                         document.getElementById('obs').innerText=" "+obs
-                        entrega ="%0A%0A*ENTREGA*%0A*Endereço%20para%20entrega%3A*%0A*Rua%3A%20GFDGF*%0A*Número%3A%20"+numero+"*%0A*Complemento%3A%20"+complemento+"*%0A*Bairro%3A%20"+bairro+"*%0A*Ponto%20de%20Ref.%3A%20"+ponto+"*%0A*CEP%3A%20"+cep+"*"
+                        entrega ="%0A%0A*ENTREGA*%0A*Endereço%20para%20entrega%3A*%0A*Rua%3A%20"+endereco+"*%0A*Número%3A%20"+numero+"*%0A*Complemento%3A%20"+complemento+"*%0A*Bairro%3A%20"+bairro+"*%0A*Ponto%20de%20Ref.%3A%20"+ponto+"*%0A*CEP%3A%20"+cep+"*"
                     }else{                   
                         vue2.frete = 'R$ 0,00'
                     }
@@ -507,41 +507,41 @@ const vue2 = new Vue({
                         form.append('entrega', vue2.frete)
                         form.append('observa', obs)
                     } 
-                    fetch(WACroot+'api/pedidos.php',{method: "POST", body: form}).then(a =>a.text(peid)).then(
-                        data =>{id = data}
-                    )
-                    Swal.fire({
-                        title: 'Informação !',
-                        text: "Podemos armazenas essas informações para automatizar esse processo em futuras compras?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        cancelButtonText: 'Não',
-                        confirmButtonText: 'Sim'
-                    }).then((result) => {
-                        document.getElementsByClassName('obsConfirmacao')[0].style.display = 'none'
-                        document.getElementsByClassName('infoEntregaConfirmacao ')[0].style.display = 'none'
-                        document.getElementsByClassName('pagamentoConfirmacao')[0].style.display = 'none'
-                        document.getElementsByClassName('valoresConfirmacao')[1].style.margin = '0px 0 15px 0px'
-                        document.getElementsByClassName('informacoesEntrega')[0].style.padding = '0px 35px'
-                        document.getElementsByClassName('informacoesEntrega')[0].style.top = '-35px'
-                        document.getElementById('pedido-concluido').style.display = 'block'
-                        document.getElementById('enviar').style.display = 'none'
-                        document.getElementById('titulo').style.display = 'none'
-                        document.getElementById('top').style.border = '0px'
-                        document.getElementById('top').style.margin = '0px'
-                        document.getElementById('voltar').style.top = '30px'
-                        document.getElementById('voltar').style.right = '4%'
-                        document.getElementsByClassName('informacoesEntrega')[0].style.display = 'block'
-                        vue2.repetir = 'https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*'
-                        if (result.isConfirmed) {                        
-                            localStorage.setItem('delivery_info',JSON.stringify(info))
-                            window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%23'+id+'.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
-                        }else{
-                            window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%23'+id+'.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
-                        }
-                    })        
+                    fetch(WACroot+'api/pedidos.php',{method: "POST", body: form}).then(a =>a.text()).then(
+                        data =>{id = data                            
+                        Swal.fire({
+                            title: 'Informação !',
+                            text: "Podemos armazenas essas informações para automatizar esse processo em futuras compras?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            cancelButtonText: 'Não',
+                            confirmButtonText: 'Sim'
+                        }).then((result) => {
+                            document.getElementsByClassName('obsConfirmacao')[0].style.display = 'none'
+                            document.getElementsByClassName('infoEntregaConfirmacao ')[0].style.display = 'none'
+                            document.getElementsByClassName('pagamentoConfirmacao')[0].style.display = 'none'
+                            document.getElementsByClassName('valoresConfirmacao')[1].style.margin = '0px 0 15px 0px'
+                            document.getElementsByClassName('informacoesEntrega')[0].style.padding = '0px 35px'
+                            document.getElementsByClassName('informacoesEntrega')[0].style.top = '-35px'
+                            document.getElementById('pedido-concluido').style.display = 'block'
+                            document.getElementById('enviar').style.display = 'none'
+                            document.getElementById('titulo').style.display = 'none'
+                            document.getElementById('top').style.border = '0px'
+                            document.getElementById('top').style.margin = '0px'
+                            document.getElementById('voltar').style.top = '30px'
+                            document.getElementById('voltar').style.right = '4%'
+                            document.getElementsByClassName('informacoesEntrega')[0].style.display = 'block'
+                            vue2.repetir = 'https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%231493.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*'
+                            if (result.isConfirmed) {                        
+                                localStorage.setItem('delivery_info',JSON.stringify(info))
+                                window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%23'+id+'.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
+                            }else{
+                                window.open('https://api.whatsapp.com/send?phone='+vue2.config.whatsapp+'&text='+agora+'%0A%0AOlá%2C%20gostaria%20de%20fazer%20um%20pedido%20%23'+id+'.%0A%0AOs%20itens%20escolhidos%20são%3A'+pedidos+'%0A%0A*Subtotal.%3A%20R%24%20'+vue2.valor.replace('.',',')+'*%0A*Entrega..%3A%20'+vue2.frete+'*%0A*Total.......%3A%20R%24%20'+parseFloat(parseFloat(vue2.valor)+frete).toFixed(2).replace('.',',')+'*%0A%0A*Observações%20do%20cliente%3A*%0A*'+obs+'*%0A---------------------------------------%0A%0AForma%20de%20Pagamento%3A%20'+vue2.tipo+forma+entrega+'%0A%0A*Nome%3A%20'+nome+'*%0A*Celular%3A%20'+celular+'*')
+                            }
+                        })        
+                    })
                     
                 }
             }

@@ -53,3 +53,10 @@ if(isset($_GET['DeletarCategoria'])){
         }
     }
 }
+
+$plugins = DBRead('delivery_plugins','*');
+if(!empty($plugins)){
+    foreach($plugins as $key => $plugin){
+        require_once('ecommerce/'.$plugin['nome'].'.php');
+    }
+}
