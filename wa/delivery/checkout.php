@@ -239,7 +239,11 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="box">
+                                <div class="box ">
+                                    <input onclick="document.getElementById('cartao').style.display='none'; document.getElementById('troco').style.display='none'"  v-model="tipo" value="Pix" type="radio" name="pagamento" id="pix"    data-uuid="8b1ffbcf-8317-4fcf-b3ef-e9ce1195feaa">
+                                    <label for="pix">Pix</label>
+                                </div>
+                                <div class="box mt-md-3">
                                     <input onclick="document.getElementById('cartao').style.display='none'; document.getElementById('troco').style.display='block';" v-model="tipo" value="Dinheiro" type="radio" name="pagamento" id="dinheiro"    data-uuid="8b1ffbcf-8317-4fcf-b3ef-e9ce1195feaa">
                                     <label for="dinheiro">Dinheiro</label>
                                     <div class="secundario troco slideInDown faster" id="troco" style="display:none">
@@ -506,6 +510,8 @@ const vue2 = new Vue({
                         form.append('pagamento', vue2.tipo)
                         form.append('entrega', vue2.frete)
                         form.append('observa', obs)
+                        form.append('troco', (document.querySelector('input[name="change"]').value.replace(/[^0-9,]/g, "")).replace(",","."))
+                        
                     } 
                     fetch(WACroot+'api/pedidos.php',{method: "POST", body: form}).then(a =>a.text()).then(
                         data =>{id = data                            

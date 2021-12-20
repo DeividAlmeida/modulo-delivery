@@ -16,6 +16,15 @@ if(is_array($data)){
         $b = floatval(floatval(str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['valor'])))));
         $total = number_format($a+$b,2,'.', '');
         $pedido[$chave] = json_decode($data[$chave]['pedido'], true); 
+        if($valor['troco']!=null && $valor['pagamento']=='Dinheiro'){
+           $troco= '<p style="margin-left:10px;" align="left">
+                <span class="tx-12">
+                    <b>Troco R$: </b>'.$valor['troco'].'
+                </span>
+            </p>';
+            }else{
+                $troco=null;
+            }
         if(is_array($pedido[$chave])){                            
             foreach($pedido[$chave] as $key => $value){
                 if(is_array($pedido[$chave][$key]['complementos'])){
@@ -193,15 +202,16 @@ if(is_array($data)){
                     <hr>
                     <p style="margin-left:10px;" align="left">
                         <span class="tx-12">Pagamento (<b>'.$valor['pagamento'].'</b>)</span>
-                    </p>
+                    </p>'.$troco.'
+                    
                     <p style="margin-left:10px;" align="left">
                         <span class="tx-12">
-                            <b>Subtotal: R$: </b>'.str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['valor']))).'
+                            <b>Subtotal R$: </b>'.str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['valor']))).'
                         </span>
                     </p>                    
                     <p style="margin-left:10px;" align="left">
                         <span class="tx-12">
-                            <b>Entrega: R$: </b>'.str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['entrega']))).'
+                            <b>Entrega R$: </b>'.str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['entrega']))).'
                         </span>
                     </p>
                     <p style="margin-left:10px;" align="left">

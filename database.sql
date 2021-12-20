@@ -245,3 +245,4 @@ CREATE TABLE IF NOT EXISTS `delivery_plugins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
    ALTER TABLE `delivery_config` ADD `ordem` TEXT NULL AFTER `horario`, ADD `ascdesc` TEXT NULL AFTER `ordem`;
+   ALTER TABLE `delivery_pedidos` ADD `troco` VARCHAR(255) NULL AFTER `observa`;
