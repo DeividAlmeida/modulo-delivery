@@ -167,13 +167,13 @@ input[type=number] {
                             <div class="col-5">                                
                                 <div class="input-group  ">
                                     <div class="input-group-prepend">
-                                        <button style="min-width: 2.5rem" @click="total<= 1?total=1: total--;pedido.total = Math.abs(parseFloat(valor)*total).toFixed(2)" class="btn btn-decrement btn-outline-secondary"  type="button">
+                                        <button style="min-width: 2.5rem" @click="retirar()" class="btn btn-decrement btn-outline-secondary"  type="button">
                                             <strong>-</strong>
                                         </button>
                                     </div>
-                                    <input type="number" v-model="total" style="text-align: center" class="form-control qtt" >
+                                    <input type="number" :value="total" @input="editAll($event.target.value)" style="text-align: center" class="form-control qtt" >
                                     <div class="input-group-append">
-                                        <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary" @click="total++;pedido.total = Math.abs(parseFloat(valor)*total).toFixed(2)" type="button">
+                                        <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary" @click="total++;pedido.total = Math.abs(parseFloat(valor)+parseFloat(pedido.total)).toFixed(2)" type="button">
                                             <strong>+</strong>
                                         </button>
                                     </div>
@@ -202,11 +202,31 @@ input[type=number] {
          total:1,
          c_valido:[],
          c_valor:[],
+         a_valor:[],
          aviso:'<?php echo $_GET['horario'] ?>',
          valor:0,
          pedido:{qtd:1,nome: '<?php echo $db[0]['nome'] ?>',total:0,complementos:[], adicionais:[]}
-    },    
+    },   
+
     methods: {
+        editAll: function(t){
+            if(t> 0){
+               let agragado = Math.abs((this.valor*this.total)-this.pedido.total),
+               valor= t*this.valor
+                this.pedido.total= parseFloat(valor+agragado).toFixed(2)
+                this.total = t
+            }else{
+                this.$forceUpdate()
+            }
+        },
+        retirar: function(){
+            if(this.total<= 1){
+                this.total=1
+            }else{ 
+                this.total--;
+                this.pedido.total = Math.abs(parseFloat(this.valor)-parseFloat(this.pedido.total)).toFixed(2)
+            }
+        },
         algo: function(){
             window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden")')
             window.location=""
@@ -219,10 +239,10 @@ input[type=number] {
             let z =0
             let desconto = parseInt(e)
             let fator
+            if(c == 'c'){
             let pass_vl =  vue.c_valor[a][0]
             let pass = this.pedido.complementos[a][b].qtd
             let compara = parseFloat((count*valor)-(pass*valor))
-            if(c == 'c'){
                 let agvl = 0
                 let real = 0
                 this.pedido.complementos[a][b].qtd = parseInt(Math.abs(d))
@@ -255,13 +275,11 @@ input[type=number] {
                 this.pedido.complementos[a][b].qtd = parseInt(Math.abs(d))
                 vue.pedido.complementos[a][1] = count                    
                 vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+real).toFixed(2)
-                vue.valor = parseFloat(vue.valor+real)
                 
             }else{
                 let real = parseFloat((count*valor)-(this.pedido.adicionais[a].qtd*valor))
                 vue.pedido.adicionais[a].qtd = parseInt(Math.abs(d))
                 vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+real).toFixed(2)
-                vue.valor = parseFloat(vue.valor+real)
             }
             this.$forceUpdate()
         },
@@ -280,12 +298,9 @@ input[type=number] {
                 vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd+1
                 vue.pedido.complementos[a][1] = vue.pedido.complementos[a][1]+1
                 vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor).toFixed(2)
-                vue.valor = parseFloat(vue.valor+valor)
             }else if( c != 'c'){
                 vue.pedido.adicionais[a].qtd = vue.pedido.adicionais[a].qtd+1
                 vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))+valor).toFixed(2)
-                vue.valor = parseFloat(vue.valor+valor)
-             
             }
             this.$forceUpdate()
         },        
@@ -312,7 +327,6 @@ input[type=number] {
                     vue.pedido.complementos[a][b].qtd = vue.pedido.complementos[a][b].qtd-1
                     vue.pedido.complementos[a][1] = vue.pedido.complementos[a][1]-1
                     vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))-valor).toFixed(2)
-                    vue.valor = parseFloat(vue.valor-valor)
                 } 
             }else{
                 if(vue.pedido.adicionais[a].qtd <= 0){
@@ -320,7 +334,6 @@ input[type=number] {
                 }else{
                     vue.pedido.adicionais[a].qtd = vue.pedido.adicionais[a].qtd-1
                     vue.pedido.total = Math.abs(parseFloat(vue.pedido.total.replace(',','.'))-valor).toFixed(2)
-                    vue.valor = parseFloat(vue.valor-valor)
                 }
             }
             this.$forceUpdate()
@@ -367,6 +380,8 @@ input[type=number] {
         }   
     },
     mounted: function () {
+        Object.keys(this.adicionais).forEach(a=>{this.a_valor.push(0)})
+        Object.keys(this.complementos).forEach(a=>{this.c_valor.push(0)})
         this.$nextTick(function () {
             this.produtos[0].adicionais.forEach((a,i)=>{
                 if(this.adicionais){
