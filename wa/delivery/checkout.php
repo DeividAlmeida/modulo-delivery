@@ -4,6 +4,7 @@
     require_once('../../includes/funcoes.php');
     require_once('../../database/config.database.php');
     require_once('../../database/config.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -21,7 +22,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" >
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" ></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="<?php echo ConfigPainel('base_url'); ?>wa/delivery/src/style/main.css">
+
 <?php 
     require_once('../../wa/delivery/src/style/wactrl.php'); 
     require_once('../../wa/delivery/src/style/cardapex.php');
@@ -31,6 +32,8 @@
 ?>    
 </head>
 <body class="home blog">
+    <span class="barraDados"></span>
+    <span class="filtro-fixo"></span>
     <div id="controller" style="background:white;margin-top:30px"> 
         <section id="pedido-concluido" class="boxConfirmacao" style="display: none;position: relative; top: 55px;">
             <div class="container">
@@ -91,7 +94,7 @@
                                                                     {{opc.nome}}
                                                                 </div>
                                                                 <div class="right"  v-if="opc.qtd>0">
-                                                                {{opc.qtd*list.qtd}} <span>{{opc.vl === 'R$ 0,00'?'':' x '+opc.vl}}</span>
+                                                                {{opc.qtd}} <span>{{opc.vl === 'R$ 0,00'?'':' x '+opc.vl}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -103,7 +106,7 @@
                                                                 {{adicional.nome}}
                                                             </div>
                                                             <div class="right">
-                                                                {{adicional.qtd*list.qtd}} x <span>{{adicional.vl}}</span>
+                                                                {{adicional.qtd}} x <span>{{adicional.vl}}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -111,7 +114,7 @@
                                             </div>
                                             <div class="actions">
                                                 <div class="right">
-                                                    <span data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b" style="white-space:nowrap"  class="price">Subtotal: <b style="color:#22a200"> R$ {{list.total.replace('.',',')}}</b></span>
+                                                    <span data-identifier="178b3269e8e18a7ff5523da479ed03e50bad67535152c7961272c2e99405605b" style="white-space:nowrap"  class="price">Subtotal: <b style="color:#22a200"> R$ {{new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2,maximumFractionDigits:2, currency: 'usd',   currencyDisplay: 'narrowSymbol'}).format(list.total)}}</b></span>
                                                 </div>                                                
                                             </div>
                                         </div>
@@ -194,7 +197,7 @@
                                     <div class="row text-right m-0 justify-content-end">
                                         <div id="cupom_desconto" class="col-3 col-lg-2">
                                             <span>Subtotal</span>
-                                            <strong id="pedido_subtotal_valor">R$ {{valor.replace('.',',')}}</strong>
+                                            <strong id="pedido_subtotal_valor">R$ {{new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2,maximumFractionDigits:2, currency: 'usd',   currencyDisplay: 'narrowSymbol'}).format(valor)}}</strong>
                                         </div>
                                         <div id="pedido_subtotal" class="col-3 col-lg-2 " >
                                             <span>Taxa de Entrega</span>
@@ -202,7 +205,7 @@
                                         </div>                                     
                                         <div id="pedido_total" class="col-3 col-lg-2 total " style="display: none;">
                                             <span>Total</span>
-                                            <strong id="pedido_total_valor">R$  {{valor.replace('.',',')}}</strong>
+                                            <strong id="pedido_total_valor">R$  {{new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2,maximumFractionDigits:2, currency: 'usd',   currencyDisplay: 'narrowSymbol'}).format(valor)}}</strong>
                                         </div>           
                                         <div id="fora_de_area" class="col-12" style="display: none;">
                                             <strong id="fora_de_area_valor" class="red">Fora da área de atendimento</strong>
@@ -273,7 +276,7 @@
                         <div class="row text-right m-0 justify-content-end">
                             <div id="cupom_desconto" class="col-3 col-lg-2">
                                 <span>Subtotal</span>
-                                <strong id="pedido_subtotal_valor">R$ {{valor.replace('.',',')}}</strong>
+                                <strong id="pedido_subtotal_valor">R$ {{new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2,maximumFractionDigits:2, currency: 'usd',   currencyDisplay: 'narrowSymbol'}).format(valor)}}</strong>
                             </div>
                             <div id="pedido_subtotal" class="col-3 col-lg-2 " >
                                 <span>Taxa de Entrega</span>
@@ -281,7 +284,7 @@
                             </div>                                     
                             <div id="pedido_total" class="col-3 col-lg-2 total " style="display: none;">
                                 <span>Total</span>
-                                <strong id="pedido_total_valor">R$  {{valor.replace('.',',')}}</strong>
+                                <strong id="pedido_total_valor">R$  {{new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2,maximumFractionDigits:2, currency: 'usd',   currencyDisplay: 'narrowSymbol'}).format(valor)}}</strong>
                             </div>           
                             <div id="fora_de_area" class="col-12" style="display: none;">
                                 <strong id="fora_de_area_valor" class="red">Fora da área de atendimento</strong>
@@ -331,7 +334,7 @@
 <script>
 const vue2 = new Vue({
     el: "#controller",
-    data: {   
+    data: { 
         money: {
                 decimal: ',',
                 thousands: '.',
@@ -355,13 +358,14 @@ const vue2 = new Vue({
         pagamento:<?php echo $pagamento ?>,
         tipo:'',
         cartao:'',
+        pedido:"hjgj",
         dinheiro:'',
-        pedido:[],
         total:0,
         repetir: '',
         obter: 'entrega',
         valor:'0.00'
     },
+    created() {this.pedido = todosPedidos; },
     methods:{
         openhide: function(a){
             let teste = document.getElementById('p'+a).getAttribute('class').search('open')
@@ -479,14 +483,14 @@ const vue2 = new Vue({
                         let p2 =""
                         for(let a =0; a< vue2.pedido[i].adicionais.length; a++){
                             if(vue2.pedido[i].adicionais[a].qtd >0){
-                                    p += "%0A-%20"+vue2.pedido[i].adicionais[a].nome+"%3A%20*"+vue2.pedido[i].adicionais[a].qtd*vue2.pedido[i].qtd+"%20(R%24%20"+vue2.pedido[i].adicionais[a].vl+")*"
+                                    p += "%0A-%20"+vue2.pedido[i].adicionais[a].nome+"%3A%20*"+vue2.pedido[i].adicionais[a].qtd+"%20(R%24%20"+vue2.pedido[i].adicionais[a].vl+")*"
                             } 
                         }
                         for(let c =0; c< vue2.pedido[i].complementos.length; c++){
                             if(vue2.pedido[i].complementos[c].length>2){
                                 for(let opc =0; opc< vue2.pedido[i].complementos[c].length; opc++){
                                     if(vue2.pedido[i].complementos[c][opc].qtd>0){                    
-                                        p2 += "%0A-%20"+vue2.pedido[i].complementos[c][0]+"%3A%20*"+vue2.pedido[i].complementos[c][opc].nome+"*%20-%20*"+vue2.pedido[i].complementos[c][opc].qtd*vue2.pedido[i].qtd+"x%20("+vue2.pedido[i].complementos[c][opc].vl+")*"
+                                        p2 += "%0A-%20"+vue2.pedido[i].complementos[c][0]+"%3A%20*"+vue2.pedido[i].complementos[c][opc].nome+"*%20-%20*"+vue2.pedido[i].complementos[c][opc].qtd+"x%20("+vue2.pedido[i].complementos[c][opc].vl+")*"
                                     }
                                 }
                             }else{                 
@@ -552,13 +556,14 @@ const vue2 = new Vue({
                 }
             }
         }
+        
     }
 })
 
-if(sessionStorage.getItem('delivery_valor') != null ){
-    vue2.total = parseFloat(sessionStorage.getItem('delivery_total'))
-    vue2.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
-    vue2.pedido=JSON.parse(sessionStorage.getItem('delivery_pedido'))
+if(delivery_valor>0){
+    vue2.total = delivery_total
+    vue2.valor = delivery_valor
+    vue2.pedido=todosPedidos;
     for(let i = 0; i<vue2.pedido.length;i++){
         let c = '0'
         let a = '0'
@@ -575,9 +580,10 @@ voltar = () =>{
 }
 new atualiza()
 function atualiza(){
-    if(sessionStorage.getItem('delivery_valor') != null){
-        vue2.total = parseFloat(sessionStorage.getItem('delivery_total'))
-        vue2.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
+    if(delivery_valor>0){
+        vue2.total = delivery_total
+        vue2.valor = delivery_valor
+        vue2.pedido=todosPedidos;
     }
 }
 function troco(a){
@@ -632,6 +638,9 @@ if(Array.isArray(infor)){
 }
 function repetir(){
     window.open(vue2.repetir)
+}
+function voltar(){
+    $("#delivery").load(WACroot)
 }
 </script>
 </body>

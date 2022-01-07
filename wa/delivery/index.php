@@ -50,7 +50,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src='https://unpkg.com/vue/dist/vue.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.10.2/underscore-min.js'></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4@5.0.0/bootstrap-4.min.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -83,7 +83,7 @@
                         
                         <div class="box-horarios" :style="horario != 'ativo'?'display: none':void(0)">
                             <ul>
-                                <li v-for="hora, dia of config.horario" v-if="!config.horario[dia]['hora-fim'].length<=0">
+                                <li v-for="hora, dia of config.horario" v-if="config.horario[dia]['hora-fim']!=0">
                                     <strong>{{dia}}: </strong>
                                     <span style="white-space: nowrap; letter-spacing: -1px;padding:0" v-for="hinicio, horas of config.horario[dia]['hora-inicio']">
                                         <span >{{config.horario[dia]['hora-inicio'][horas]+' : '+config.horario[dia]['minuto-inicio'][horas] + '&nbsp;&nbsp;-&nbsp;&nbsp;' + config.horario[dia]['hora-fim'][horas]+' : '+config.horario[dia]['minuto-fim'][horas]}}</span>
@@ -102,7 +102,7 @@
                         <i class="fa fa-angle-down"></i>
                     </div>
                     <div class="listaFormas" :style="pagamento != 'ativo'?'display: none':void(0)">
-                        <div v-if="gpagamento.opicao.credito.length >0" class="">
+                        <div v-if="gpagamento.opicao.credito!=0" class="">
                             <h4>Cartões de Crédito</h4>
                             <ul>                            
                                 <li v-for="opc, i of gpagamento.opicao.credito">{{opc.nome}}</li>        
@@ -110,7 +110,7 @@
                         </div>
                         
                         
-                        <div v-if="gpagamento.opicao.debito.length >0" class="">
+                        <div v-if="gpagamento.opicao.debito!=0" class="">
                             <h4>Cartões de Débito</h4>
                             <ul>                            
                                 <li v-for="opd, i of gpagamento.opicao.debito">{{opd.nome}}</li>        
@@ -118,7 +118,7 @@
                         </div>
                         
                         
-                        <div v-if="gpagamento.opicao.vale.length >0" class="">
+                        <div v-if="gpagamento.opicao.vale!=0" class="">
                             <h4>Vales</h4>
                             <ul>                            
                                 <li v-for="opv, i of gpagamento.opicao.vale">{{opv.nome}}</li>        
@@ -126,7 +126,7 @@
                         </div>
                         
                         
-                        <div v-if="gpagamento.opicao.outro.length >0" class="">
+                        <div v-if="gpagamento.opicao.outro!=0" class="">
                             <h4>Outras Formas</h4>
                             <ul>                            
                                 <li v-for="opo, i of gpagamento.opicao.outro">{{opo.nome}}</li>        
@@ -177,7 +177,7 @@
                                                     {{opc.nome}}
                                                 </div>
                                                 <div class="right"  v-if="opc.qtd>0">
-                                                {{opc.qtd*list.qtd}} <span>{{opc.vl === 'R$ 0,00'?'':' x '+opc.vl}}</span>
+                                                {{opc.qtd}} <span>{{opc.vl === 'R$ 0,00'?'':' x '+opc.vl}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,7 +189,7 @@
                                                 {{adicional.nome}}
                                             </div>
                                             <div class="right">
-                                                {{adicional.qtd*list.qtd}} x <span>{{adicional.vl}}</span>
+                                                {{adicional.qtd}} x <span>{{adicional.vl}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -207,7 +207,7 @@
                                                 <strong>-</strong>
                                             </button>
                                         </div>
-                                            <input @input="muda(Math.abs($event.target.value), id)" type="text" :id="id" inputmode="decimal" style="text-align: center"  :value="list.qtd"  class="form-control basket-update-qtt" placeholder="">
+                                            <input @input="muda(Math.abs($event.target.value), id)" type="text" :id="id" inputmode="decimal" style="text-align: center;padding:0px !important"  :value="list.qtd"  class="form-control basket-update-qtt" placeholder="">
                                         <div class="input-group-append">
                                             <button @click="add(id)" style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary"   type="button">
                                                 <strong>+</strong>
@@ -221,7 +221,7 @@
                             <div class="row">
                                 <div class="col-3 text-left">Total:</div>
                                 <div class="col-9 text-right total">
-                                    <span class="green">R$ {{valor.replace('.',',')}}</span>
+                                    <span class="green">R$ {{new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2,maximumFractionDigits:2, currency: 'usd',   currencyDisplay: 'narrowSymbol'}).format(valor)}}</span>
                                     <span class="red">+</span> Taxa de Entrega
                                 </div>
                             </div>
@@ -345,7 +345,7 @@
                         <div class="botao openBasket" onclick="document.getElementsByClassName('basket')[0].setAttribute('class', 'basket')">
                             <div class="title">
                                 <span>Itens do <strong>Seu pedido</strong></span>
-                                <span id="shopping-basket-total-price" class="valor">R$ {{valor.replace('.',',')}}</span>
+                                <span id="shopping-basket-total-price" class="valor">R$ {{new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2,maximumFractionDigits:2, currency: 'usd',   currencyDisplay: 'narrowSymbol'}).format(valor)}}</span>
                             </div>
                             <div id="shopping-basket-unpaired-marker" class="floating" style="display: none;"><span class="fa fa-exclamation"></span></div>
                             <div class="floating"><span id="shopping-basket-items-count">{{total}}</span></div>

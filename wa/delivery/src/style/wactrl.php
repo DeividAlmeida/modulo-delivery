@@ -4,6 +4,7 @@ html{
     font-family: Montserrat, Arial, Helvetica, 'Liberation Sans', FreeSans, sans-serif;
 }
 
+
 .pagination{
     padding-left:15px!important;
 

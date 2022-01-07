@@ -4,13 +4,13 @@
 	require_once('../../database/config.database.php');
 	require_once('../../database/config.php');
     $db = DBRead('delivery_produto','*',"WHERE id ='{$_GET["id"]}'");    
-    $complementos = json_encode(DBRead('delivery_complemento','*',"WHERE status ='Ativo'"));
-    $adicionais = json_encode(DBRead('delivery_adicional','*',"WHERE status ='Ativo'"));
+    $complementos = json_encode(DBRead('delivery_complemento','*',"WHERE status ='Ativo' "));
+    $adicionais = json_encode(DBRead('delivery_adicional','*',"WHERE status ='Ativo' "));
     $produtos = json_encode($db);
     $conf = DBRead('delivery_config','*')[0];
     $config = json_encode($conf);
 ?>      
-    <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <link rel="stylesheet" href="<?php echo ConfigPainel('base_url'); ?>wa/delivery/src/style/bootstrap.min.css">
     <?php require_once('../../wa/delivery/src/style/cardapex.php') ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
@@ -110,7 +110,7 @@ input[type=number] {
                                             <strong>-</strong>
                                         </button>
                                     </div>
-                                    <input type="number" min="0" inputmode="decimal" @change="edit(idc,idp+2,'c',$event.target.value, complemento.max, opcao.valor.replace(/[^0-9,-]+/g,''),id )" :value="pedido.complementos[idc][idp+2].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
+                                    <input type="number" min="0" inputmode="decimal" @change="edit(idc,idp+2,'c',$event.target.value, complemento.max, opcao.valor.replace(/[^0-9,-]+/g,''),id )" :value="pedido.complementos[idc][idp+2].qtd" style="text-align: center; padding:0px !important" class="form-control option-qtt" placeholder="">
                                     <div class="input-group-append">
                                         <button style="min-width: 2.5rem" @click="add(idc, idp+2, 'c', complemento.max, opcao.valor.replace(/[^0-9,-]+/g,''))" class="btn btn-increment btn-outline-secondary" type="button">
                                             <strong>+</strong>
@@ -130,7 +130,7 @@ input[type=number] {
                     <div class="title">                        
                         <h4 v-if="produtos[id].adicionais.length >0">ADICIONAIS</h4>                      
                     </div>                    
-                   <div v-if="pedido.adicionais[ida]" v-for="adicional, ida of produtos[id].adicionais" >
+                   <div v-for="adicional, ida of pedido.adicionais" >
                         <div style="border-bottom: 1px #efefef solid;" class="option" data-uuid="70e720cc-a8c8-4dfd-8429-0a443b2804c2">
                             <div class="row">
                                 <div class="col-7 align-self-center">
@@ -139,18 +139,18 @@ input[type=number] {
                                 <div class="col-5 align-self-center text-right">                          
                                     <div class="input-group " >
                                         <div class="input-group-prepend">
-                                            <button style="min-width: 2.5rem" @click="remove(ida, null, 'a', adicional.valor.replace(/[^0-9,-]+/g,''))"  class="btn btn-decrement btn-outline-secondary" type="button">
+                                            <button style="min-width: 2.5rem" @click="remove(ida, null, 'a', adicional.vl.replace(/[^0-9,-]+/g,''))"  class="btn btn-decrement btn-outline-secondary" type="button">
                                                 <strong>-</strong>
                                             </button>
                                         </div>
-                                        <input type="number" min="0"  inputmode="decimal" @change="edit(ida,null,'a',$event.target.value, null, adicional.valor.replace(/[^0-9,-]+/g,''))" :value="pedido.adicionais[ida].qtd" style="text-align: center" class="form-control option-qtt" placeholder="">
+                                        <input type="number" min="0"  inputmode="decimal" @change="edit(ida,null,'a',$event.target.value, null, adicional.vl.replace(/[^0-9,-]+/g,''))" :value="pedido.adicionais[ida].qtd" style="text-align: center; padding:0px !important" class="form-control option-qtt" placeholder="">
                                         <div class="input-group-append">
-                                            <button style="min-width: 2.5rem" @click="add(ida,null, 'a',null, adicional.valor.replace(/[^0-9,-]+/g,''))" class="btn btn-increment btn-outline-secondary" type="button">
+                                            <button style="min-width: 2.5rem" @click="add(ida,null, 'a',null, adicional.vl.replace(/[^0-9,-]+/g,''))" class="btn btn-increment btn-outline-secondary" type="button">
                                                 <strong>+</strong>
                                             </button>
                                         </div>
                                     </div>                          
-                                    <p class="price">{{adicional.valor == 'R$ 0,00'?'Grátis':'+ '+adicional.valor}}</p>
+                                    <p class="price">{{adicional.vl == 'R$ 0,00'?'Grátis':'+ '+adicional.vl}}</p>
                                 </div>
                             </div>
                         </div>                    
@@ -171,7 +171,7 @@ input[type=number] {
                                             <strong>-</strong>
                                         </button>
                                     </div>
-                                    <input type="number" :value="total" @input="editAll($event.target.value)" style="text-align: center" class="form-control qtt" >
+                                    <input type="number" :value="total" @input="editAll($event.target.value)" style="text-align: center; padding:0px !important" class="form-control qtt" >
                                     <div class="input-group-append">
                                         <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary" @click="total++;pedido.total = Math.abs(parseFloat(valor)+parseFloat(pedido.total)).toFixed(2)" type="button">
                                             <strong>+</strong>
@@ -180,7 +180,7 @@ input[type=number] {
                                 </div>
                             </div>
                             <div class="col-7 confirmar">
-                                <button v-if="aviso != 'Estamos fechados'" type="button" @click="concluir()" class="adicionar">Adicionar<br>R$ {{pedido.total.replace('.',',')}}</button>
+                                <button v-if="aviso != 'Estamos fechados'" type="button" @click="concluir()" class="adicionar">Adicionar<br>R$ {{new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2,maximumFractionDigits:2, currency: 'usd',   currencyDisplay: 'narrowSymbol'}).format(pedido.total)}}</button>
                                 <button v-else type="button" class="adicionar" style="background:#dc3545!important; border: 1px #dc3545 solid;    border-bottom: 3px #dc3545 solid;">ESTAMOS FECHADOS<br> NO MOMENTO</button>
                             </div>
                         </div>
@@ -346,27 +346,17 @@ input[type=number] {
             } else if(WACroot.search('www.')<0){
                  WACroot =  WACroot.replace('https://', 'https://www.')
             }
-            let c = false      
+            let c = false
             vue.pedido.complementos.filter(a=>{if(a[1] === 0){c= '1'}})
+            let p = [vue.pedido]
             if(c != false){             
                 window.parent.location.assign("javascript:     Swal.fire({ title: 'Erro',  text: 'Você precisa selecionar ao menos 1 item nos complementos', icon: 'error', confirmButtonColor: '#d33'})")
             }else{
-                window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza(); Swal.fire({    title: "Adicionado",    text: "Item adicionado com sucesso!",    icon: "success",    showCancelButton: true,    confirmButtonColor: "#3085d6",    cancelButtonColor: "#22a200",    confirmButtonText: "Enviar meu pedido",    cancelButtonText: "Escolher mais itens"  }).then((result) => {    if (result.isConfirmed) {   $("#delivery").load("'+WACroot+'checkout.php")       }  })')
-                window.location=""
                 vue.pedido.qtd = vue.total
-                if(sessionStorage.getItem('delivery_valor') == null){
-                    sessionStorage.setItem('delivery_valor',parseFloat(vue.pedido.total)) 
-                    sessionStorage.setItem('delivery_total',vue.total) 
-                    sessionStorage.setItem('delivery_pedido',JSON.stringify([vue.pedido])) 
-                }else{
-                   let valor = parseFloat(sessionStorage.getItem('delivery_valor'))+parseFloat(vue.pedido.total)
-                   let total = parseFloat(sessionStorage.getItem('delivery_total'))+vue.total
-                   sessionStorage.setItem('delivery_valor',valor) 
-                   sessionStorage.setItem('delivery_total',total)
-                   let p = JSON.parse(sessionStorage.getItem('delivery_pedido'))
-                   p.push(vue.pedido)               
-                  sessionStorage.setItem('delivery_pedido',JSON.stringify(p))
-                }
+                p.push(vue.pedido)              
+                
+                window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "hidden");new atualiza('+JSON.stringify(p)+','+JSON.stringify(vue.total)+','+JSON.stringify(vue.pedido.total)+'); Swal.fire({    title: "Adicionado",    text: "Item adicionado com sucesso!",    icon: "success",    showCancelButton: true,    confirmButtonColor: "#3085d6",    cancelButtonColor: "#22a200",    confirmButtonText: "Enviar meu pedido",    cancelButtonText: "Escolher mais itens"  }).then((result) => {    if (result.isConfirmed) {   $("#delivery").load("'+WACroot+'checkout.php")       }  })')
+                window.location=""
             }
         },
         sel: function(a, b, c){  
@@ -401,22 +391,24 @@ input[type=number] {
  
 
  vue.produtos[0].complementos.forEach((a,i)=>{
-    vue.complementos.filter((b)=>{
-        if(b.nome == a.nome && b.status=='Ativo'){
-            vue.pedido.complementos[i] = [b.nome, 0]
-            if(b.tipo == 1){
-                Object.assign(vue.pedido.complementos[i],{escolha:null}) 
-            }
-            for(let ii = 0 ; ii< vue.produtos[0].complementos[i].opcao.length; ii++){                
-                if(b.tipo == 0){
-                    vue.pedido.complementos[i].push({nome:vue.produtos[0].complementos[i].opcao[ii].nome, qtd:0,vl:vue.produtos[0].complementos[i].opcao[ii].valor}) 
-                }else{
-                    
+     if(vue.complementos){
+        vue.complementos.filter((b)=>{
+            if(b.nome == a.nome && b.status=='Ativo'){
+                vue.pedido.complementos[i] = [b.nome, 0]
+                if(b.tipo == 1){
+                    Object.assign(vue.pedido.complementos[i],{escolha:null}) 
                 }
-            }                      
-            Object.assign(vue.produtos[0].complementos[i],{tipo:b.tipo})
-        }    
-    })
+                for(let ii = 0 ; ii< vue.produtos[0].complementos[i].opcao.length; ii++){                
+                    if(b.tipo == 0){
+                        vue.pedido.complementos[i].push({nome:vue.produtos[0].complementos[i].opcao[ii].nome, qtd:0,vl:vue.produtos[0].complementos[i].opcao[ii].valor}) 
+                    }else{
+                        
+                    }
+                }                      
+                Object.assign(vue.produtos[0].complementos[i],{tipo:b.tipo})
+            }    
+        })
+     }
  })
  for(let l=0;l<vue.produtos[0].complementos.length;l++){
     vue.c_valido.push({0:0})

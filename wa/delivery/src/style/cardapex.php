@@ -98,7 +98,7 @@ section.barraDados {background:#fff; border-bottom:1px #dedede solid; display:ta
 	section.barraDados .boxin.pagamento.ativo .formasPagamento {border:1px #dedede solid; border-bottom:0;}
 	section.barraDados .formasPagamento strong {display:block; font-size:14px; line-height:14px; padding:5px 0; color:#000;}
 	section.barraDados .boxin.pagamento .fa-angle-down {position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 24px; color: #a9a9a8;}
-	section.barraDados .boxin.pagamento .listaFormas {position:absolute; top:100%; left:10px; background:#fff; width:470px; z-index:99; border: 1px #dedede solid; padding:15px; border-radius: 0 15px 15px 0;}
+	section.barraDados .boxin.pagamento .listaFormas {position:absolute; top:93%; left:10px; background:#fff; width:470px; z-index:99; border: 1px #dedede solid; padding:15px; border-radius: 0 15px 15px 0;}
 	section.barraDados .boxin.pagamento .listaFormas h4 {font-size: 16px; border-bottom: 1px #dedede solid; padding-bottom: 10px; margin-bottom: 10px;}
 	section.barraDados .boxin.pagamento .listaFormas ul {display:table; margin-bottom:20px;}
 	section.barraDados .boxin.pagamento .listaFormas ul li {font-size:12px; background:#f5f5f5; color:#000; border-radius:40px; padding:5px 15px; display:table; float:left; margin-bottom:5px; margin-bottom:5px; margin-right:5px;}
@@ -722,7 +722,7 @@ section.banner-tarja .box a:hover {background:#28475d;}
 	section.barraDados .boxin.horario.semDelivery, section.barraDados .boxin.pagamento.semDelivery {width:50% !important;}
 	section.barraDados .horario-atendimento p.btn span {font-size:9px;}
 	section.barraDados .boxin.entrega {border:0; padding:0; margin:0;}
-		section.barraDados .boxin.pagamento .listaFormas {left:50%; right:auto; transform:translateX(-50%);}
+		section.barraDados .boxin.pagamento .listaFormas {left:97%;top:94%; right:auto; transform:translateX(-50%);}
 		section.barraDados .boxin.pagamento.semDelivery .listaFormas {right:0; left:auto; transform:none;}
 		section.barraDados .tempoEntrega {padding-top:50px; background-position:center 10px; padding-left:0; text-align:center;}
 			section.barraDados .tempoEntrega strong {line-height:13px;}

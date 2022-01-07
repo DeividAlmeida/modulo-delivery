@@ -1,3 +1,4 @@
+
 <script>
 new barra()
 var myMixin = {
@@ -46,7 +47,7 @@ var myMixin = {
   },
 };
 
-const vue = new Vue({
+const vue1 = new Vue({
 el: "#controller",
 mixins: [myMixin],
 
@@ -57,7 +58,7 @@ data: {
     config:<?php echo $config ?>,
     entrega:<?php echo $entrega ?>,
     gpagamento:<?php echo $pagamento ?>,
-    idx:null,
+    idx:"1",
     tokenDumms: [],
     pager: {},
     tokens: {},
@@ -73,7 +74,7 @@ data: {
 },
 methods: {
     select: function(a,b){      
-      document.querySelectorAll('iframe#carrinho')[0].src=vue.origin+"wa/delivery/modal.php?id="+a+"&horario="+b
+      document.querySelectorAll('iframe#carrinho')[0].src=vue1.origin+"wa/delivery/modal.php?id="+a+"&horario="+b
         setTimeout( function(){
           window.parent.location.assign('javascript:document.getElementById("carrinho").setAttribute("class", "open")')
         }, 1000)
@@ -84,41 +85,44 @@ methods: {
     },
     muda: function(a,b){
         if(a>=1){
-            let base = parseFloat(vue.pedido[b].total)/vue.pedido[b].qtd
-            let tira = base*vue.pedido[b].qtd
+            let base = parseFloat(vue1.pedido[b].total)/vue1.pedido[b].qtd
+            let tira = base*vue1.pedido[b].qtd
             let coloca = base*a
-            vue.total = (vue.total + a)- vue.pedido[b].qtd 
-            vue.valor = parseFloat((parseFloat(vue.valor)-tira)+coloca).toFixed(2)
-            vue.pedido[b].qtd = a
-            vue.pedido[b].total=parseFloat(base*vue.pedido[b].qtd).toFixed(2)
-            sessionStorage.setItem('delivery_pedido',JSON.stringify(vue.pedido))
-            sessionStorage.setItem('delivery_total',JSON.stringify(vue.total))
-            sessionStorage.setItem('delivery_valor',vue.valor)  
+            vue1.total = (vue1.total + a)- vue1.pedido[b].qtd 
+            vue1.valor = parseFloat((parseFloat(vue1.valor)-tira)+coloca).toFixed(2)
+            vue1.pedido[b].qtd = a
+            vue1.pedido[b].total=parseFloat(base*vue1.pedido[b].qtd).toFixed(2)
+        
+            delivery_total = vue1.total
+            delivery_valor = vue1.valor 
+            todosPedidos = vue1.pedido
         }
         this.$forceUpdate()
     },
     add: function(b){
             let a = Math.abs(document.getElementById(b).value)+1
-            let base = parseFloat(vue.pedido[b].total)/vue.pedido[b].qtd
-            vue.pedido[b].qtd = a
-            vue.total = vue.total+1
-            vue.pedido[b].total=parseFloat(base*vue.pedido[b].qtd).toFixed(2)
-            vue.valor = parseFloat(parseFloat(vue.valor)+base).toFixed(2)
-            sessionStorage.setItem('delivery_pedido',JSON.stringify(vue.pedido))
-            sessionStorage.setItem('delivery_total',JSON.stringify(vue.total))
-            sessionStorage.setItem('delivery_valor',vue.valor)
+            let base = parseFloat(vue1.pedido[b].total)/vue1.pedido[b].qtd
+            vue1.pedido[b].qtd = a
+            vue1.total = vue1.total+1
+            vue1.pedido[b].total=parseFloat(base*vue1.pedido[b].qtd).toFixed(2)
+            vue1.valor = parseFloat(parseFloat(vue1.valor)+base).toFixed(2)
+        
+            delivery_total = vue1.total
+            delivery_valor = vue1.valor
+            todosPedidos = vue1.pedido
     },
     less: function(b){
             let a = Math.abs(document.getElementById(b).value)-1
         if(a>=1){
-            vue.total = vue.total-1
-            let base = parseFloat(vue.pedido[b].total)/vue.pedido[b].qtd
-            vue.pedido[b].qtd = a
-            vue.pedido[b].total=parseFloat(base*vue.pedido[b].qtd).toFixed(2)
-            vue.valor = parseFloat(parseFloat(vue.valor)-base).toFixed(2)
-            sessionStorage.setItem('delivery_pedido',JSON.stringify(vue.pedido))
-            sessionStorage.setItem('delivery_total',JSON.stringify(vue.total))
-            sessionStorage.setItem('delivery_valor',vue.valor)
+            vue1.total = vue1.total-1
+            let base = parseFloat(vue1.pedido[b].total)/vue1.pedido[b].qtd
+            vue1.pedido[b].qtd = a
+            vue1.pedido[b].total=parseFloat(base*vue1.pedido[b].qtd).toFixed(2)
+            vue1.valor = parseFloat(parseFloat(vue1.valor)-base).toFixed(2)
+        
+            delivery_total = vue1.total
+            delivery_valor = vue1.valor
+            todosPedidos = vue1.pedido
         }
     },
     openhide: function(a){
@@ -144,12 +148,13 @@ methods: {
             confirmButtonText: 'Sim'
         }).then((result) => {
             if (result.isConfirmed) {
-                vue.pedido.splice(a,1)
-                vue.total = parseFloat(vue.total-b)
-                vue.valor = parseFloat(vue.valor-c).toFixed(2)
-                sessionStorage.setItem('delivery_pedido',JSON.stringify(vue.pedido))
-                sessionStorage.setItem('delivery_total',JSON.stringify(vue.total))
-                sessionStorage.setItem('delivery_valor',vue.valor)
+                vue1.pedido.splice(a,1)
+                vue1.total = parseFloat(vue1.total-b)
+                vue1.valor = parseFloat(vue1.valor-c).toFixed(2)
+            
+                delivery_total = vue1.total
+                delivery_valor = vue1.valor
+                todosPedidos = vue1.pedido
                 Swal.fire(
                 'Removido!',
                 'Removido com sucesso.',
@@ -229,8 +234,30 @@ methods: {
     },
 },
 mounted: function () {
+    this.total = delivery_total 
+    this.valor = delivery_valor 
+    this.pedido = todosPedidos 
     this.tokenDumms = <?php echo $db?>; //data array;
     this.initController(); //index method used to call the setPage method
+    this.config.horario = JSON.parse(this.config.horario)
+    let tag = 0
+    let hoje = new Date()
+    let minuto_agora = String(hoje.getMinutes())
+    if(minuto_agora.length<2){minuto_agora ='0'+minuto_agora}
+    let agora = parseInt(String(hoje.getHours())+minuto_agora)
+    for (key in this.config.horario) {  
+        if(tag == hoje.getDay()){             
+            for(let c =0 ; c < this.config.horario[key]["hora-inicio"].length ; c++){
+                let inicio = parseInt(String(this.config.horario[key]["hora-inicio"][c])+String(this.config.horario[key]["minuto-inicio"][c]))
+                let fim = parseInt(String(this.config.horario[key]["hora-fim"][c])+String(this.config.horario[key]["minuto-fim"][c]))                                  
+                if(agora<=fim && agora>=inicio){
+                    this.aviso ='Estamos abertos'
+                    this.ate = 'das '+String(this.config.horario[key]["hora-inicio"][c])+':'+String(this.config.horario[key]["minuto-inicio"][c])+' até '+String(this.config.horario[key]["hora-fim"][c])+':'+String(this.config.horario[key]["minuto-fim"][c])
+                }
+            }        
+        }
+        tag++
+    }
   },
 });
 
@@ -252,46 +279,34 @@ window.onscroll = function(){
     document.getElementsByClassName('filtro-fixo')[0].style="display: none"
   }
 }
-vue.config.horario = JSON.parse(vue.config.horario)
-let tag = 0
-let hoje = new Date()
-let minuto_agora = String(hoje.getMinutes())
-if(minuto_agora.length<2){minuto_agora ='0'+minuto_agora}
-let agora = parseInt(String(hoje.getHours())+minuto_agora)
-for (key in vue.config.horario) {  
-    if(tag == hoje.getDay()){             
-        for(let c =0 ; c < vue.config.horario[key]["hora-inicio"].length ; c++){
-            let inicio = parseInt(String(vue.config.horario[key]["hora-inicio"][c])+String(vue.config.horario[key]["minuto-inicio"][c]))
-            let fim = parseInt(String(vue.config.horario[key]["hora-fim"][c])+String(vue.config.horario[key]["minuto-fim"][c]))                                  
-            if(agora<=fim && agora>=inicio){
-                vue.aviso ='Estamos abertos'
-                vue.ate = 'das '+String(vue.config.horario[key]["hora-inicio"][c])+':'+String(vue.config.horario[key]["minuto-inicio"][c])+' até '+String(vue.config.horario[key]["hora-fim"][c])+':'+String(vue.config.horario[key]["minuto-fim"][c])
-            }
-        }        
-    }
-    tag++
-}
-function atualiza(){
-    if(sessionStorage.getItem('delivery_valor') != null ){
-        vue.total = parseFloat(sessionStorage.getItem('delivery_total'))
-        vue.valor = parseFloat(sessionStorage.getItem('delivery_valor')).toFixed(2)
-        vue.pedido=JSON.parse(sessionStorage.getItem('delivery_pedido'))
-        for(let i = 0; i<vue.pedido.length;i++){
+
+function atualiza(z,t,v){
+    if(t > 0 ){
+        vue1.total = vue1.total+t
+        vue1.valor = (parseFloat(vue1.valor)+parseFloat(v)).toFixed(2)
+        delivery_total = vue1.total
+        delivery_valor = vue1.valor
+        if(z!=undefined){
+            vue1.pedido.push(z[0])
+            todosPedidos = vue1.pedido
+        }
+        for(let i = 0; i<vue1.pedido.length;i++){
             let c = '0'
             let a = '0'
             let resultado = null
-            vue.pedido[i].complementos.filter(a=>{if(a[1] !== 0){c= '1'}})
-            vue.pedido[i].adicionais.filter(b=>{if(b.qtd !== 0){a = '1'}})
+            vue1.pedido[i].complementos.filter(a=>{if(a[1] !== 0){c= '1'}})
+            vue1.pedido[i].adicionais.filter(b=>{if(b.qtd !== 0){a = '1'}})
             resultado = c+a
-            Object.assign(vue.pedido[i], {resultado:resultado})
+            Object.assign(vue1.pedido[i], {resultado:resultado})
         }
     }
 } 
-continuar =() =>{
-  $("#delivery").load(WACroot+"checkout.php")
-}
 
-!Array.isArray(vue.gpagamento.opicao) && typeof(vue.gpagamento.opicao) != "string"?
+ function continuar(){
+        $("#delivery").load(WACroot+"checkout.php")
+    }
+
+!Array.isArray(vue1.gpagamento.opicao) && typeof(vue1.gpagamento.opicao) != "string"?
         void(0):
-        vue.gpagamento.opicao = JSON.parse(vue.gpagamento.opicao)
+        vue1.gpagamento.opicao = JSON.parse(vue1.gpagamento.opicao)
 </script>
