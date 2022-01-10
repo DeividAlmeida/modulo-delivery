@@ -7,11 +7,11 @@ $data = DBRead('delivery_pedidos', '*', 'ORDER BY id DESC');
 $entrega = DBRead('delivery_entrega', '*')[0];
 $pedido = [];
 $table = [];
-$item = '';
-$item_cozinha = '';
 
 if(is_array($data)){
     foreach($data as $chave => $valor){
+        $item = '';
+        $item_cozinha = '';
         $a = floatval(floatval(str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['entrega'])))));
         $b = floatval(floatval(str_replace(",",".",str_replace(".","",str_replace('R$',"",$valor['valor'])))));
         $total = number_format($a+$b,2,'.', '');
