@@ -206,13 +206,19 @@ if($array['opicao']==null ){
                         <span class="opc" v-for="opo, i of idx.opicao.outro">{{opo.nome}} <span class="fecha" @click="remove(i,'outro')"> x</span></span></div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Chave Pix:</label>                        
+                        <input  v-model="idx.pix" placeholder="Coloque a chave pix que receberá pagamentos " class="form-control" name="pix" >
+                    </div>
+                </div>
             </div> 
-            <h4>Receber pagamentos online</h4>
-            <div class="row"> 
+            <h4 class="row d-none">Receber pagamentos online</h4>
+            <div class="row d-none"> 
                 <div class="col-6">                   
                     <div class="form-group">
                         <label>Pagar no Site:</label>
-                        <select name="pagar" v-model="idx.pagar" class="form-control custom-select" required>
+                        <select name="pagar" v-model="idx.pagar" class="form-control custom-select" >
                             <option value="S" >Sim</option>
                             <option value="N" >Não</option>
                         </select>
@@ -221,13 +227,13 @@ if($array['opicao']==null ){
                 <div class="col-6">  
                     <div class="form-group">
                         <label>Escolha o Meio de Pagamento:</label>
-                        <select name="meio" class="form-control custom-select" required>
+                        <select name="meio" class="form-control custom-select" >
                             <option value="pagseguro" >PagSeguro</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row d-none">
                 <div class="col-12">                
                     <div class="card">
                         <div class="card-header">
@@ -282,6 +288,7 @@ if($array['opicao']==null ){
                 thousands: '.',
                 prefix: 'R$ ',
                 precision: 2,
+                pix:null,
                 masked: false 
             },
             idx:<?php echo $banco ?>

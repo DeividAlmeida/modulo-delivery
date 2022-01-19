@@ -9,7 +9,7 @@ SELECT "Delivery", "delivery.php", "icon-truck", 1, 0, "delivery", "delivery/del
 CREATE TABLE IF NOT EXISTS `delivery` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `modo` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `delivery` (`id`, `modo`) VALUES (
     1, 
     '<script src=\"https://cdn.jsdelivr.net/npm/vue@2\"></script>'
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `delivery_categoria` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nome` text DEFAULT NULL,
     `descricao` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- COMPLEMENTO
 CREATE TABLE IF NOT EXISTS `delivery_complemento` (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `delivery_complemento` (
     `status` varchar(255)  DEFAULT 'Ativo',
     `opcoes` text DEFAULT NULL,
     `descricao` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- PEDIDOS
 CREATE TABLE IF NOT EXISTS `delivery_pedidos` (
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `delivery_pedidos` (
     `pagamento` text DEFAULT NULL,    
     `entrega` text DEFAULT NULL,
     `observa` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ADICIONAL
 CREATE TABLE IF NOT EXISTS `delivery_adicional` (
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `delivery_adicional` (
     `categoria` text DEFAULT NULL,
     `valor` text DEFAULT NULL,
     `status` varchar(255)  DEFAULT 'Ativo'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- PRODUTO
 CREATE TABLE IF NOT EXISTS `delivery_produto` (
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `delivery_produto` (
     `promocao` text DEFAULT NULL,
     `v_cortado` text DEFAULT NULL,
     `status` varchar(255)  DEFAULT 'Ativo'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- ENTREGA
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `delivery_entrega` (
     `msg` text DEFAULT NULL,
     `min` text DEFAULT NULL,
     `entrega` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `delivery_entrega` (
     `id`,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `delivery_pagamento` (
     `email` text DEFAULT NULL,
     `token` text DEFAULT NULL,
     `pagar` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `delivery_pagamento` (`id`, `mostrar`, `opicao`, `pagar`, `meio`)
 VALUES (1, NULL, NULL, NULL, NULL);
 
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `delivery_config` (
     `atendimento` text DEFAULT NULL,
         #Horario
     `horario` text DEFAULT NULL 
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
    INSERT INTO `delivery_config` (
        `id`,
 
@@ -242,7 +242,8 @@ CREATE TABLE IF NOT EXISTS `delivery_plugins` (
   `path` varchar(255) NOT NULL,
   `img` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
    ALTER TABLE `delivery_config` ADD `ordem` TEXT NULL AFTER `horario`, ADD `ascdesc` TEXT NULL AFTER `ordem`;
    ALTER TABLE `delivery_pedidos` ADD `troco` VARCHAR(255) NULL AFTER `observa`;
+   ALTER TABLE `delivery_pagamento` ADD `pix` TEXT NULL AFTER `pagar`;

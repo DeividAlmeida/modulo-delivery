@@ -3,7 +3,7 @@ error_reporting(0);
 require_once('../../includes/funcoes.php');
 require_once('../../database/config.database.php');
 require_once('../../database/config.php');
-$data = DBRead('delivery_pedidos', '*', 'ORDER BY id DESC');
+$data = DBRead('delivery_pedidos', '*', "ORDER BY id DESC LIMIT 30");
 $entrega = DBRead('delivery_entrega', '*')[0];
 $pedido = [];
 $table = [];

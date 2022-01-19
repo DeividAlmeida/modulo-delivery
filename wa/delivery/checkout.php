@@ -231,7 +231,7 @@
                             <div id="pagamentoConfirmacao" class="center pagamentoConfirmacao" style="box-shadow:none">
                                 <h3 class="title" style="bottom: 12px;">Formas de Pagamento</h3>
                                 <div class="box">
-                                    <input onclick="document.getElementById('cartao').style.display='block'; document.getElementById('troco').style.display='none'" type="radio" name="pagamento" id="maquininha" v-model="tipo" value="Cartão">
+                                    <input onclick="document.getElementsByClassName('troco2')[0].style.float='left';document.getElementById('cartao').style.display='block'; document.getElementById('troco').style.display='none'; document.getElementById('chave').style.display='none'" type="radio" name="pagamento" id="maquininha" v-model="tipo" value="Cartão">
                                     <label for="maquininha">Cartões (Crédito, Débito, etc)</label>
                                     <div class="secundario bandeiras animated sladeInDown faster" id="cartao" style="display:none">
                                         <select v-if="tipo == 'Cartão'" v-model="cartao" id="cartão" class="form-control" style="padding:0 10px;">
@@ -243,11 +243,20 @@
                                     </div>
                                 </div>
                                 <div class="box ">
-                                    <input onclick="document.getElementById('cartao').style.display='none'; document.getElementById('troco').style.display='none'"  v-model="tipo" value="Pix" type="radio" name="pagamento" id="pix"    data-uuid="8b1ffbcf-8317-4fcf-b3ef-e9ce1195feaa">
+                                    <input onclick="document.getElementsByClassName('troco2')[0].style.float='right';document.getElementById('cartao').style.display='none'; document.getElementById('troco').style.display='none'; document.getElementById('chave').style.display='block'"  v-model="tipo" value="Pix" type="radio" name="pagamento" id="pix"    data-uuid="8b1ffbcf-8317-4fcf-b3ef-e9ce1195feaa">
                                     <label for="pix">Pix</label>
+                                    <div class="secundario troco slideInDown faster" id="chave" style="display:none">
+                                        <p >Chave Pix</p>
+                                        <div class="input-group mb-3 d-flex">
+                                          <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary" style="background:#029a26; color:#fff; font-weight: bold;"type="button" id="button-addon1" onclick="{this.innerText='Copiado'; clipboard()}">Copiar</button>
+                                          </div>
+                                          <input type="text" class="form-control" placeholder="" disabled :value="pagamento.pix" aria-label="Example text with button addon" aria-describedby="button-addon1" id="pixchave">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="box mt-md-3">
-                                    <input onclick="document.getElementById('cartao').style.display='none'; document.getElementById('troco').style.display='block';" v-model="tipo" value="Dinheiro" type="radio" name="pagamento" id="dinheiro"    data-uuid="8b1ffbcf-8317-4fcf-b3ef-e9ce1195feaa">
+                                <div class="box mt-md-3 troco2" >
+                                    <input onclick="document.getElementById('cartao').style.display='none'; document.getElementById('troco').style.display='block';document.getElementById('chave').style.display='none'" v-model="tipo" value="Dinheiro" type="radio" name="pagamento" id="dinheiro"    data-uuid="8b1ffbcf-8317-4fcf-b3ef-e9ce1195feaa">
                                     <label for="dinheiro">Dinheiro</label>
                                     <div class="secundario troco slideInDown faster" id="troco" style="display:none">
                                         <p><i class="fas fa-money-bill-alt"></i> Troco para:</p>
@@ -641,6 +650,14 @@ function repetir(){
 }
 function voltar(){
     $("#delivery").load(WACroot)
+}
+
+function clipboard() {
+  var copyText = document.getElementById("pixchave");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); 
+  navigator.clipboard.writeText(copyText.value);
+  
 }
 </script>
 </body>

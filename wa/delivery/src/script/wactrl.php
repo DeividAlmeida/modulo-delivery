@@ -234,12 +234,12 @@ methods: {
     },
 },
 mounted: function () {
-    this.config.horario = JSON.parse(this.config.horario)
     this.total = delivery_total 
     this.valor = delivery_valor 
     this.pedido = todosPedidos 
     this.tokenDumms = <?php echo $db?>; //data array;
     this.initController(); //index method used to call the setPage method
+    this.config.horario = JSON.parse(this.config.horario)
     let tag = 0
     let hoje = new Date()
     let minuto_agora = String(hoje.getMinutes())
